@@ -41,8 +41,10 @@ def overshoot(times, thetas) -> float:
     return float(np.max(thetas) - thetas[-1])
 
 
-def max_rate(times, thetas) -> float:
-    """Fastest sustained bend, in degrees per hour."""
+def peak_rate(times, thetas) -> float:
+    """Fastest observed bend, in degrees per hour. Named peak_rate, not
+    max_rate, because max_rate is the parameter that caps it; the two must
+    never share a column name in a feature table."""
     if len(times) < 2:
         return 0.0
     return float(np.max(np.abs(np.diff(thetas))) / (times[1] - times[0]))
@@ -81,7 +83,7 @@ def tracking_rmse(times, thetas, phis) -> float:
 
 
 STATIC_FEATURES = ("half_rise_time", "peak_angle", "final_angle", "overshoot",
-                   "max_rate", "auroc")
+                   "peak_rate", "auroc")
 
 
 def static_vector(times, thetas) -> np.ndarray:
@@ -91,6 +93,6 @@ def static_vector(times, thetas) -> np.ndarray:
         peak_angle(times, thetas),
         final_angle(times, thetas),
         overshoot(times, thetas),
-        max_rate(times, thetas),
+        peak_rate(times, thetas),
         auroc(times, thetas),
     ])

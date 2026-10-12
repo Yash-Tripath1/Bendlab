@@ -52,6 +52,20 @@ when falsified.
 H1, H3 and H4 are stated as predictions that may well fail. H5 is the reality
 anchor: if it fails, nothing above it means anything.
 
+Two hypotheses were added on 11 October, after round 0 and before the
+experiments that test them.
+
+| # | Hypothesis | Falsified if |
+|---|---|---|
+| H6 | The set of parameter vectors sharing one behavioural fingerprint is connected: crossing over two behaviourally identical plants produces offspring that are also behaviourally identical | Offspring routinely fall outside the parents' equivalence class at small crossover and mutation step sizes |
+| H7 | Light protocols differ measurably in how much they shrink the degenerate set, and can be ranked by identifiability gain | All tested protocols leave the same within-class parameter spread |
+| H8 | Under a fixed budget of light exposure, an adaptive protocol-choice policy identifies plants (predicts an unseen protocol's curve within tolerance) more often than the best fixed protocol | The best fixed protocol matches or beats the adaptive policy within the seed-block CI |
+
+H6 is a geometry claim about the degenerate set, and it decides whether an
+evolutionary search over that set is even meaningful. H7 is the applied
+payoff: if some protocols resolve more of the plant than others, that ranking
+is a recommendation an experimenter could act on.
+
 ## Method, kept separate so each part can be ablated
 
 1. **Generate.** Parameter vectors drawn by a seeded generator. Every run

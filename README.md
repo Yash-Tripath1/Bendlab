@@ -8,9 +8,14 @@ populations of simulated bending plants, measures how each one responds to
 light, and asks which differences in the underlying parameters are actually
 visible from the outside.
 
-Round 0 status: hypotheses written, model built, first real-data fit done,
-first population sweep done. Results in
-[`docs/RESULTS_ROUND0.md`](docs/RESULTS_ROUND0.md).
+Round 1 is complete: eight hypotheses tested, three falsified, one
+unanswerable as specified, three surviving.
+[`docs/RESULTS_ROUND0.md`](docs/RESULTS_ROUND0.md) and
+[`docs/RESULTS_ROUND1.md`](docs/RESULTS_ROUND1.md). Dashboard below.
+
+![Round 1 dashboard](results/figures/round1_dashboard.png)
+
+![Explainer part 2 dashboard](results/figures/explainer2_dashboard.png)
 
 ## The question, plainly
 
@@ -37,7 +42,15 @@ That is the result, not a failure to find one.
 | `sweep.py` | H1/H2: run a population under static light and under a mid-run flip, cluster on behaviour |
 | `docs/DATA_SOURCES.md` | where plant data comes from, tiered by how usable it is |
 | `docs/DATA_CONTRACT.md` | every sheet, its units, sampling rate, and the parsing rules |
+| `docs/EXPLAINER.md` | the project in plain words, part 1 |
+| `docs/EXPLAINER_PART2.md` | plain words, part 2: the round-1 suite and the audit |
 | `docs/RESULTS_ROUND0.md` | round 0 results, caveats and next steps |
+| `docs/RESULTS_ROUND1.md` | round 1 results (H3-H8), the audit, and why it runs in seconds |
+| `docs/IDENT_GAME.md` | the round-2 design: the adaptive identification game |
+| `sweep_weighted.py` | the same sweep with plants drawn from the fitted region |
+| `round1.py` | H3, H4, H6, H7, H8 in one run, all thresholds declared at the top |
+| `audit_round1.py` | independent re-derivation of every finding, prints ALL CHECKS PASSED |
+| `make_explainer_figures.py` | builds the six-panel explainer figure from the raw files |
 | `data/real/` | the real dataset, see attribution below |
 | `results/` | CSV outputs of the runs, committed so the write-up is checkable |
 
@@ -51,7 +64,14 @@ pip install -r requirements.txt
 python generate_plants.py     # sanity check the generator
 python fit_real.py            # H5 fit, ~1 minute, writes results/fit_fig1c.csv
 python sweep.py               # 10k plants x 2 regimes, ~5 seconds
+python sweep_weighted.py      # same sweep, plants drawn from the fitted region
+python round1.py              # H3, H4, H6, H7, H8 + dashboard, ~15 seconds
+python audit_round1.py        # independent re-derivation of every finding
+python make_explainer_figures.py   # rebuilds the explainer figure
 ```
+
+Run in that order: `fit_real.py` writes the fits that the weighted
+population and the round-1 suite are built from.
 
 Both scripts are seeded from declared integers. No wall-clock, no unseeded
 draws in the simulation path, so a rerun is bit-identical. `sweep.py` and
@@ -60,15 +80,24 @@ draws in the simulation path, so a rerun is bit-identical. `sweep.py` and
 ## Headline numbers, round 0
 
 **H5, the reality anchor.** Median per-plant RMSE against 48 real sunflower
-curves is 5.07 degrees. Median across-plant standard deviation in the same
+curves is 4.74 degrees. Median across-plant standard deviation in the same
 data is 8.58 degrees. The model is wrong by less than real plants differ from
-each other, in all six light treatments. Provisional, because 22 of 48 fits
-end with a parameter pinned at a bound.
+each other, in all six light treatments. 20 of 48 fits end with `tau` pinned
+at its bound, all in the ZT12 and ZT16 blocks: the static-light assumption
+fails for midday and afternoon treatments, so only the 28 clean fits define
+the plausible region.
 
 **H1, degeneracy.** After clustering 10,000 simulated plants into six
-behavioural groups, a group still retains 25 to 43 per cent of the full
-parameter range. The largest group, 2,197 plants, spans essentially the entire
-`phi0` box while its members are behaviourally near-identical.
+behavioural groups, a group still retains 25 to 50 per cent of the full
+parameter range. The largest group, 2,859 plants, spans essentially the
+entire box for `k`, `phi0` and `max_rate` while its members are
+behaviourally near-identical.
+
+**Degeneracy weakens where real plants live.** Repeating the sweep with
+plants drawn from the fitted region instead of the uniform box drops
+retention on every parameter: k 25 to 13 per cent, tau 36 to 10, phi0 25 to
+8. It also flips the speed limit from inert to meaningful: the cap binds for
+1 plant in 2,000 under uniform sampling and 7.19 per cent under weighted.
 
 **Exact degeneracy, on real data.** Refitting plant ZT0-1 with the rate cap
 removed gives RMSE 1.894 against 1.894 with the cap fitted. Identical, because

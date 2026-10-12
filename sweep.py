@@ -27,6 +27,11 @@ FLIP_DELTA = 45.0  # degrees, flip magnitude
 RECORD_DT = 0.5   # hours, matches the measurement cadence
 SEED = 1
 
+# Guard: a behaviour feature and a parameter must never share a name, or the
+# parameter column silently overwrites the feature in the table (round-0 bug).
+assert not (set(F.STATIC_FEATURES) & set(PARAM_NAMES)), \
+    "feature/parameter name collision: %s" % (set(F.STATIC_FEATURES) & set(PARAM_NAMES))
+
 
 def half_rise_batch(times, thetas):
     """Vectorised half-rise time: first crossing of half each plant's peak."""
@@ -39,7 +44,13 @@ def half_rise_batch(times, thetas):
 
 
 def feature_frame(times, thetas, pop, regime):
-    """Build the feature table for one regime."""
+    """Build the feature table for one regime.
+
+    Behaviour columns keep the names in features.STATIC_FEATURES. Parameter
+    columns are written with a param_ prefix so a feature and a parameter can
+    never silently share a column name (this exact collision shipped once and
+    corrupted the round-0 clustering; see docs/RESULTS_ROUND0.md, bug log).
+    """
     peak = thetas.max(axis=0)
     final = thetas[-1]
     overshoot = peak - final
@@ -50,11 +61,11 @@ def feature_frame(times, thetas, pop, regime):
         "peak_angle": peak,
         "final_angle": final,
         "overshoot": overshoot,
-        "max_rate": rate,
+        "peak_rate": rate,
         "auroc": auroc,
     })
     for name in PARAM_NAMES:
-        out[name] = pop[name].to_numpy()
+        out[f"param_{name}"] = pop[name].to_numpy()
     out["regime"] = regime
     return out
 
@@ -73,7 +84,7 @@ def degeneracy_report(feat, feat_cols, n_clusters=6):
             continue
         row = {"cluster": c, "n": int(m.sum())}
         for name in PARAM_NAMES:
-            v = feat.loc[m, name]
+            v = feat.loc[m, f"param_{name}"]
             row[f"{name}_range"] = float(v.max() - v.min())
             row[f"{name}_iqr"] = float(v.quantile(.75) - v.quantile(.25))
         rows.append(row)

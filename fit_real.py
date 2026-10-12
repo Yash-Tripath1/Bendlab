@@ -24,9 +24,11 @@ from data_real import load_long
 DT = 1.0 / 60.0  # one minute integration step
 
 # Bounds: wide enough to contain any plausible plant, tight enough that the
-# optimizer cannot escape to overflow.
+# optimizer cannot escape to overflow. tau was widened 12 -> 48 h on 12 Oct
+# (declared next-step 1) after round 0 found 20/48 fits pinned at the old
+# upper bound; a bound-pinned fit must not define the plausible region.
 LO = np.array([1e-3, 0.05, 0.5, 0.0])
-HI = np.array([50.0, 12.0, 200.0, 130.0])
+HI = np.array([50.0, 48.0, 200.0, 130.0])
 NAMES = ("k", "tau", "max_rate", "phi0")
 
 

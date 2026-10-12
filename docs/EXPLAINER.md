@@ -54,10 +54,11 @@ that same dataset differ from each other by 8.58 degrees. Our model is wrong
 by less than plants naturally vary.
 
 **Knowing what a plant does does not tell you what it is.** We sorted 10,000
-simulated plants into six piles by behaviour. The largest pile, 2,197 plants,
-contained essentially every possible value of the light angle while its
-members bent almost identically. On average a behavioural pile still holds a
-quarter to a half of the full range of every dial.
+simulated plants into six piles by behaviour. The largest pile, 2,859 plants,
+contained essentially every possible value of the light angle, the response
+strength and the speed limit, while its members bent almost identically. On
+average a behavioural pile still holds a quarter to a half of the full range
+of every dial.
 
 **The piles are about speed, not direction.** The clusters separate
 fast-benders from slow-benders. How fast a plant moves comes through clearly.

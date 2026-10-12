@@ -10,13 +10,10 @@ Two sampling modes, because they answer different questions:
              what the parameter space contains, including regions that are
              biologically silly. This is the right default for H1-H4.
 
-  weighted — concentrate draws where real plants plausibly live, by reweighting
-             or resampling towards the fitted region. Use this later, once the
-             fit in fit_real.py says where that region is.
-
-Uniform is implemented. Weighted is a declared interface, not yet written,
-because writing it before the fit exists would mean inventing the plausible
-region out of nothing.
+  weighted — concentrate draws where real plants were measured, by
+             bootstrap-resampling the clean fits from fit_real.py with
+             declared jitter. Use this once the fit defines the plausible
+             region (done 12 Oct: see results/fit_fig1c.csv, clean fits only).
 """
 
 from __future__ import annotations
@@ -53,6 +50,36 @@ def population_frame(pop: np.ndarray, seed: int) -> "object":
     df.attrs["sampler"] = "uniform"
     df.attrs["bounds"] = {name: (lo, hi) for name, lo, hi in PARAMS}
     return df
+
+
+def weighted_population(n: int, seed: int, fit_frame, jitter: float = 0.15
+                        ) -> np.ndarray:
+    """Draw n parameter vectors where real plants were actually measured.
+
+    fit_frame: one row per fitted real plant, columns = PARAM_NAMES. Callers
+    must pass only clean fits (no parameter pinned at a bound); a bound-pinned
+    fit is an artifact of the optimizer's wall, not a measurement, and must
+    not define the plausible region.
+
+    Method: bootstrap-resample the fitted plants with replacement, then apply
+    multiplicative lognormal jitter (declared 0.15, chosen once, never tuned)
+    to represent fit and measurement uncertainty.
+
+    Jitter is deliberately unclipped, and no global bounds are applied. The
+    plausible region is defined by the measured plants and nothing else:
+    clipping to the uniform box would put probability mass at the box walls
+    where no plant was ever measured. The trade-off, stated plainly, is that
+    a few draws land outside the uniform box.
+
+    Returns shape (n, len(PARAM_NAMES)), same column order as PARAM_NAMES.
+    """
+    rng = np.random.default_rng(seed)
+    vals = fit_frame[list(PARAM_NAMES)].to_numpy(float)
+    if len(vals) == 0:
+        raise ValueError("weighted_population needs at least one clean fit")
+    idx = rng.integers(0, len(vals), size=n)
+    pop = vals[idx]
+    return pop * np.exp(rng.normal(0.0, jitter, size=pop.shape))
 
 
 def splits(n: int, seed: int, dev_frac: float = 0.7, val_frac: float = 0.15
