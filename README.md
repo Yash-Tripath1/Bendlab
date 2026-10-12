@@ -17,6 +17,8 @@ unanswerable as specified, three surviving.
 
 ![Explainer part 2 dashboard](results/figures/explainer2_dashboard.png)
 
+![Real seedlings dashboard](results/figures/real_seedlings_dashboard.png)
+
 ## The question, plainly
 
 A bending-stem model has four parameters: how strongly the plant responds to
@@ -51,6 +53,8 @@ That is the result, not a failure to find one.
 | `round1.py` | H3, H4, H6, H7, H8 in one run, all thresholds declared at the top |
 | `audit_round1.py` | independent re-derivation of every finding, prints ALL CHECKS PASSED |
 | `make_explainer_figures.py` | builds the six-panel explainer figure from the raw files |
+| `real_seedling_sim.py` | imports the 86 real seedlings and runs them through every protocol |
+| `make_print_edition.py` | compiles the whole report stack into one dated, printable PDF |
 | `data/real/` | the real dataset, see attribution below |
 | `results/` | CSV outputs of the runs, committed so the write-up is checkable |
 
@@ -67,6 +71,7 @@ python sweep.py               # 10k plants x 2 regimes, ~5 seconds
 python sweep_weighted.py      # same sweep, plants drawn from the fitted region
 python round1.py              # H3, H4, H6, H7, H8 + dashboard, ~15 seconds
 python audit_round1.py        # independent re-derivation of every finding
+python real_seedling_sim.py   # the 86 real seedlings through every protocol
 python make_explainer_figures.py   # rebuilds the explainer figure
 ```
 
