@@ -23,16 +23,19 @@ DOCS = [
     ("docs/EXPLAINER_PART2.md", "Explainer, part 2"),
     ("docs/RESULTS_ROUND0.md", "Round 0 results"),
     ("docs/RESULTS_ROUND1.md", "Round 1 results and the audit"),
+    ("docs/RESULTS_ROUND2_ZT9.md", "Round 2 opener: the ZT9 autopsy"),
     ("docs/IDENT_GAME.md", "Round 2 design: the identification game"),
     ("docs/DATA_SOURCES.md", "Where plant data comes from"),
     ("docs/DATA_CONTRACT.md", "Data contract"),
 ]
 EXTRA_FIGS = [("results/figures/real_seedlings_dashboard.png",
-               "Appendix A: the real seedlings, imported and simulated")]
+               "Appendix A: the real seedlings, imported and simulated"),
+              ("results/figures/zt9_autopsy_dashboard.png",
+               "Appendix B: the ZT9 autopsy")]
 
 SAFE = {0x2014: "-", 0x2013: "-", 0x2026: "...", 0x2192: "->",
-        0x2248: "~", 0x00d7: "x", 0x2264: "<=", 0x2265: ">=",
-        0x2019: "'", 0x2018: "'", 0x201c: '"', 0x201d: '"'}
+        0x2212: "-", 0x2265: ">=", 0x2264: "<=", 0x2248: "~",
+        0x00D7: "x", 0x2019: "'", 0x2018: "'", 0x201C: '"', 0x201D: '"'}
 
 
 def safe(s):

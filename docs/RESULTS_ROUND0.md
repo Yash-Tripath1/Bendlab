@@ -224,6 +224,9 @@ the plant ends up.
    downstream number. What replaces this step: explain the ZT9 onset --
    four plants whose lag wants to be under three minutes, and whose
    rise-stall-rise shape is the worst fit in the dataset.
+   **Done 13 October**: `docs/RESULTS_ROUND2_ZT9.md`. Freeing the tau
+   floor buys 0.8% RMSE, so the bound is a symptom; the two-phase rate
+   profile is a genuine model limitation.
 3. Replace the cluster-retention metric for H2 with a continuous one.
 4. H3: dense 2-D sweep over (k, tau) at fixed cap, look for discontinuity.
 5. ~~Weighted population sampling~~ — **done 12 October**, section 5.

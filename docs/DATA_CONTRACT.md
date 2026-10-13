@@ -75,6 +75,22 @@ assigning meaning.
 - Sampling differs by sheet: `Fig1B` and `Fig1C` are half-hourly, the rest
   hourly. Interpolate explicitly when comparing, and say so.
 
+### The other sheets, scoped 13 October 2026 (read before touching)
+
+| Sheet | What it actually is (paper legends) | Angle convention | Model status |
+|---|---|---|---|
+| `Fig1B` | phototropism time course, blue light from ZT3, n=3 (Fig 1B) | change from 0 at onset | candidate validation set; tiny n |
+| `Fig2B` | stem angles of field-grown heliotropic plants, n=6 (Fig 2B) | **absolute** stem angle (~71-122 deg), oscillates day/night | needs a moving-sun model; do not fit with the static model |
+| `Fig4A` | chamber-grown plants transplanted to the field after sunset, initiation of heliotropism, n=17 (Fig 4A) | **absolute** stem angle (~64-119 deg) | needs moving sun + night return |
+| `Fig4J` | plants in filter boxes: Clear, blue-depleted, red-depleted, n=5 each (Fig 4J) | plotted **Z-score-normalised** in the paper; sheet values look like degrees (~64-112) | **do not model until the normalisation question is resolved against S15 Data** |
+
+Rules that follow from the Fig1C clock bug: (1) absolute-angle sheets
+must have their angle convention established before any fit -- our
+model's theta is a change from vertical rest, theirs is not obviously
+the same number; (2) every new sheet gets its stimulus-onset and
+time-zero written here first; (3) `Fig4J`'s three filter groups are
+treatments applied to the light, not plant genotypes.
+
 ### Licence
 
 PLOS Biology publishes under CC BY (confirmed on the journal's information

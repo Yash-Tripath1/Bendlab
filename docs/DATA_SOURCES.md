@@ -21,6 +21,15 @@ H5, the anchor that keeps the model honest.
 The PLOS S13 file is the only one that is already a clean table. Everything
 else needs either library access or figure digitising.
 
+Scoped 13 October 2026: the Orbovic & Poff (1993) curves most often
+reproduced are **mean curvature time courses** for first positive
+phototropism (blue light at t = 0, minutes scale), including the
+temperature series (15/25/28 degC) re-plotted in later work. They are
+population means, not per-plant curves, so they can validate curve
+*shape* (including whether a two-phase rise appears outside our
+sunflower data) but cannot enter the per-plant fitting pipeline.
+Digitisation has not started.
+
 ## Tier 2 — figure digitising, when a paper only shows a plot
 
 - WebPlotDigitizer (automeris.io/wpd), free, browser-based

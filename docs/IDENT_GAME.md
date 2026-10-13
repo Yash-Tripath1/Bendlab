@@ -1,9 +1,10 @@
 # The identification game (round 2 design sketch)
 
-**Status, 13 October: implemented and run in `round1.py`. The game as
+**Status, 13 October: v1 implemented and run in `round1.py`. The game as
 specified is saturated — random protocol choice scores 89 per 100, so no
-policy comparison is meaningful yet. Harder variants are listed at the
-bottom.**
+policy comparison is meaningful yet. The harder v2 below was declared on
+13 October 2026 and has NOT been run; its thresholds are fixed in advance
+and must not be edited after seeing v2 output.**
 
 Round 0 measured whether behaviour identifies parameters. Round 2 turns the
 question into a scoreable game, so that protocol-choice policies can be
@@ -101,3 +102,37 @@ again be a negative result. H8 is written so that outcome is a finding, not a
 disappointment. The interesting sub-question either way: does the answer
 depend on the plant, i.e. do different regions of parameter space need
 different protocols?
+
+## Harder variant v2 — declared 13 October 2026, not yet run
+
+One change at a time was considered and rejected: each single change
+leaves escape routes. v2 tightens all four screws together, because the
+v1 failure mode was total saturation.
+
+| Setting | v1 (run) | v2 (declared) |
+|---|---|---|
+| Budget | 24 h | **12 h** |
+| Observation noise | 2 deg | **5 deg** |
+| Success tolerance eps | 5 deg RMSE | **2 deg RMSE** |
+| Held-out protocol | ramp24 (within seen phi0 range) | **ramp24, as before** |
+| Population | weighted, 28 morning fits (bug) then 44 | **weighted, 44 clean fits** |
+| Hidden plants / hypothesis set | 500 / 3,000 | **500 / 3,000** |
+| Policies | random, fixed, greedy, thompson | **same four, same rules** |
+
+Rules that bind the interpretation, declared now:
+
+1. **Hardness gate.** If random still scores above 80 per 100, v2 is
+   also saturated and no policy comparison may be reported; redesign
+   again (extrapolating held-out ramp is the next lever). If random
+   scores below 20, the game is too hard to discriminate and eps is
+   revisited — with the change logged, not silently applied.
+2. **Support criterion for H8.** Adaptive choice is supported only if
+   the best adaptive policy beats BOTH non-adaptive baselines (random
+   and fixed) by at least 5 successes per 100, paired W/T/L reported.
+   A win against fixed alone does not count: v1 showed fixed can be
+   worse than mixing.
+3. **Noise honesty.** 5 deg is the top of the observed residual range
+   (worst real fit, ZT9-1, is 6.76 deg); v2 results must be reported as
+   "at the noisy end of real", never as typical conditions.
+4. Seeds derive from the round-1 seed base by the same offsets; the
+   implementation must print them before the first episode runs.

@@ -57,6 +57,8 @@ That is the result, not a failure to find one.
 | `make_explainer_figures.py` | builds the six-panel explainer figure from the raw files |
 | `real_seedling_sim.py` | imports the 86 real seedlings and runs them through every protocol |
 | `make_print_edition.py` | compiles the whole report stack into one dated, printable PDF |
+| `zt9_autopsy.py` | round-2 opener: residuals, tau-floor sensitivity and stall timing for the ZT9 anomaly |
+| `docs/RESULTS_ROUND2_ZT9.md` | the ZT9 verdict: a genuine shape limitation, bound is a symptom |
 | `data/real/` | the real dataset, see attribution below |
 | `results/` | CSV outputs of the runs, committed so the write-up is checkable |
 
