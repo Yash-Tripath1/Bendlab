@@ -15,7 +15,7 @@ import datetime
 import numpy as np  # noqa: F401  (kept for parity with repo scripts)
 from fpdf import FPDF
 
-DATE = "2026-10-12"
+DATE = "2026-10-13"
 DOCS = [
     ("README.md", "Front page"),
     ("PROBLEM_STATEMENT.md", "The question, as written before any run"),

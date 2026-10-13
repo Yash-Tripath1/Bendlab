@@ -1,9 +1,12 @@
 """Run the REAL seedlings through the simulator.
 
 The 48 published sunflower seedlings (PLOS S13) enter the simulator as the
-dial sets fitted in H5 (results/fit_fig1c.csv). Only the 28 plants whose fit
+dial sets fitted in H5 (results/fit_fig1c.csv). Only the 44 plants whose fit
 did not ride a bound are trusted with predictions under new light regimes;
-the other 20 are shown as raw curves but not extrapolated.
+the other 4 (all ZT9, tau at its lower bound) are shown as raw curves but
+not extrapolated. (Before the 13 Oct time-base correction in fit_real.py
+the trusted set was 28 morning plants and every ZT12/ZT16 plant was
+excluded; that exclusion was a clock artifact and is retracted.)
 
 Protocols are copied verbatim from round1.py so this is the same light menu
 the synthetic plants saw. Outputs:
@@ -128,8 +131,8 @@ for (r, ccol), name in zip([(0, 1), (0, 2), (1, 0)],
     med = np.median(th, axis=1)
     ax[r, ccol].plot(t, med, "k--", lw=2, label="median")
     ax[r, ccol].set_title(
-        "PREDICTION under %s\n(same 28 seedlings, brand-new light)" % name,
-        fontsize=11)
+        "PREDICTION under %s\n(same %d seedlings, brand-new light)"
+        % (name, len(clean)), fontsize=11)
     ax[r, ccol].set_xlabel("hours")
     ax[r, ccol].set_ylabel("stem angle (deg)")
     ax[r, ccol].legend(fontsize=8)
@@ -142,8 +145,8 @@ for b in sorted(f["block"].unique()):
                      color=color_of(b), label=b, alpha=0.85)
 ax[1, 2].set_xlabel("final angle under the flip (deg)")
 ax[1, 2].set_ylabel("peak bend rate (deg/h)")
-ax[1, 2].set_title("6. Behaviour space under new light:\nmorning seedlings "
-                   "spread, afternoons were never trusted", fontsize=11)
+ax[1, 2].set_title("6. Behaviour space under new light:\nseedlings from all "
+                   "six start times, one spread", fontsize=11)
 ax[1, 2].legend(fontsize=7, ncol=2)
 
 fig.tight_layout(rect=(0, 0, 1, 0.95))

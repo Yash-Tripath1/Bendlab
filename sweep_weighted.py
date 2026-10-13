@@ -2,10 +2,11 @@
 drawn where real sunflowers were measured instead of uniformly over the box.
 
 Population source: the clean fits in results/fit_fig1c.csv (parameter not
-pinned at any bound; 28 plants from blocks ZT0, ZT3, ZT6, ZT9 after the
-widened-bound refit of 12 Oct). ZT12 and ZT16 contribute no clean fits, so
-this population represents early-day light treatments only, and that limit is
-part of every result below.
+pinned at any bound; 44 plants from all six blocks ZT0-ZT16 after the
+clock-corrected refit of 13 Oct). Only the four ZT9 plants pinned at the
+tau lower bound are excluded. (The 12 Oct version of this population used
+28 morning-only fits because a time-base bug in fit_real.py made every
+ZT12/ZT16 fit pin tau at its upper bound; see RESULTS_ROUND0 bug log.)
 
 Same regimes, features, clustering and degeneracy metric as sweep.py, same
 seed rule. Run sweep.py first, or at least fit_real.py, so the inputs exist.

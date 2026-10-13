@@ -7,6 +7,19 @@ was declared in the script before the first run.
 
 Dashboard: `results/figures/round1_dashboard.png`.
 
+> **Amendment, 13 October 2026.** This suite was rerun on the
+> clock-corrected weighted population (44 clean fits spanning all six
+> stimulus start times; the original run drew from 28 morning-only fits
+> produced by a time-base bug in `fit_real.py` -- see the retraction in
+> `docs/RESULTS_ROUND0.md`, bug log). All numbers below are from the
+> corrected run. Three verdicts are unchanged (H3 falsified, H6
+> supported with leakage, H7 not supported as declared; H8 still
+> saturated). **One verdict flipped: H4.** On the corrected population
+> the behaviour clusters do *not* persist across light regimes
+> (ARI 0.442, against 0.606 originally reported), so H4 is supported,
+> not falsified. The original H4 reading is retracted wherever it
+> appears in this file.
+
 ## H3: cliffs in parameter space — FALSIFIED
 
 Dense 64 x 64 grid over (k, tau) at phi0 = 45 deg, cap = 30 deg/h, static
@@ -21,20 +34,23 @@ resolution and these feature definitions. H3 is abandoned as stated. Caveat:
 a finer grid or sharper features (for instance overshoot under flip regimes)
 could still find discontinuities; "smooth here" is not "smooth everywhere".
 
-## H4: do clusters survive a moving sun? — FALSIFIED
+## H4: do clusters survive a moving sun? — SUPPORTED
 
 Same 6,000 weighted plants clustered under static light and under a 12 h
 sawtooth sweep (+/-45 deg around each plant's own phi0), same six features,
 six clusters each. Declared persistence threshold: ARI >= 0.50.
 
-Result: **ARI = 0.606.** Clusters largely persist across regimes.
+Result: **ARI = 0.442.** Clusters do not persist across regimes.
 
-The behavioural classes are mostly properties of the plant, not of the light
-show: fast responders stay fast responders when the sun moves. This was
-stated as a prediction that might well fail, and it failed cleanly.
-Consequence: the classes we report are not an artifact of one protocol,
-which is good news for their meaning, and bad news for H2's hope that a
-moving sun would reveal a fundamentally different partition.
+The behavioural classes are partly properties of the light show, not just
+of the plant: a moving sun repartitions the population. (The original run
+reported ARI 0.606 and the opposite conclusion; that population excluded
+every afternoon plant because of the clock bug, and morning-only plants
+apparently sort more stably. Retracted.) Consequence: a cluster label is
+a statement about a plant *under a protocol*, not a plant type -- which
+is good news for H2's underlying hope that richer regimes reveal more,
+even though H2's own cluster metric still does not show it, and a
+warning against reifying the six classes anywhere downstream.
 
 ## H6: is the degenerate set connected? — SUPPORTED, WITH LEAKAGE
 
@@ -45,19 +61,18 @@ assigned to the nearest cluster centroid.
 
 | Parents | Offspring stay in class |
 |---|---|
-| Same cluster (n=300) | **62.7%** |
-| Cross-cluster control, mother's class (n=257) | 29.2% |
-| Cross-cluster control, either parent's class | 63.4% |
+| Same cluster (n=300) | **57.3%** |
+| Cross-cluster control, mother's class (n=234) | 29.5% |
+| Cross-cluster control, either parent's class | 53.8% |
 
-Reading: offspring of equivalent parents stay equivalent at more than twice
+Reading: offspring of equivalent parents stay equivalent at about twice
 the control rate, so the degenerate set is **connected, not a scatter of
-isolated islands** — small genetic steps mostly stay inside. But 37 per cent
+isolated islands** — small genetic steps mostly stay inside. But 43 per cent
 leak out, so it is a valley with soft walls, not a flat neutral plane.
 Evolutionary or sampling methods walking the set are meaningful, but need to
 check membership at every step. Note the generous control: "either parent's
-class" for cross-cluster pairs (63.4%) is a union of two classes and sits at
-the same level as the same-cluster number; the informative comparison is
-62.7 against 29.2.
+class" for cross-cluster pairs (53.8%) is a union of two classes; the
+informative comparison is 57.3 against 29.5.
 
 ## H7: do protocols differ in what they reveal? — NOT SUPPORTED (as declared)
 
@@ -69,21 +84,23 @@ support threshold: best-worst gap >= 0.10.
 
 | Protocol | cost (h) | mean rel. err | k | tau | cap | phi0 |
 |---|---|---|---|---|---|---|
-| dflip16   | 16 | **0.176** | 0.145 | 0.141 | 0.242 | 0.175 |
-| sweep12   | 12 | 0.203 | 0.176 | 0.219 | 0.298 | 0.119 |
-| flip12_14 | 14 | 0.238 | 0.225 | 0.205 | 0.329 | 0.192 |
-| flip4_8   | 8  | 0.240 | 0.195 | 0.232 | 0.288 | 0.246 |
-| static6   | 6  | 0.262 | 0.238 | 0.236 | 0.317 | 0.257 |
+| dflip16   | 16 | **0.153** | 0.111 | 0.085 | 0.246 | 0.168 |
+| flip12_14 | 14 | 0.178 | 0.154 | 0.149 | 0.239 | 0.171 |
+| sweep12   | 12 | 0.183 | 0.143 | 0.172 | 0.272 | 0.143 |
+| flip4_8   | 8  | 0.236 | 0.186 | 0.188 | 0.290 | 0.282 |
+| static6   | 6  | 0.244 | 0.226 | 0.190 | 0.278 | 0.280 |
 
-Result: gap = 0.086 < 0.10. **H7 not supported as declared.**
+Result: gap = 0.091 < 0.10. **H7 not supported as declared.**
 
 Two honest observations anyway, logged as description, not as rescued
 claims. The ordering is consistent and sensible: every dynamic protocol
 beats static light, and the double flip wins. And the cap is the worst-
-recovered parameter under every protocol (0.24 to 0.33), exactly as the
-round-0 exact-degeneracy result predicts. The threshold was ours and
-arguably strict; what the declared test says is that no protocol is a
-game-changer over another.
+recovered parameter under every protocol bar one statistical tie with
+phi0 under static6 (0.24 to 0.29), exactly as the round-0
+exact-degeneracy result predicts; tau, by contrast, is now the
+best-recovered dial under the double flip (0.085). The threshold was
+ours and arguably strict; what the declared test says is that no
+protocol is a game-changer over another.
 
 ## H8: the identification game — pre-mortem CONFIRMED
 
@@ -95,25 +112,25 @@ best, dflip16), greedy one-step expected-information-gain, plug-in Thompson.
 
 | Policy | success per 100 |
 |---|---|
-| random   | **92.0** |
-| greedy   | 91.6 |
-| fixed    | 87.8 |
-| thompson | 73.2 |
+| random   | **89.4** |
+| greedy   | 88.6 |
+| fixed    | 83.2 |
+| thompson | 63.2 |
 
-Greedy vs fixed, paired W/T/L: 25/433/6.
+Greedy vs fixed, paired W/T/L: 37/406/10.
 
 **The headline is the pre-mortem, confirmed almost word for word.** With a
 24 h budget, *measuring at all* is a step function: even random protocol
-choice identifies 92 plants in 100. Adaptive intelligence buys nothing over
-rolling dice, and the single "best" protocol is actually slightly worse than
+choice identifies 89 plants in 100. Adaptive intelligence buys nothing over
+rolling dice, and the single "best" protocol is actually worse than
 mixing. This is structurally the same negative result as the matching
 hackathon's "asking is a step function, not a lever", in a different domain,
 found by a different team member (Umaid's crossover aside, the pre-mortem
 was written before any of this ran).
 
-The plug-in Thompson policy's 73.2 is significantly below the rest
-(binomial SE about 1.3 per 100) and is read as a design artifact of the
-plug-in approximation chasing posterior entropy on single samples, not as
+The plug-in Thompson policy's 63.2 is far below the rest (binomial SE
+about 2 per 100) and is read as a design artifact of the plug-in
+approximation chasing posterior entropy on single samples, not as
 evidence against Thompson sampling itself.
 
 Consequence for round 2: the game as specified is too easy to discriminate
@@ -128,29 +145,36 @@ unanswerable, and running fancier policies would be theater.
 | # | Status |
 |---|---|
 | H1 | supported (uniform), weaker but present (weighted) |
-| H2 | not supported on cluster metrics; H4's persistence explains part of why |
+| H2 | not supported on cluster metrics |
 | H3 | falsified — smooth map, no cliffs at this resolution |
-| H4 | falsified — clusters persist across regimes (ARI 0.606) |
-| H5 | passed, with the static-light caveat for ZT12/ZT16 |
-| H6 | supported with leakage — connected valley, 37% crossover escape |
+| H4 | supported — clusters do not persist across regimes (ARI 0.442) |
+| H5 | passed 6/6 blocks on the corrected clock; 4/48 fits bound-pinned (ZT9) |
+| H6 | supported with leakage — connected valley, 43% crossover escape |
 | H7 | not supported as declared; dynamic protocols order above static |
 | H8 | unanswerable as specified — game saturated by random play |
 
 ## What round 1 says overall
 
-Three of eight hypotheses are dead (H3, H4, H7 as declared), one is
-unanswerable until redesigned (H8), and the survivors are H1 (degeneracy),
-H5 (the anchor, with a caveat) and H6 (connectivity, Umaid's). A first round
-that kills half its hypotheses is a first round that was worth running:
-every death here was cheap (seconds of compute) and each one narrows round 2.
-The consistent story across everything: **the plant's behavioural type is
-robust and readable; the plant's parameters are not; and no light show we
-tried changes that trade-off by much.**
+Two of eight hypotheses are dead as declared (H3, H7), one is
+unanswerable until redesigned (H8), one is alive on a metric we do not
+trust (H2), and the survivors are H1 (degeneracy), H4 (classes are
+regime-dependent), H5 (the anchor) and H6 (connectivity, Umaid's). A
+first round that kills half of what it touches is a first round that was
+worth running: every death here was cheap (seconds of compute) and each
+one narrows round 2. The consistent story across everything, corrected:
+**a plant's behaviour is readable but is a property of the plant
+*under a protocol*, not of the plant alone; the plant's parameters are
+harder still; and no light show we tried changes that trade-off by
+much.** (The first version of this paragraph called the behavioural
+type "robust" on the strength of the retracted H4 result.)
 
 ## Limitations, stated
 
 - Everything here is the simulator studying itself; H5 is the only bridge to
-  real plants and it holds only for morning-light treatments.
+  real plants. Since the 13 October clock correction the bridge spans all
+  six stimulus start times; its weak point is now the four ZT9 plants
+  whose sub-three-minute onset the model's lag cannot express, so ZT9 is
+  under-represented in the weighted population (2 of 6 plants).
 - Nearest-neighbour recovery (H7) is a crude identifiability proxy; a
   posterior-volume metric could reorder protocols.
 - Clustering into six groups is a declared choice, not a derived one; H4's
@@ -171,14 +195,19 @@ all checks pass. What it verified:
   14.18) and the oscillation period to 0.002 h (3.488 vs 3.490). Three
   independent integrators agree to 1.4e-14.
 - **H5 from raw data.** All 48 per-plant RMSEs recomputed from the original
-  xlsx and the saved parameters: median 4.742 (reported 4.74), spread 8.582
-  (reported 8.58), per-plant deviation below 1e-14.
+  xlsx and the saved parameters, on elapsed time since stimulus onset:
+  median 1.801 (reported 1.80), spread 8.582 (reported 8.58), per-plant
+  deviation below 1e-14. A regression guard (check 3d) asserts every
+  plant's fitted start equals its block's ZT and pins down the
+  bound-pinned count, so the clock bug cannot return silently.
 - **Exact degeneracy.** Cap-in vs cap-out RMSE on ZT0-1: 1.8939 vs 1.8939.
-- **Retention numbers.** Independently recomputed: 13.1 / 9.9 / 27.7 / 7.7
-  per cent against the reported 13 / 10 / 28 / 8.
-- **H4 stability.** ARI across three clustering seeds: 0.606, 0.608, 0.605.
-- **H8 ladder.** No data 31 per cent, one noisy 6 h static curve 56, full
-  budget 92. The saturation is real but it is earned rung by rung; the
+- **Retention numbers.** Independently recomputed: 9.3 / 3.7 / 13.6 / 11.9
+  per cent against the reported 9 / 4 / 14 / 12.
+- **H4 stability.** ARI across three clustering seeds: 0.442, 0.442, 0.444 --
+  stably *below* the 0.50 persistence threshold. The corrected verdict
+  (clusters do not persist) is not a seed artifact.
+- **H8 ladder.** No data 30 per cent, one noisy 6 h static curve 44, full
+  budget 89. The saturation is real but it is earned rung by rung; the
   budget is not redundant.
 
 Three bugs were found during the audit, and all three were **in the audit,
@@ -194,17 +223,32 @@ instructive:
    pointwise; a cluster is a similarity of summaries, not an identity of
    curves. The actual claim (parameter retention) reproduces.
 3. The first H8 probe asserted one cheap curve already suffices. It does not
-   (56 per cent), and the corrected ladder is the stronger result.
+   (44 per cent), and the corrected ladder is the stronger result.
+
+A fourth bug, larger than these three combined, arrived after the audit:
+the ZT time-base error in `fit_real.py` (13 October, found by Yash;
+full account in `docs/RESULTS_ROUND0.md`). The audit did not catch it
+because its H5 check evaluated curves on the same raw-ZT convention as
+the fitter -- it shared the assumption it was meant to test. The audit
+now evaluates on elapsed time and carries a regression guard
+(check 3d). Recorded here because it is the audit's real failure mode:
+an independent code path with a non-independent assumption is only
+half an audit.
 
 One genuine refinement to H6 came out of the audit: connectivity of the
-degenerate set degrades with parent separation. For typical curve-equivalent
-pairs, 28/40 crossover children (light held fixed, phi0 not averaged) stay
-within 3 deg, median drift 1.56 deg; but the single most-separated
-equivalent pair found has a midpoint that drifts 33 deg, and drift grows
-monotonically with parental k- and tau-separation (median 1.16 deg below
-0.1 separation, ~7 deg above 0.3). The valley is connected near its floor
-and pinches off at the extremes. Also noted: phi0 is an experimental
-condition, not a plant trait, so any crossover test must hold it fixed.
+degenerate set holds for typical pairs but is not uniform. For
+curve-equivalent pairs, 24/40 crossover children (light held fixed, phi0
+not averaged) stay within 3 deg, median drift 1.88 deg, and drift tends
+to grow with parental k-separation (median 1.53 deg below 0.1 of the
+range, 3.4-4.4 deg above it, though only 6 of 40 pairs sit up there).
+The single most-separated equivalent pair the search could find turns
+out to be separated almost entirely in the cap (22 against 260 deg/h,
+the exactly-degenerate dial) and its midpoint drifts only 1.07 deg --
+so the dramatic 33 deg "pinch-off" reported by the first audit run was
+an artifact of the morning-only population and does not reproduce. The
+valley is connected; whether it pinches at its true extremes is still
+open. Also noted: phi0 is an experimental condition, not a plant trait,
+so any crossover test must hold it fixed.
 
 ## Why this runs in seconds, not hours
 

@@ -4,57 +4,71 @@ Everything below is from `fit_real.py` and `sweep.py`, both seeded, both
 rerunnable. Real data is PLOS Biology 2023 S13, sheet Fig1C, 48 plants across
 six light treatments.
 
+> **Correction, 13 October 2026.** Sections 1 and 5 were rewritten after
+> Anadi Tripathi found a time-base bug in the fitter (bug log, section 8).
+> The first version claimed the static-light assumption "fails by time of
+> day" and excluded all midday/afternoon plants from everything downstream.
+> **That claim is retracted.** The afternoon plants were never unfittable;
+> we were fitting them on the wrong clock. Every number that depended on
+> the fits has been rerun; the retracted values are quoted in the bug log
+> so the size of the error stays on record.
+
 ## 1. H5, the reality anchor
 
 Fits the two-state model `(k, tau, max_rate, phi0)` to each real curve by
 bounded least-squares under static light.
 
-Numbers are from the widened-bound refit of 12 October (`tau` upper bound
-12 to 48 h). The first version of this table used the narrower bound and is
-superseded.
+Numbers are from the clock-corrected refit of 13 October: each plant is
+fitted on elapsed time since its own stimulus onset (the unilateral blue
+light started at each block's ZT; see `docs/DATA_CONTRACT.md`). The
+widened-bound refit of 12 October used the same bounds but the wrong
+clock and is superseded.
 
 | Block | n | median RMSE (deg) | across-plant spread (deg) | RMSE / spread | pass |
 |---|---|---|---|---|---|
 | ZT0  | 7 | 1.97 | 5.17  | 0.38 | yes |
-| ZT3  | 9 | 4.06 | 5.58  | 0.73 | yes |
-| ZT6  | 8 | 6.24 | 8.58  | 0.73 | yes |
-| ZT9  | 6 | 3.85 | 5.27  | 0.73 | yes |
-| ZT12 | 9 | 4.70 | 11.47 | 0.41 | yes |
-| ZT16 | 9 | 6.98 | 9.38  | 0.74 | yes |
+| ZT3  | 9 | 1.78 | 5.58  | 0.32 | yes |
+| ZT6  | 8 | 2.01 | 8.58  | 0.23 | yes |
+| ZT9  | 6 | 2.42 | 5.27  | 0.46 | yes |
+| ZT12 | 9 | 1.41 | 11.47 | 0.12 | yes |
+| ZT16 | 9 | 1.45 | 9.38  | 0.15 | yes |
 
-Overall median RMSE 4.74 deg against median spread 8.58 deg, ratio 0.55.
+Overall median RMSE 1.80 deg against median spread 8.58 deg, ratio 0.21.
 
 **Reading.** The model is wrong by less than real plants differ from each
-other. That is the bar we set, and it clears it in all six blocks. It earns
-the right to be studied, which is all H5 was ever for.
+other, in all six blocks, by a factor of two to eight. That is the bar we
+set, and it clears it everywhere. It earns the right to be studied, which
+is all H5 was ever for.
 
-**The caveat that matters.** 20 of 48 plants still end with `tau` pinned at
-the new 48 h bound. Widening the bound moved the wall without emptying it,
-which is itself informative: the model does not want a slightly longer lag,
-it wants an indefinitely long one, which is what a plant does when the
-static-light assumption fails and no lag value can compensate. The pinned
-fits concentrate exactly where expected:
+**The caveat that matters.** Only 4 of 48 plants end with a parameter
+pinned at a bound, and they sit at the opposite wall from the retracted
+version: four of the six ZT9 plants pin `tau` at its *lower* bound
+(0.05 h, three minutes). Their curves move within the first hour -- up to
+10 deg in 60 minutes, the fastest onset of any block -- and the model
+wants a shorter lag than it is allowed to express. ZT9-1 is also the
+worst fit in the dataset (RMSE 6.76 deg); the ZT9 curves rise fast, stall,
+and rise again, a shape a single lag can only approximate.
 
-| Block | clean fits | median tau |
+| Block | clean fits | median tau (h) |
 |---|---|---|
-| ZT0  | 7/7 | 4.11  |
-| ZT3  | 9/9 | 5.59  |
-| ZT6  | 8/8 | 6.87  |
-| ZT9  | 4/6 | 9.74  |
-| ZT12 | 0/9 | 48.00 (bound) |
-| ZT16 | 0/9 | 48.00 (bound) |
+| ZT0  | 7/7 | 4.11 |
+| ZT3  | 9/9 | 3.63 |
+| ZT6  | 8/8 | 2.87 |
+| ZT9  | 2/6 | 0.05 (bound) |
+| ZT12 | 9/9 | 4.60 |
+| ZT16 | 9/9 | 5.52 |
 
-This resolves the ambiguity stated in the first version of this section. The
-two candidate explanations were "static light is wrong for ZT12 and ZT16" and
-"the model is missing a mechanism". Widening the bound falsifies the second:
-a missing mechanism would not care which treatment block it was in. The
-early-day blocks fit cleanly at tau between 4 and 10 h; the midday and
-afternoon blocks want tau without limit. **The static-light assumption is the
-failure, and it fails by time of day.**
+Time of day has not vanished from the results; it has moved to where the
+paper itself puts it. The dials differ by block -- median `k` is 17 to 25
+for ZT0-ZT6 and about 5 for ZT9 and ZT12 -- which is the model's way of
+registering the gated, time-of-day-dependent phototropism Brooks et al.
+report. Gating in the parameters is biology the model can express. What
+it could not express, it turns out, was our own timestamp error.
 
-Consequence for everything downstream: only the 28 clean fits define the
-plausible region. ZT12 and ZT16 are excluded from it, not because their data
-is bad but because our model cannot represent them.
+Consequence for everything downstream: the 44 clean fits define the
+plausible region, spanning all six stimulus start times. The four ZT9
+lower-bound fits are excluded, not because their data is bad but because
+a lag pinned at the wall is an optimizer artifact, not a measurement.
 
 Also note the spread column is generous to us. It counts genuine plant-to-plant
 differences as if they were measurement noise, so passing is the easy bar.
@@ -139,46 +153,55 @@ continuous quantities, for instance whether the flip response separates
 plants that static features map to the same point. Logged as the next step,
 not as a conclusion.
 
-## 5. Weighted population, 12 October
+## 5. Weighted population, rerun 13 October
 
 The same sweep as section 3, but plants are drawn where real sunflowers were
-actually measured rather than uniformly over the box. Source: the 28 clean
+actually measured rather than uniformly over the box. Source: the 44 clean
 fits from section 1, bootstrap-resampled with declared 15 per cent lognormal
-jitter, seed 2, 10,000 plants, `sweep_weighted.py`.
+jitter, seed 2, 10,000 plants, `sweep_weighted.py`. (The 12 October version
+drew from 28 morning-only fits; that restriction was a consequence of the
+clock bug and is gone.)
 
-Source region, from the clean fits alone: k 1.63 to 23.03, tau 2.63 to 19.54,
-max_rate 3.04 to 45.38, phi0 26.35 to 89.25. No global clip is applied, so the
-plausible region is defined by the measurements and nothing else.
+Source region, from the clean fits alone: k 3.78 to 46.83, tau 0.45 to
+42.01, max_rate 6.21 to 179.75, phi0 23.93 to 81.56. No global clip is
+applied, so the plausible region is defined by the measurements and
+nothing else.
 
 | Parameter | within-cluster IQR | weighted range | retains | uniform run |
 |---|---|---|---|---|
-| k        | 4.606  | 35.115 | 13% | 25% |
-| tau      | 3.376  | 34.073 | 10% | 36% |
-| max_rate | 21.012 | 75.820 | 28% | 50% |
-| phi0     | 8.453  | 109.510 | 8% | 25% |
+| k        | 6.999  | 75.218  | 9%  | 25% |
+| tau      | 2.528  | 69.031  | 4%  | 36% |
+| max_rate | 37.456 | 275.804 | 14% | 50% |
+| phi0     | 12.260 | 103.057 | 12% | 25% |
 
-**Reading.** Degeneracy survives in the plausible region but is weaker. Every
-parameter is better determined by behaviour when plants are drawn from where
-real plants live: retention falls on all four, tau from 36 to 10 per cent and
-phi0 from 25 to 8. The honest statement is no longer "behaviour tells you
-almost nothing", it is "behaviour tells you a good deal less than you would
-like, and how much depends on where in parameter space you are".
+**Reading.** Degeneracy survives in the plausible region but is weaker.
+Every parameter is better determined by behaviour when plants are drawn
+from where real plants live: retention falls on all four against the
+uniform run, tau from 36 to 4 per cent and max_rate from 50 to 14. The
+honest statement is no longer "behaviour tells you almost nothing", it is
+"behaviour tells you a good deal less than you would like, and how much
+depends on where in parameter space you are".
 
 **The cap comes alive.** Under the uniform box the speed limit bound the
 trajectory for 1 plant in 2,000. In the weighted population it binds for
-7.19 per cent of plants. The cap is not intrinsically inert; it was inert
-because the uniform box spends most of its volume on caps far above any rate
-those plants would ever reach. This is the strongest argument yet for weighted
-sampling: it changes which parameters matter, not just how often they appear.
+8.28 per cent of plants. The cap is not intrinsically inert; it was inert
+because the uniform box spends most of its volume on caps far above any
+rate those plants would ever reach. This is the strongest argument yet
+for weighted sampling: it changes which parameters matter, not just how
+often they appear.
 
-**Scope limit, stated because it limits every number above.** ZT12 and ZT16
-contribute no clean fits, so this population represents early-day light
-treatments only. It is not "real sunflowers", it is "the sunflowers our model
-can represent".
+**Scope limit, stated because it limits every number above.** The
+population now spans all six stimulus start times. Its only exclusion is
+the four ZT9 plants pinned at the tau lower bound, so ZT9 is
+under-represented (2 of its 6 plants). It is "the sunflowers our model
+can represent", which after the clock correction is nearly all of them.
 
-**Median final angle is 42.4 deg** against a measured plateau of roughly 50 to
-60 deg in the same blocks, so the population is centred slightly low. `corr(
-final_angle, phi0)` is 0.553, down from 0.64 under uniform sampling.
+**Median final angle is 46.0 deg** against a measured plateau of roughly
+50 to 60 deg, so the population is centred slightly low. `corr(
+final_angle, phi0)` is 0.881, up from 0.64 under uniform sampling: where
+real plants live, the final angle tracks the light angle closely, and
+the degeneracy hides in the dynamics (k, tau, cap) rather than in where
+the plant ends up.
 
 ## 6. Status against the hypotheses
 
@@ -188,16 +211,19 @@ final_angle, phi0)` is 0.553, down from 0.64 under uniform sampling.
 | H2 | not supported on the current metric; metric likely inadequate |
 | H3 | not tested, needs a dense parameter sweep |
 | H4 | not tested, needs the sweep regime and a cluster-agreement measure |
-| H5 | passed 6/6 blocks; 20/48 fits bound-pinned, localised to ZT12 and ZT16 |
+| H5 | passed 6/6 blocks; 4/48 fits bound-pinned, all ZT9 at the tau lower bound |
 
 ## 7. Declared next steps
 
-1. ~~Widen the tau bound and refit~~ — **done 12 October**, section 1. Falsified
-   the missing-mechanism explanation; the static-light assumption fails by
-   time of day.
-2. Fit a non-static light regime to ZT12 and ZT16 and compare RMSE. This is
-   now the highest-value step, because recovering those 20 plants widens the
-   plausible region and every weighted number depends on it.
+1. ~~Widen the tau bound and refit~~ — **done 12 October**, section 1. The
+   wall moved and we misread that as evidence; the wall was a clock
+   offset. Retracted, see bug log.
+2. ~~Fit a non-static light regime to ZT12 and ZT16~~ — **moot as of
+   13 October.** Those plants never needed a moving light; they needed
+   their own start time. The recovered population is already in every
+   downstream number. What replaces this step: explain the ZT9 onset --
+   four plants whose lag wants to be under three minutes, and whose
+   rise-stall-rise shape is the worst fit in the dataset.
 3. Replace the cluster-retention metric for H2 with a continuous one.
 4. H3: dense 2-D sweep over (k, tau) at fixed cap, look for discontinuity.
 5. ~~Weighted population sampling~~ — **done 12 October**, section 5.
@@ -239,6 +265,59 @@ feature name and a parameter name ever collide.
 The bug also surfaced a real finding on the way out: the cap is inert under
 static light for this parameter box (section 3), which is why the corrupted
 and corrected runs agree on the qualitative conclusion.
+
+**13 October: the fitter used the plant's absolute clock as elapsed time.
+Found by Anadi Tripathi, who photographed the argument and brought it to the
+project.**
+
+The Fig1C time column is headed `ZT`: zeitgeber time, hours since the
+growth-chamber lights came on. Brooks et al. started the unilateral blue
+light at six different times of day, so each block's curves begin -- at
+angle zero, by construction -- at its own ZT. `fit_real.py` integrated
+the model with the lamp on from ZT 0 and scored only from each plant's
+first timestamp. For a ZT16 plant that asks the model to stay straight
+through 16 unobserved hours of illumination and then bend; the only
+escape the optimizer has is to drive the lag `tau` to its upper bound
+and keep it there. Consequences, stated plainly:
+
+- all 48 fits except the ZT0 block (whose clock genuinely starts at 0)
+  were distorted, `tau` inflated roughly in proportion to the block's ZT
+- the reported H5 caveat -- "the static-light assumption fails by time
+  of day", 20/48 fits pinned, all of them ZT12/ZT16, midday and
+  afternoon plants excluded from the plausible region -- measured our
+  timestamp error, not the plants. **Retracted in full.**
+- our 12 October "falsification" of the missing-mechanism explanation
+  was unsound: we argued a missing mechanism "would not care which
+  block it was in", but a clock offset cares exactly that way, growing
+  with ZT. The widened bound "moved the wall without emptying it"
+  because the wall was the offset itself.
+- every fit-dependent number was rerun: median RMSE 4.74 -> 1.80 deg,
+  clean fits 28 -> 44 of 48 (ZT12 and ZT16 are 9/9 clean), the weighted
+  sweep (section 5), the whole round-1 suite (`docs/RESULTS_ROUND1.md`)
+  and the real-seedling predictions. One round-1 verdict flipped: H4
+  (ARI 0.606 -> 0.442, clusters do not persist across light regimes).
+
+What survived: the ZT0 fits are bit-identical (ZT0-1's degeneracy probes
+in section 2 still read 1.894 against 1.894), everything that never
+touches real data (the uniform sweep, H1, the simulator's physics
+checks), and H5's headline direction -- the model still passes, now by
+a factor of two to eight instead of scraping the bar in the afternoon.
+
+Why the audit missed it: `audit_round1.py` check 3 recomputed the RMSEs
+through `run_model` on the raw ZT timestamps, the same convention as the
+fitter, so it verified the arithmetic of the wrong quantity. It now
+evaluates on elapsed time and carries a regression guard (check 3d:
+every plant's fitted start must equal its block's ZT, and the pinned
+count is asserted). The data contract gained the handling rule that
+would have prevented this (`docs/DATA_CONTRACT.md`, "stimulus onset").
+
+The bug also left a genuine finding behind, the way the last one did:
+fitted `tau` medians ran 4.11, 3.63, 2.87, bound, 4.60, 5.52 across
+ZT0..ZT16 -- no monotone clock trend once the clock is right -- while
+median `k` falls from 17-25 in the morning blocks to about 5 at
+ZT9/ZT12. Time of day gates the gain, not the lag. That is a statement
+about sunflowers, and it was invisible while the lag was busy absorbing
+our error.
 
 ## Files
 

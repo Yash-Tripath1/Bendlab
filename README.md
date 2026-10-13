@@ -8,8 +8,10 @@ populations of simulated bending plants, measures how each one responds to
 light, and asks which differences in the underlying parameters are actually
 visible from the outside.
 
-Round 1 is complete: eight hypotheses tested, three falsified, one
-unanswerable as specified, three surviving.
+Round 1 is complete: eight hypotheses tested, two falsified as declared,
+one unanswerable as specified, four surviving. (One verdict, H4, flipped
+on 13 October when a time-base bug in the fitter was found and fixed;
+see the bug log in `docs/RESULTS_ROUND0.md`.)
 [`docs/RESULTS_ROUND0.md`](docs/RESULTS_ROUND0.md) and
 [`docs/RESULTS_ROUND1.md`](docs/RESULTS_ROUND1.md). Dashboard below.
 
@@ -85,12 +87,15 @@ draws in the simulation path, so a rerun is bit-identical. `sweep.py` and
 ## Headline numbers, round 0
 
 **H5, the reality anchor.** Median per-plant RMSE against 48 real sunflower
-curves is 4.74 degrees. Median across-plant standard deviation in the same
+curves is 1.80 degrees. Median across-plant standard deviation in the same
 data is 8.58 degrees. The model is wrong by less than real plants differ from
-each other, in all six light treatments. 20 of 48 fits end with `tau` pinned
-at its bound, all in the ZT12 and ZT16 blocks: the static-light assumption
-fails for midday and afternoon treatments, so only the 28 clean fits define
-the plausible region.
+each other, in all six light treatments, by a factor of two to eight. Only
+4 of 48 fits end with a parameter pinned at a bound (four ZT9 plants whose
+lag wants to be under three minutes), so the 44 clean fits define the
+plausible region across every stimulus start time. An earlier version of
+this page reported RMSE 4.74 and claimed the model failed for midday and
+afternoon treatments; that was a timestamp bug in our fitter, retracted in
+the round-0 bug log.
 
 **H1, degeneracy.** After clustering 10,000 simulated plants into six
 behavioural groups, a group still retains 25 to 50 per cent of the full
@@ -100,9 +105,10 @@ behaviourally near-identical.
 
 **Degeneracy weakens where real plants live.** Repeating the sweep with
 plants drawn from the fitted region instead of the uniform box drops
-retention on every parameter: k 25 to 13 per cent, tau 36 to 10, phi0 25 to
-8. It also flips the speed limit from inert to meaningful: the cap binds for
-1 plant in 2,000 under uniform sampling and 7.19 per cent under weighted.
+retention on every parameter: k 25 to 9 per cent, tau 36 to 4, max_rate 50
+to 14, phi0 25 to 12. It also flips the speed limit from inert to
+meaningful: the cap binds for 1 plant in 2,000 under uniform sampling and
+8.28 per cent under weighted.
 
 **Exact degeneracy, on real data.** Refitting plant ZT0-1 with the rate cap
 removed gives RMSE 1.894 against 1.894 with the cap fitted. Identical, because

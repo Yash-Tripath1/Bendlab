@@ -3,6 +3,22 @@
 Fits (k, tau, max_rate, phi0) per plant against the PLOS S13 Fig1C data with
 bounded least-squares (scipy least_squares), static light.
 
+TIME BASE (corrected 13 Oct 2026). The Fig1C time column is headed ZT:
+zeitgeber time, the plant's absolute clock, NOT time since the stimulus.
+Each block was first exposed to the unilateral blue light at its own ZT
+(ZT0 at lights-on, ZT16 at lights-off; Brooks et al. 2023, Fig 1C legend:
+"stimulated with unidirectional blue light starting at different times of
+day"). Every fit therefore runs on elapsed time, t - t_first, with the
+model at rest (theta = 0, lamp just switched on) at the plant's first
+timestamp. The first version of this script integrated with the lamp on
+from ZT 0 and scored only from the first timestamp, so a ZT16 plant had
+to explain 16 unobserved hours of bending it never did; the only escape
+was tau at its upper bound. That artifact produced the retracted round-0
+claim that "static light fails by time of day" (20/48 fits pinned, all
+ZT12/ZT16). On the corrected time base 4/48 fits touch a bound, all of
+them ZT9 plants at the tau LOWER bound. See docs/RESULTS_ROUND0.md,
+bug log, for the full retraction.
+
 Verdict rule, stated before fitting:
   the model passes H5 for a block if the median per-plant RMSE is at or below
   the median across-plant standard deviation at matched timestamps, i.e. the
@@ -26,7 +42,10 @@ DT = 1.0 / 60.0  # one minute integration step
 # Bounds: wide enough to contain any plausible plant, tight enough that the
 # optimizer cannot escape to overflow. tau was widened 12 -> 48 h on 12 Oct
 # (declared next-step 1) after round 0 found 20/48 fits pinned at the old
-# upper bound; a bound-pinned fit must not define the plausible region.
+# upper bound; the 13 Oct time-base correction (module docstring) showed
+# those pins were a clock artifact, not plants asking for a longer lag.
+# The bounds stay wide: a bound-pinned fit must not define the plausible
+# region, whichever wall it ends up on.
 LO = np.array([1e-3, 0.05, 0.5, 0.0])
 HI = np.array([50.0, 48.0, 200.0, 130.0])
 NAMES = ("k", "tau", "max_rate", "phi0")
@@ -34,7 +53,13 @@ NAMES = ("k", "tau", "max_rate", "phi0")
 
 def run_model(k: float, tau: float, max_rate: float, phi0: float,
               t_eval: np.ndarray) -> np.ndarray:
-    """Integrate the two-state model under static light, report at t_eval."""
+    """Integrate the two-state model under static light, report at t_eval.
+
+    t_eval is ELAPSED time since stimulus onset: the model starts at rest
+    at t_eval = 0 with the lamp just switched on. Callers holding absolute
+    ZT timestamps must subtract the plant's first timestamp first (see the
+    module docstring; passing raw ZT here was the 13 Oct bug).
+    """
     t_end = float(t_eval[-1])
     n = int(round(t_end / DT))
     theta, r = 0.0, 0.0
@@ -59,17 +84,25 @@ def run_model(k: float, tau: float, max_rate: float, phi0: float,
 
 
 def fit_plant(t: np.ndarray, y: np.ndarray) -> dict:
-    """Bounded least-squares fit of one curve."""
+    """Bounded least-squares fit of one curve.
+
+    t may be absolute ZT timestamps; it is shifted to elapsed time since
+    the plant's first timestamp (stimulus onset) before fitting.
+    """
+    t = np.asarray(t, float)
+    t_start = float(t[0])
+    t_elapsed = t - t_start
     phi_init = float(np.clip(np.median(y[-3:]), 10.0, 110.0))
     x0 = np.array([1.0, 1.0, 30.0, phi_init])
 
     def resid(x):
-        return run_model(*x, t) - y
+        return run_model(*x, t_elapsed) - y
 
     res = least_squares(resid, x0, bounds=(LO, HI), xtol=1e-6, ftol=1e-8)
     rmse = float(np.sqrt(np.mean(res.fun ** 2)))
     out = dict(zip(NAMES, res.x))
-    out.update(rmse=rmse, n_pts=len(t), t_end=float(t[-1]),
+    out.update(rmse=rmse, n_pts=len(t), t_start=t_start,
+               duration=float(t_elapsed[-1]),
                at_bound=str([NAMES[i] for i in range(4)
                              if res.x[i] <= LO[i] * 1.01 or res.x[i] >= HI[i] * 0.99]))
     return out
@@ -135,6 +168,7 @@ def degeneracy_check() -> None:
     df = load_long(sheet="Fig1C")
     g = df[df["plant"] == "ZT0-1"].sort_values("t")
     t, y = g["t"].to_numpy(float), g["angle"].to_numpy(float)
+    t = t - t[0]  # elapsed since stimulus onset (ZT0-1 starts at 0 anyway)
 
     print("\n=== degeneracy check, plant ZT0-1 ===")
     print(" tau fixed |    k  | max_rate |  phi0  |   RMSE")

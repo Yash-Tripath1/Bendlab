@@ -1,7 +1,7 @@
 # The identification game (round 2 design sketch)
 
 **Status, 13 October: implemented and run in `round1.py`. The game as
-specified is saturated — random protocol choice scores 92 per 100, so no
+specified is saturated — random protocol choice scores 89 per 100, so no
 policy comparison is meaningful yet. Harder variants are listed at the
 bottom.**
 

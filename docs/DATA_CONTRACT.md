@@ -60,6 +60,18 @@ assigning meaning.
 - Time base differs by sheet. `ZT` is zeitgeber time (hours since lights on).
   `Fig2B` uses plain `time` in hours. Do not concatenate sheets without
   converting to a common base and recording which sheet each row came from.
+- **`Fig1C` stimulus onset (the rule whose absence cost us a retraction).**
+  ZT is the plant's absolute clock, not time since stimulus. In Fig 1C each
+  block was first exposed to unilateral blue light at its own ZT (Fig 1
+  legend, Brooks et al. 2023), so a plant's first non-null cell is its
+  stimulus onset and its angle there is 0 by construction. Any fit,
+  simulation or feature that consumes these curves must use elapsed time
+  `t - t_first` per plant. Feeding raw ZT to a model that assumes the
+  stimulus started at t = 0 makes late blocks look pathologically slow
+  (in our case: `tau` pinned at its bound for all 18 ZT12/ZT16 plants).
+  Added 13 Oct 2026 after exactly that bug shipped; see the bug log in
+  `docs/RESULTS_ROUND0.md`. `fit_real.py` enforces this by shifting
+  inside `fit_plant`, and `audit_round1.py` check 3d guards it.
 - Sampling differs by sheet: `Fig1B` and `Fig1C` are half-hourly, the rest
   hourly. Interpolate explicitly when comparing, and say so.
 

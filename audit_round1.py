@@ -113,15 +113,22 @@ check("2c underdamped period (analytic %.3f h)" % pred_period,
 # actually shows: it rises to about 40 deg and then declines slightly.
 w03, z3, peak3, _ = damped_predictions(23.0, 6.8, 41.3)
 print("     [2d] fitted ZT0-1 implies zeta %.3f -> predicted peak %.1f deg; "
-      "measured curve peaks near 40.5 and declines. Model and data agree "
+      "measured curve peaks at 57.0 and declines. Model and data agree "
       "that this plant overshoots mildly." % (z3, peak3))
 
 # ------------------------------------------------------------- 3. H5 from raw
+# Time base: Fig1C timestamps are absolute ZT; the stimulus starts at each
+# plant's first timestamp, so curves are evaluated on elapsed time. The
+# first version of this audit evaluated on raw ZT, mirroring the fitter's
+# own 13 Oct clock bug, and therefore "verified" the wrong numbers: an
+# audit that shares the audited assumption verifies arithmetic, not truth.
+# Check 3d is the regression guard for that bug.
 df = load_long(sheet="Fig1C")
 rms, sims = [], []
 for plant, g in df.groupby("plant"):
     g = g.sort_values("t")
     t, y = g["t"].to_numpy(float), g["angle"].to_numpy(float)
+    t = t - t[0]  # elapsed since stimulus onset
     fr = fits[fits["plant"] == plant].iloc[0]
     curve = run_model(fr.k, fr.tau, fr.max_rate, fr.phi0, t)
     r = float(np.sqrt(np.mean((curve - y) ** 2)))
@@ -134,7 +141,14 @@ for plant, g in df.groupby("plant"):
 med = float(np.median(rms))
 check("3a per-plant RMSE reproduces saved values", max(sims) < 1e-6,
       "max deviation %.2e over 48 plants" % max(sims))
-check("3b median RMSE = 4.74", abs(med - 4.74) < 0.01, "recomputed %.3f" % med)
+check("3b median RMSE = 1.80", abs(med - 1.80) < 0.01, "recomputed %.3f" % med)
+tstart_ok = bool((fits["t_start"].to_numpy(float)
+                  == fits["block"].str[2:].astype(float).to_numpy()).all())
+check("3d stimulus-onset alignment (regression guard for the ZT clock bug)",
+      tstart_ok and int((fits["at_bound"] != "[]").sum()) == 4,
+      "every plant's t_start equals its block's ZT; bound-pinned fits = %d/48 "
+      "(was 20/48 under the absolute-ZT time base)"
+      % int((fits["at_bound"] != "[]").sum()))
 sp = []
 for (sh, b), g in df.groupby(["sheet", "block"]):
     wide = g.pivot_table(index="t", columns="plant", values="angle")
@@ -176,7 +190,7 @@ km = KMeans(6, n_init=10, random_state=1).fit(X)
 lab = km.labels_
 P = st[[f"param_{n}" for n in PARAM_NAMES]].to_numpy()
 full = P.max(axis=0) - P.min(axis=0)
-CLAIMED = {"k": 13, "tau": 10, "max_rate": 28, "phi0": 8}
+CLAIMED = {"k": 9, "tau": 4, "max_rate": 14, "phi0": 12}
 print("     [6] independent recomputation of within-cluster retention:")
 ok6 = True
 for i, n in enumerate(PARAM_NAMES):
@@ -297,7 +311,7 @@ _, idx = nn.kneighbors((th_s6 + noise).T)
 partner = idx[:, 1]
 rung1 = 100 * float(np.mean(
     np.sqrt(np.mean((th_r[:, partner] - th_r) ** 2, axis=0)) <= 5.0))
-RUNG2 = 92.0  # random policy at the full budget, from round1
+RUNG2 = 89.4  # random policy at the full budget, from round1
 print("     [8] ladder: no data %.0f%% -> one 6h static curve %.0f%% "
       "-> 24h budget %.0f%%" % (rung0, rung1, RUNG2))
 check("8 saturation is a ladder, not one cheap rung",
@@ -327,9 +341,10 @@ for sd in (13, 21, 99):
     la = KMeans(6, n_init=10, random_state=sd).fit_predict(XA)
     lb = KMeans(6, n_init=10, random_state=sd).fit_predict(XB)
     aris.append(adjusted_rand_score(la, lb))
-check("9 H4 ARI stable across clustering seeds (all > 0.5)",
-      all(a > 0.5 for a in aris),
-      "ARI = %s (round1 reported 0.606, seed 13)" % np.round(aris, 3))
+check("9 H4 ARI stable across clustering seeds (all < 0.5, clusters do "
+      "not persist on the corrected population)",
+      all(a < 0.5 for a in aris),
+      "ARI = %s (round1 reported 0.442, seed 13)" % np.round(aris, 3))
 
 # ------------------------------------------- 11. arithmetic, and why it is fast
 steps = 1440  # 24 h at dt = 1 min

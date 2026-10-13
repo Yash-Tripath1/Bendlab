@@ -46,7 +46,7 @@ ax[0, 0].plot(t, th[:, a], lw=2.2, color="tab:blue",
 ax[0, 0].plot(t, th[:, b], lw=2.2, ls="--", color="tab:red",
               label="Plant B: k=%.1f tau=%.1f cap=%.0f light=%.0f"
                     % tuple(pb))
-ax[0, 0].set_title("1. Two completely different plants,\none curve (within "
+ax[0, 0].set_title("1. A tenfold speed-limit difference,\none curve (within "
                    "%.1f deg)" % np.abs(th[:, a] - th[:, b]).max(),
                    fontsize=11)
 ax[0, 0].set_xlabel("hours")
@@ -71,9 +71,9 @@ ax[0, 1].legend(fontsize=8)
 
 # ---- panel 3: the ladder (H8).
 ax[0, 2].bar(["no data\nat all", "one 6-hour\ncurve", "full 24-hour\nbudget"],
-             [31, 56, 92], color=["tab:gray", "tab:orange", "tab:green"],
+             [30, 44, 89], color=["tab:gray", "tab:orange", "tab:green"],
              width=0.55)
-for i, v in enumerate([31, 56, 92]):
+for i, v in enumerate([30, 44, 89]):
     ax[0, 2].text(i, v + 2, "%d%%" % v, ha="center", weight="bold")
 ax[0, 2].set_ylim(0, 105)
 ax[0, 2].set_ylabel("plants correctly predicted, per 100")
@@ -102,8 +102,8 @@ ax[1, 0].axhline(3.0, color="red", ls="--", label="still 'the same plant' "
 ax[1, 0].set_xlabel("how different the parents' k dial was\n(fraction of the "
                     "full range)")
 ax[1, 0].set_ylabel("how far the child's curve drifted (deg)")
-ax[1, 0].set_title("4. Umaid's breeding test: the valley is connected\nnear "
-                   "the floor and pinches off at the edges", fontsize=11)
+ax[1, 0].set_title("4. Umaid's breeding test: children of look-alike\n"
+                   "parents mostly bend like their parents", fontsize=11)
 ax[1, 0].legend(fontsize=8)
 
 # ---- panel 5: the scoreboard.
@@ -113,10 +113,11 @@ lines = [
      "tab:green"),
     ("H2  a light flip reveals more", "DEAD (on our metrics)", "tab:red"),
     ("H3  hidden cliffs in the dials", "DEAD (map is smooth)", "tab:red"),
-    ("H4  moving sun changes the piles", "DEAD (piles persist)", "tab:red"),
-    ("H5  fake plants bend believably", "ALIVE (morning light only)",
+    ("H4  moving sun changes the piles", "ALIVE (piles do not persist)",
      "tab:green"),
-    ("H6  identical twins can breed", "ALIVE (valley narrows)", "tab:green"),
+    ("H5  fake plants bend believably", "ALIVE (all six start times)",
+     "tab:green"),
+    ("H6  identical twins can breed", "ALIVE (soft walls, some leakage)", "tab:green"),
     ("H7  better light shows exist", "UNPROVEN (gap too small)",
      "tab:orange"),
     ("H8  smart beats random measuring", "REDESIGN (game too easy)",
@@ -127,7 +128,7 @@ ax[1, 1].text(0.02, 0.98, "THE SCOREBOARD", fontsize=12, weight="bold",
 for i, (q, v, c) in enumerate(lines):
     ax[1, 1].text(0.02, 0.88 - i * 0.115, q, fontsize=9.5, va="top")
     ax[1, 1].text(0.05, 0.835 - i * 0.115, v, fontsize=8.5, va="top", color=c)
-ax[1, 1].set_title("5. Eight hypotheses, three dead, and that is\nwhat a "
+ax[1, 1].set_title("5. Eight hypotheses, four alive, two dead,\nand that is what a "
                    "round of research is for", fontsize=11)
 
 # ---- panel 6: the audit. Simulation against textbook physics.
