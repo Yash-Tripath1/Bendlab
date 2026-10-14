@@ -1,0 +1,55 @@
+{
+  "n_plants": 100000,
+  "seed": 20261014,
+  "regimes": [
+    "static",
+    "flip8",
+    "sweep12",
+    "dflip",
+    "ramp24"
+  ],
+  "runtime_seconds": 48.5,
+  "static_cap_binding_fraction": 0.00056,
+  "median_within_cluster_iqr_frac_of_range": {
+    "k": 0.24853047420534108,
+    "tau": 0.3550641339229628,
+    "max_rate": 0.4997774964377597,
+    "phi0": 0.24692309278639044
+  },
+  "ari_vs_static": {
+    "static": 1.0,
+    "flip8": 0.3210179723524943,
+    "sweep12": 0.43890974337745153,
+    "dflip": 0.4987319194300616,
+    "ramp24": 0.45022597932582387
+  },
+  "nearest_neighbour_rank1_median_rel_error": {
+    "k": 0.01737841004022597,
+    "tau": 0.022158049932325872,
+    "max_rate": 0.33425455009575145,
+    "phi0": 0.01632678919982747
+  },
+  "twins_rmse_below_1deg": 1500,
+  "twins_rmse_below_1deg_and_mean_param_diff_above_025": 46,
+  "nontrivial_twin_queries_final_above_20deg": 514,
+  "nontrivial_twins_rmse_below_1deg": 514,
+  "nontrivial_twins_rmse_below_1deg_and_mean_param_diff_above_025": 6,
+  "twin_queries": 1500,
+  "dashboard_examples": [
+    {
+      "plant_id": 90754,
+      "twin_id": 75234,
+      "trajectory_rmse_deg": 0.012626906806902633
+    },
+    {
+      "plant_id": 55414,
+      "twin_id": 4845,
+      "trajectory_rmse_deg": 0.020457927209624284
+    },
+    {
+      "plant_id": 44723,
+      "twin_id": 51712,
+      "trajectory_rmse_deg": 0.022763479971396362
+    }
+  ]
+}
