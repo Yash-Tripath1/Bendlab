@@ -1,18 +1,18 @@
-"""ZT9 autopsy: why do four of six ZT9 plants pin tau at its lower bound?
+"""ZT9 diagnostic analysis: origin of the lower-bound lag estimates in four of six ZT9 plants.
 
 Declared before running (13 Oct 2026), three questions, three verdicts:
 
   A. Residual shape. Where, in elapsed time, does the fitted curve miss
      the ZT9 measurements? Systematic = same-sign segment residuals in
      at least 5 of 6 plants.
-  B. Tau-floor sensitivity. Refit ZT9 with the tau lower bound at
+  B. Lower-bound sensitivity. Refit ZT9 with the tau lower bound at
      0.05 (current), 0.01 and 0.001 h, everything else identical.
      Verdict rule: if the 0.001 h floor cuts median RMSE by >= 30% and
      no refit then pins another bound, the lower bound is the main
      driver. A cut under 10% means the bound is not the driver.
      Between the two: partial.
-  C. Stall alignment (descriptive only, no causal claim). A curve has
-     a genuine stall if its 2.5 h-smoothed bend rate reaches a minimum
+  C. Stall alignment (descriptive only; no causal interpretation). A curve
+     is classified as stalled if its 2.5 h-smoothed bend rate reaches a minimum
      in elapsed 3-20 h (a window every curve covers) and then
      re-accelerates by >= 1 deg/h within 8 h. Do stall timings line up
      better across blocks in ELAPSED hours, or in circadian PHASE
@@ -21,7 +21,7 @@ Declared before running (13 Oct 2026), three questions, three verdicts:
      was discarded: it mostly detected end-of-observation slowdown.)
 
 Outputs: results/zt9_residuals.csv, results/zt9_tau_sensitivity.csv,
-results/zt9_stall_times.csv, results/figures/zt9_autopsy_dashboard.png
+results/zt9_stall_times.csv, results/figures/zt9_diagnostic_dashboard.png
 """
 
 import numpy as np
@@ -98,7 +98,7 @@ for plant, (t_abs, t_el, y) in [(p, curve_of(p)) for p in resid_curves]:
                           "at_bound": str(pinned)})
 sens = pd.DataFrame(sens_rows)
 sens.to_csv("results/zt9_tau_sensitivity.csv", index=False)
-print("\n=== B. tau-floor sensitivity (median RMSE over the 6 ZT9 plants) ===")
+print("\n=== B. sensitivity to the tau lower bound (median RMSE over six ZT9 plants) ===")
 print(sens.groupby("tau_floor")["rmse"].agg(["median", "max"]).round(3)
       .to_string())
 print(sens[sens.tau_floor == 0.001][["plant", "k", "tau", "max_rate",
@@ -107,13 +107,13 @@ print(sens[sens.tau_floor == 0.001][["plant", "k", "tau", "max_rate",
 
 # ---------------------------------------------------------- C. stall timing
 def stall_time(t_el, y):
-    """A genuine stall: slowest smoothed rate in elapsed 3-20 h, followed
-    by re-acceleration of at least 1 deg/h within the next 8 h.
+    """Identify an operationally defined stall in a stem-angle trajectory.
 
-    The window is common to every plant (all curves run >= 23.5 h), which
-    excludes the end-of-observation slowdown that a naive slowest-point
-    search mistakes for a stall. Returns (stall_elapsed, min_rate,
-    rebound) or (nan, nan, nan) when the curve never re-accelerates.
+    The criterion is a minimum in the smoothed bend rate within elapsed
+    3-20 h followed by re-acceleration of at least 1 deg/h within 8 h. The
+    common observation window excludes terminal slowing near the end of
+    the recording. Returns (stall_elapsed, min_rate, rebound), or NaN
+    values when the re-acceleration criterion is not met.
     """
     if len(y) < 20:
         return np.nan, np.nan, np.nan
@@ -146,7 +146,7 @@ for plant in FITS.index:
 stall_all = pd.DataFrame(stall_rows)
 stall = stall_all.dropna(subset=["stall_elapsed"])
 stall_all.to_csv("results/zt9_stall_times.csv", index=False)
-print("\ncurves with a genuine stall (of 48): %d" % len(stall))
+print("\ncurves satisfying the stall criterion (of 48): %d" % len(stall))
 med = stall.groupby("block")[["stall_elapsed", "stall_phase"]].median()
 print("\n=== C. stall timing, block medians (stalling plants only) ===")
 print(med.round(2).to_string())
@@ -159,8 +159,8 @@ print(stall[stall["block"] == "ZT9"][["plant", "stall_elapsed",
 
 # ------------------------------------------------------------------- figure
 fig, ax = plt.subplots(2, 3, figsize=(16, 9))
-fig.suptitle("ZT9 autopsy — the four lower-bound plants, examined "
-             "(13 October 2026)", fontsize=13, weight="bold")
+fig.suptitle("ZT9 diagnostic analysis: residuals, lower-bound sensitivity "
+             "and stall timing (13 October 2026)", fontsize=13, weight="bold")
 
 for plant, (t_el, resid, y) in resid_curves.items():
     ax[0, 0].plot(t_el, y, lw=1.2, alpha=.8)
@@ -178,7 +178,7 @@ piv = sens.pivot(index="plant", columns="tau_floor", values="rmse")
 for plant in piv.index:
     ax[0, 2].plot([str(c) for c in piv.columns], piv.loc[plant], "o-", alpha=.7)
 ax[0, 2].plot([str(c) for c in piv.columns], piv.median(), "k--", lw=2, label="median")
-ax[0, 2].set_title("3. Does a lower tau floor fix it?", fontsize=11)
+ax[0, 2].set_title("3. Sensitivity of fit error to the tau lower bound", fontsize=11)
 ax[0, 2].set_xlabel("tau lower bound (h)"); ax[0, 2].set_ylabel("fit RMSE (deg)")
 ax[0, 2].legend(fontsize=8)
 
@@ -195,16 +195,16 @@ for b, g in stall.groupby("block"):
     ax[1, 1].annotate(b, (g["stall_elapsed"].median(), g["stall_phase"].median()),
                       fontsize=9, weight="bold")
 ax[1, 1].axhline(16, color="red", ls="--", lw=1)
-ax[1, 1].set_title("5. Genuine stalls: elapsed vs circadian phase\n(red line = ZT16, subjective dusk)", fontsize=11)
+ax[1, 1].set_title("5. Stall timing in elapsed time and circadian phase\n(red line: ZT16)", fontsize=11)
 ax[1, 1].set_xlabel("hours since onset"); ax[1, 1].set_ylabel("ZT phase (h, mod 24)")
 
 zt9only = sens[sens.tau_floor.isin([0.05, 0.001])]
-ax[1, 2].bar(["current floor\n0.05 h", "floor 0.001 h"],
+ax[1, 2].bar(["standard lower bound\n0.05 h", "lower bound\n0.001 h"],
              [zt9only[zt9only.tau_floor == f]["rmse"].median() for f in (0.05, 0.001)],
              color=["tab:orange", "tab:green"], width=.5)
-ax[1, 2].set_title("6. Median ZT9 RMSE by tau floor", fontsize=11)
+ax[1, 2].set_title("6. Median ZT9 RMSE by tau lower bound", fontsize=11)
 ax[1, 2].set_ylabel("deg")
 
 fig.tight_layout(rect=(0, 0, 1, 0.95))
-fig.savefig("results/figures/zt9_autopsy_dashboard.png", dpi=140)
-print("\nsaved results/figures/zt9_autopsy_dashboard.png")
+fig.savefig("results/figures/zt9_diagnostic_dashboard.png", dpi=140)
+print("\nsaved results/figures/zt9_diagnostic_dashboard.png")

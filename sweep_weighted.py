@@ -1,5 +1,5 @@
-"""Weighted population sweep: the same experiment as sweep.py, but plants are
-drawn where real sunflowers were measured instead of uniformly over the box.
+"""Weighted population sweep: the same experiment as sweep.py, but parameter vectors are
+drawn from the region supported by measured sunflower fits rather than uniformly over the parameter box.
 
 Population source: the clean fits in results/fit_fig1c.csv (parameter not
 pinned at any bound; 44 plants from all six blocks ZT0-ZT16 after the
@@ -55,11 +55,11 @@ def main() -> None:
                                       df["phi0"], T_END, record_dt=RECORD_DT)
     static = feature_frame(t_s, th_s, df, "static_weighted")
 
-    # Cap-binding check: does the speed limit ever matter for real-ish plants?
+    # Maximum-rate check: frequency with which the rate limit constrains trajectories in the empirically supported region
     obs_rate = np.abs(np.diff(th_s, axis=0)).max(axis=0) / (t_s[1] - t_s[0])
     binding = (obs_rate >= 0.99 * df["max_rate"].to_numpy()).mean()
-    print("\ncap binds for %.2f%% of weighted plants "
-          "(uniform box: ~0.05%%)" % (100 * binding))
+    print("\nmaximum-rate limit constrains %.2f%% of weighted-population "
+          "trajectories (uniform population: approximately 0.05%%)" % (100 * binding))
 
     # Flip regime, same protocol as the uniform sweep.
     def flip_light(t, phi0, flip_t=FLIP_T, delta=FLIP_DELTA):
@@ -75,7 +75,7 @@ def main() -> None:
     print("\n=== behaviour clusters, weighted population, static light ===")
     print(cl.round(2).to_string(index=False))
 
-    print("\n=== degeneracy read-out (weighted) ===")
+    print("\n=== parameter-retention summary (weighted population) ===")
     for name in PARAM_NAMES:
         full = float(df[name].max() - df[name].min())
         print("%-9s median within-cluster IQR %.3f | weighted range %.3f "
@@ -83,11 +83,11 @@ def main() -> None:
               % (name, cl[f"{name}_iqr"].median(), full,
                  100 * cl[f"{name}_iqr"].median() / full))
 
-    print("\n=== comparison anchors (uniform run, sweep.py, 12 Oct) ===")
+    print("\n=== comparison with the uniform population (sweep.py) ===")
     print("uniform retention: k 25% | tau 36% | max_rate 50% | phi0 25%")
     print("corr(final_angle, phi0), weighted = %.3f"
           % static["final_angle"].corr(static["param_phi0"]))
-    print("median final_angle: uniform box ~wide | weighted %.2f deg"
+    print("median final_angle in the weighted population: %.2f deg"
           % static["final_angle"].median())
 
     pd.concat([static, flip], ignore_index=True).to_csv(

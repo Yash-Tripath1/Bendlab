@@ -111,7 +111,7 @@ def main() -> None:
                                flip_light, T_END, record_dt=RECORD_DT)
     flip = feature_frame(t_f, th_f, df, "flip")
     flip["reversal"] = th_f.max(axis=0) - th_f[-1]
-    print("flip sanity: mean angle drop in the 2h after the flip = %.2f deg"
+    print("step-regime check: mean angle change during the 2 h after the step = %.2f deg"
           % np.mean(th_f[-1] - th_f[int(FLIP_T / RECORD_DT)]))
 
     feat_cols = list(F.STATIC_FEATURES)
@@ -119,7 +119,7 @@ def main() -> None:
     print("\n=== behaviour-space clusters, static light, n=%d ===" % n)
     print(cl.round(2).to_string(index=False))
 
-    print("\n=== degeneracy read-out ===")
+    print("\n=== parameter-retention summary ===")
     for name in PARAM_NAMES:
         col = f"{name}_iqr"
         print("%-9s median within-cluster IQR %.3f | full-range %.3f "

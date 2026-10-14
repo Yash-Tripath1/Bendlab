@@ -12,9 +12,10 @@ Checks:
   4. cap-inertness on ZT0-1 (the 1.894 == 1.894 claim)
   5. ringing check: do the fitted plants oscillate like the pendulum says?
   6. H1 concrete pair: two same-cluster plants, far parameters, same curve?
-  7. H6 midpoint child of that pair
-  8. H8 saturation context: is the game easy because the population is
-     separable from one cheap noisy curve? (nearest-neighbour, no policy)
+  7. H6 parameter midpoint of a curve-equivalent pair
+  8. H8 saturation context: predictive accuracy at three information levels
+     (no data, one short noisy trajectory, full budget; nearest-neighbour
+     analysis without a protocol-selection policy)
   9. H4 ARI stability across clustering seeds
  10. arithmetic: how many Euler updates does the suite actually perform?
 """
@@ -167,7 +168,7 @@ r_nocap = float(np.sqrt(np.mean((run_model(fr.k, fr.tau, 1e9, fr.phi0, t) - y) *
 check("4 cap-inertness on ZT0-1", abs(r_cap - r_nocap) < 1e-9,
       "cap %.4f vs no-cap %.4f" % (r_cap, r_nocap))
 
-# ----------------------------------------------------------- 5. ringing check
+# -------------------------------------------------- 5. trajectory stability
 ts, ths = simulate(fr.k, fr.tau, fr.max_rate, lambda tt: fr.phi0, 48.0)
 print("     [5] fitted ZT0-1 params k=%.1f tau=%.1f cap=%.1f phi0=%.1f ->"
       " theta_max %.1f deg at t=%.1f h, theta(48h) %.1f" %
@@ -214,8 +215,9 @@ print("        two random same-cluster plants differ by %.2f of the parameter "
 
 # ------------------------------------------------- 7. H6 midpoint, correctly aimed
 # The degenerate set is the set of plants with the SAME curve, not the set of
-# plants in one k-means cluster. So the honest midpoint test picks parents
-# whose curves actually coincide, then asks whether the midpoint does too.
+# plants in one k-means cluster. The corresponding midpoint analysis
+# therefore uses source parameter vectors whose trajectories coincide and
+# evaluates whether their parameter midpoint also coincides.
 CURVE_EPS = 3.0  # degrees, same tolerance used for H8 success
 pop_pair = pd.DataFrame(weighted_population(4_000, 77, clean),
                         columns=PARAM_NAMES)
@@ -224,10 +226,10 @@ tp, thp = batch_simulate(pop_pair["k"], pop_pair["tau"], pop_pair["max_rate"],
                          pop_pair["phi0"], None, 24.0, record_dt=0.5)
 rng2 = np.random.default_rng(11)
 Pp = pop_pair[list(PARAM_NAMES)].to_numpy()
-# Rejection sampling for a far-apart pair fails: random pairs are far apart
-# but not curve-equivalent, and curve-equivalent pairs are close. So search
-# for the most separated pair inside the tolerance instead, which is the
-# question actually worth asking.
+# Random pairs are usually widely separated but not curve-equivalent,
+# whereas curve-equivalent pairs tend to be close in parameter space. The
+# analysis therefore searches for the most separated pair within the
+# trajectory-equivalence tolerance.
 found, best_sep = None, -1.0
 for _ in range(400_000):
     a, b = rng2.integers(0, len(pop_pair), 2)
@@ -240,28 +242,28 @@ if found is None:
           "none found in 400k draws at %.1f deg tolerance" % CURVE_EPS)
 else:
     a, b, pa, pb = found
-    kid = ((pa + pb) / 2).reshape(1, -1)
-    kpop = pd.DataFrame(kid, columns=PARAM_NAMES)
+    midpoint = ((pa + pb) / 2).reshape(1, -1)
+    kpop = pd.DataFrame(midpoint, columns=PARAM_NAMES)
     tk, thk = batch_simulate(kpop["k"], kpop["tau"], kpop["max_rate"],
                              kpop["phi0"], None, 24.0, record_dt=0.5)
-    gap_kid = max(float(np.abs(thk[:, 0] - thp[:, a]).max()),
-                  float(np.abs(thk[:, 0] - thp[:, b]).max()))
-    print("     [7] parents' curves within %.2f deg; parameter separation "
+    gap_midpoint = max(float(np.abs(thk[:, 0] - thp[:, a]).max()),
+                       float(np.abs(thk[:, 0] - thp[:, b]).max()))
+    print("     [7] source parameter vectors' curves within %.2f deg; parameter separation "
           "%.2f of range" % (float(np.abs(thp[:, a] - thp[:, b]).max()),
                              float(np.abs((pa - pb) / full).max())))
     print("        A:", dict(zip(PARAM_NAMES, pa.round(2))))
     print("        B:", dict(zip(PARAM_NAMES, pb.round(2))))
-    print("        naive midpoint (phi0 averaged too): %.2f deg from parents"
-          % gap_kid)
-    print("     [7] NOTE, not a failure: the most-separated equivalent pair's "
-          "midpoint drifts %.0f deg. The valley narrows away from typical "
-          "pairs; 7b measures the typical case." % gap_kid)
+    print("        unadjusted midpoint (phi0 also averaged): maximum "
+          "deviation %.2f deg from the source trajectories" % gap_midpoint)
+    print("     [7] Descriptive result: the midpoint of the most widely "
+          "separated equivalent pair deviates by %.0f deg. This indicates "
+          "that the width of the equivalent region varies with parameter "
+          "separation; check 7b evaluates typical pairs." % gap_midpoint)
 
-# 7b: the same probe over a proper sample of curve-equivalent pairs, which is
-# the only version whose result means anything. phi0 is held at parent A's
-# value, since phi0 is the experimental light condition, not a plant trait,
-# and averaging 124 deg light with 26 deg light invents an experiment neither
-# parent was in.
+# 7b: the same analysis over a sample of curve-equivalent pairs. The light
+# angle phi0 is held at the first source value because phi0 specifies the
+# experimental light condition rather than a plant trait; averaging two
+# light angles would define a condition experienced by neither source.
 rng3 = np.random.default_rng(11)
 Pp2 = pop_pair[list(PARAM_NAMES)].to_numpy()
 rows = []
@@ -270,25 +272,25 @@ while len(rows) < 40 and tries < 400_000:
     tries += 1
     a2, b2 = rng3.integers(0, len(pop_pair), 2)
     if np.abs(thp[:, a2] - thp[:, b2]).max() < CURVE_EPS:
-        kid2 = (Pp2[a2] + Pp2[b2]) / 2
-        kid2[3] = Pp2[a2][3]
-        kdf = pd.DataFrame([kid2], columns=PARAM_NAMES)
+        recombinant = (Pp2[a2] + Pp2[b2]) / 2
+        recombinant[3] = Pp2[a2][3]
+        kdf = pd.DataFrame([recombinant], columns=PARAM_NAMES)
         _, ck = batch_simulate(kdf["k"], kdf["tau"], kdf["max_rate"],
                                kdf["phi0"], None, 24.0, record_dt=0.5)
         rows.append({
-            "child_gap": float(np.abs(ck[:, 0] - thp[:, a2]).max()),
+            "recombinant_gap": float(np.abs(ck[:, 0] - thp[:, a2]).max()),
             "sep_k": float(np.abs(Pp2[a2][0] - Pp2[b2][0]) / full[0]),
         })
-cg = pd.DataFrame(rows)["child_gap"]
+cg = pd.DataFrame(rows)["recombinant_gap"]
 check("7b crossover at fixed light stays equivalent for typical pairs",
       float((cg <= CURVE_EPS).mean()) >= 0.6,
-      "%d/%d children within %.1f deg, median drift %.2f deg (n=%d pairs)"
+      "%d/%d recombinant parameter vectors within %.1f deg, median drift %.2f deg (n=%d pairs)"
       % (int((cg <= CURVE_EPS).sum()), len(cg), CURVE_EPS, cg.median(), len(cg)))
 
-# --------------------------------------------- 8. the ladder, not a single rung
-# Claiming "one cheap curve already suffices" was the first version's guess,
-# and it was wrong. What round1 actually showed is a ladder, so measure all
-# three rungs: no data at all, one cheap curve, and the full 24 h budget.
+# -------------------------------------- 8. prediction by information level
+# Predictive performance is evaluated at three information levels: no
+# plant-specific data, one short static-light trajectory, and the full 24 h
+# protocol budget.
 clean_f = fits[fits["at_bound"] == "[]"]
 pop = pd.DataFrame(weighted_population(300, 99, clean_f), columns=PARAM_NAMES)
 pop.insert(0, "plant_id", np.arange(300))
@@ -303,21 +305,21 @@ t_r, th_r = batch_simulate(pop["k"], pop["tau"], pop["max_rate"], pop["phi0"],
 t_s6, th_s6 = batch_simulate(pop["k"], pop["tau"], pop["max_rate"],
                              pop["phi0"], None, 6.0, record_dt=0.5)
 prior_rmse = np.sqrt(np.mean((th_r - th_r.mean(axis=1)[:, None]) ** 2, axis=0))
-rung0 = 100 * float(np.mean(prior_rmse <= 5.0))
+level0 = 100 * float(np.mean(prior_rmse <= 5.0))
 
 noise = np.random.default_rng(5).normal(0, 2.0, th_s6.shape)
 nn = NearestNeighbors(n_neighbors=2).fit((th_s6 + noise).T)
 _, idx = nn.kneighbors((th_s6 + noise).T)
 partner = idx[:, 1]
-rung1 = 100 * float(np.mean(
+level1 = 100 * float(np.mean(
     np.sqrt(np.mean((th_r[:, partner] - th_r) ** 2, axis=0)) <= 5.0))
-RUNG2 = 89.4  # random policy at the full budget, from round1
-print("     [8] ladder: no data %.0f%% -> one 6h static curve %.0f%% "
-      "-> 24h budget %.0f%%" % (rung0, rung1, RUNG2))
-check("8 saturation is a ladder, not one cheap rung",
-      rung0 < 50 and rung1 < 80 and RUNG2 > 85,
-      "each rung must earn its place; if rung 1 were already above 80 the "
-      "budget would be pointless")
+LEVEL3 = 89.4  # random policy under the full budget, from experiment series 1
+print("     [8] information levels: no data %.0f%%; one 6 h static "
+      "trajectory %.0f%%; 24 h budget %.0f%%" % (level0, level1, LEVEL3))
+check("8 predictive performance increases across information levels",
+      level0 < 50 and level1 < 80 and LEVEL3 > 85,
+      "the intermediate level remains below 80%, while the full-budget "
+      "level exceeds 85%")
 
 # ------------------------------------------------------------- 9. ARI stability
 pop6 = pd.DataFrame(weighted_population(6_000, 21, clean_f), columns=PARAM_NAMES)
@@ -346,21 +348,19 @@ check("9 H4 ARI stable across clustering seeds (all < 0.5, clusters do "
       all(a < 0.5 for a in aris),
       "ARI = %s (round1 reported 0.442, seed 13)" % np.round(aris, 3))
 
-# ------------------------------------------- 11. arithmetic, and why it is fast
+# ------------------------------------------- 11. computational cost
 steps = 1440  # 24 h at dt = 1 min
 total = (4096 * steps          # H3 grid
          + 6000 * steps * 2    # H4 static + sweep
-         + 557 * steps         # H6 children
+         + 557 * steps         # H6 recombinant parameter vectors
          + 1000 * (360 + 480 + 840 + 720 + 960)   # H7 protocols
          + 3000 * (360 + 480 + 840 + 720 + 960 + steps)  # H8 libraries
          + 500 * (360 + 480 + 840 + 720 + 960 + steps))  # H8 truths
 print("     [11] total Euler updates in round1.py: %.1f million "
       "(~10 flops each => ~%.2f GFLOP)" % (total / 1e6, total * 10 / 1e9))
-print("     [11] each update is 6 flops on 2 state variables. The matching "
-      "hackathon ran a maximum-weight general-graph matching per decision day "
-      "over 200 members, which is orders of magnitude more work per step than "
-      "one ODE increment, and it had a 10-second per-decision budget. Speed "
-      "here is arithmetic, not a shortcut.")
+print("     [11] Each update advances two state variables using six "
+      "arithmetic operations. The low computational cost follows directly "
+      "from the dimensionality and step count of the model.")
 
 print("\n%s" % ("ALL CHECKS PASSED" if not FAILS
                 else "FAILURES: " + ", ".join(FAILS)))

@@ -1,164 +1,207 @@
 # BendLab
 
-**Simulating and clustering plant responses to light**
+**Parameter identifiability in a minimal model of phototropic stem bending**
 
-A plant bends toward light. Two plants can bend in what looks like the same
-way and still be built differently underneath. BendLab generates large
-populations of simulated bending plants, measures how each one responds to
-light, and asks which differences in the underlying parameters are actually
-visible from the outside.
+BendLab examines whether the parameters of a four-parameter bending model
+can be inferred from observed stem-angle trajectories. The project combines
+a mechanistic simulator, behavioural clustering, parameter-degeneracy
+analysis, fits to published sunflower data, and pre-specified comparisons
+of light protocols and adaptive protocol-selection policies.
 
-Round 1 is complete: eight hypotheses tested, two falsified as declared,
-one unanswerable as specified, four surviving. (One verdict, H4, flipped
-on 13 October when a time-base bug in the fitter was found and fixed;
-see the bug log in `docs/RESULTS_ROUND0.md`.)
-[`docs/RESULTS_ROUND0.md`](docs/RESULTS_ROUND0.md) and
-[`docs/RESULTS_ROUND1.md`](docs/RESULTS_ROUND1.md). Dashboard below.
+Experiment series 1 is complete. Eight hypotheses were evaluated: two
+were falsified as specified, one could not be assessed under the original
+design, and the remainder were supported with qualifications stated in
+the results documents. One conclusion (H4) changed on 13 October 2026
+after correction of a time-base error in the fitting pipeline; the
+retracted result and the correction are documented in
+`docs/RESULTS_ROUND0.md`.
 
-![Round 1 dashboard](results/figures/round1_dashboard.png)
+## Principal findings
 
-![Explainer part 2 dashboard](results/figures/explainer2_dashboard.png)
+- Behaviourally similar simulated plants can retain 25–50 per cent of
+  the full range of each model parameter; observed behaviour therefore
+  does not uniquely identify the underlying parameters.
+- The maximum bend rate is exactly unidentifiable for trajectories that
+  never reach that rate limit.
+- The model fits 48 measured sunflower trajectories with a median
+  per-plant RMSE of 1.80 degrees, compared with a median across-plant
+  standard deviation of 8.58 degrees.
+- Degeneracy remains present, but is weaker, in the parameter region
+  supported by the measured-data fits.
+- Behavioural clusters are protocol-dependent: clusters obtained under
+  static light do not persist under a moving-light regime (adjusted Rand
+  index 0.442, below the pre-specified persistence threshold of 0.50).
+- Adaptive selection of light protocols has not yet been shown to improve
+  predictive identification. The first version of that experiment was
+  saturated, and a more demanding version has been specified in advance.
 
-![Real seedlings dashboard](results/figures/real_seedlings_dashboard.png)
+![Experiment series 1 summary](results/figures/round1_dashboard.png)
 
-## The question, plainly
+![Simulation experiments and validation summary](results/figures/explainer2_dashboard.png)
 
-A bending-stem model has four parameters: how strongly the plant responds to
-light (`k`), how long it takes to react (`tau`), the fastest it can bend
-(`max_rate`), and where the light is (`phi0`). We simulate 10,000 plants with
-random parameters, record the angle of each stem over 24 hours, then cluster
-the plants by behaviour.
+![Measured-data parameter sets under alternative light protocols](results/figures/real_seedlings_dashboard.png)
 
-The finding so far: a cluster of plants that look alike still contains nearly
-the full range of every parameter. **Behaviour does not identify the plant.**
-That is the result, not a failure to find one.
+## Research question
 
-## What is in here
+The model contains four parameters: response gain (`k`), sensing lag
+(`tau`), maximum bend rate (`max_rate`) and light direction (`phi0`).
+BendLab generates populations of simulated plants with known parameter
+values, records stem angle over time, and asks which aspects of those
+parameters can be recovered from behaviour alone.
 
-| Path | What it is |
+The current results indicate that a behavioural cluster can contain
+nearly the full range of every parameter. This discrepancy between
+behavioural similarity and parameter similarity is the project's central
+result.
+
+## Repository contents
+
+| Path | Description |
 |---|---|
-| `PROBLEM_STATEMENT.md` | the question, the model, and hypotheses H1-H5 with falsification criteria, written before any experiment ran |
-| `sim.py` | the simulator. Two-state model with a sensing lag and a saturating bend rate |
-| `features.py` | feature extraction, defined before results existed so it cannot be tuned to flatter them |
-| `generate_plants.py` | seeded parameter sampler, uniform population and the disjoint split rule |
-| `data_real.py` | reader for the real stem-angle data |
-| `fit_real.py` | H5: fit the model to real sunflower curves, plus two degeneracy probes |
-| `sweep.py` | H1/H2: run a population under static light and under a mid-run flip, cluster on behaviour |
-| `docs/DATA_SOURCES.md` | where plant data comes from, tiered by how usable it is |
-| `docs/DATA_CONTRACT.md` | every sheet, its units, sampling rate, and the parsing rules |
-| `docs/EXPLAINER.md` | the project in plain words, part 1 |
-| `docs/EXPLAINER_PART2.md` | plain words, part 2: the round-1 suite and the audit |
-| `docs/RESULTS_ROUND0.md` | round 0 results, caveats and next steps |
-| `docs/RESULTS_ROUND1.md` | round 1 results (H3-H8), the audit, and why it runs in seconds |
-| `docs/IDENT_GAME.md` | the round-2 design: the adaptive identification game |
-| `sweep_weighted.py` | the same sweep with plants drawn from the fitted region |
-| `round1.py` | H3, H4, H6, H7, H8 in one run, all thresholds declared at the top |
-| `audit_round1.py` | independent re-derivation of every finding, prints ALL CHECKS PASSED |
-| `make_explainer_figures.py` | builds the six-panel explainer figure from the raw files |
-| `real_seedling_sim.py` | imports the 86 real seedlings and runs them through every protocol |
-| `make_print_edition.py` | compiles the whole report stack into one dated, printable PDF |
-| `zt9_autopsy.py` | round-2 opener: residuals, tau-floor sensitivity and stall timing for the ZT9 anomaly |
-| `docs/RESULTS_ROUND2_ZT9.md` | the ZT9 verdict: a genuine shape limitation, bound is a symptom |
-| `data/real/` | the real dataset, see attribution below |
-| `results/` | CSV outputs of the runs, committed so the write-up is checkable |
+| `PROBLEM_STATEMENT.md` | Research question, model specification and hypotheses H1–H8 with falsification criteria |
+| `sim.py` | Two-state simulator incorporating sensing lag and a saturating bend rate |
+| `features.py` | Behavioural feature extraction, specified independently of fitted outcomes |
+| `generate_plants.py` | Seeded parameter sampling for uniform and empirically weighted populations |
+| `data_real.py` | Reader for the measured stem-angle dataset |
+| `fit_real.py` | H5 model fitting to measured sunflower trajectories and parameter-degeneracy probes |
+| `sweep.py` | H1/H2 population simulations under static and stepped light regimes |
+| `sweep_weighted.py` | Population simulations using the parameter region derived from measured-data fits |
+| `round1.py` | H3, H4, H6, H7 and H8 analyses, with thresholds declared in the source file |
+| `audit_round1.py` | Independent re-derivation and analytical checks of the principal results |
+| `make_explainer_figures.py` | Construction of the six-panel results summary figure |
+| `real_seedling_sim.py` | Simulations of measured-data parameter sets under alternative light protocols |
+| `zt9_diagnostics.py` | Residual, lag-bound sensitivity and stall-timing analyses for the ZT9 model limitation |
+| `make_print_edition.py` | Compilation of the project documents into a dated printable PDF |
+| `docs/EXPLAINER.md` | Project overview |
+| `docs/EXPLAINER_PART2.md` | Overview of the simulation experiments, validation and corrections |
+| `docs/RESULTS_ROUND0.md` | Model fitting, degeneracy analyses, corrections and error log |
+| `docs/RESULTS_ROUND1.md` | Results for H3–H8 and the independent audit |
+| `docs/RESULTS_ROUND2_ZT9.md` | Diagnostic analysis of the ZT9 residual pattern |
+| `docs/ADAPTIVE_IDENTIFICATION.md` | Design specification for the adaptive identification experiment, including pre-declared v2 |
+| `docs/DATA_SOURCES.md` | Data provenance and candidate external datasets |
+| `docs/DATA_CONTRACT.md` | Dataset structure, units, sampling and parsing rules |
+| `data/real/` | Measured dataset; see attribution below |
+| `results/` | Numerical outputs required to reproduce the reported results |
 
-## Reproduce
+## Reproduction
 
-Python 3.10 or later. Install, then run from the repository root, because the
-data paths are relative to it.
+Python 3.10 or later is required. Commands should be run from the
+repository root because data paths are relative to that directory.
 
 ```bash
 pip install -r requirements.txt
-python generate_plants.py     # sanity check the generator
-python fit_real.py            # H5 fit, ~1 minute, writes results/fit_fig1c.csv
-python sweep.py               # 10k plants x 2 regimes, ~5 seconds
-python sweep_weighted.py      # same sweep, plants drawn from the fitted region
-python round1.py              # H3, H4, H6, H7, H8 + dashboard, ~15 seconds
-python audit_round1.py        # independent re-derivation of every finding
-python real_seedling_sim.py   # the 86 real seedlings through every protocol
-python make_explainer_figures.py   # rebuilds the explainer figure
+python generate_plants.py
+python fit_real.py
+python sweep.py
+python sweep_weighted.py
+python round1.py
+python audit_round1.py
+python real_seedling_sim.py
+python zt9_diagnostics.py
+python make_explainer_figures.py
 ```
 
-Run in that order: `fit_real.py` writes the fits that the weighted
-population and the round-1 suite are built from.
+The order is material: `fit_real.py` writes the parameter fits from which
+the weighted population and subsequent analyses are constructed. All
+stochastic components use declared seeds; neither wall-clock values nor
+unseeded random draws are used in the simulation path.
 
-Both scripts are seeded from declared integers. No wall-clock, no unseeded
-draws in the simulation path, so a rerun is bit-identical. `sweep.py` and
-`fit_real.py` create `results/` if it is missing.
+## Main quantitative results
 
-## Headline numbers, round 0
+### Model fitting (H5)
 
-**H5, the reality anchor.** Median per-plant RMSE against 48 real sunflower
-curves is 1.80 degrees. Median across-plant standard deviation in the same
-data is 8.58 degrees. The model is wrong by less than real plants differ from
-each other, in all six light treatments, by a factor of two to eight. Only
-4 of 48 fits end with a parameter pinned at a bound (four ZT9 plants whose
-lag wants to be under three minutes), so the 44 clean fits define the
-plausible region across every stimulus start time. An earlier version of
-this page reported RMSE 4.74 and claimed the model failed for midday and
-afternoon treatments; that was a timestamp bug in our fitter, retracted in
-the round-0 bug log.
+The median per-plant RMSE against 48 measured sunflower trajectories is
+1.80 degrees. The median across-plant standard deviation in the same data
+is 8.58 degrees, giving a ratio of 0.21. All six stimulus-start-time
+groups satisfy the pre-specified adequacy criterion. Forty-four of the
+48 fits have no parameter at an optimisation bound; the four exceptions
+are ZT9 plants for which the fitted lag reaches its lower bound.
 
-**H1, degeneracy.** After clustering 10,000 simulated plants into six
-behavioural groups, a group still retains 25 to 50 per cent of the full
-parameter range. The largest group, 2,859 plants, spans essentially the
-entire box for `k`, `phi0` and `max_rate` while its members are
-behaviourally near-identical.
+An earlier version reported a median RMSE of 4.74 degrees and concluded
+that the model performed poorly for midday and afternoon stimulus times.
+That conclusion resulted from fitting elapsed model time to absolute
+zeitgeber time and has been retracted in full.
 
-**Degeneracy weakens where real plants live.** Repeating the sweep with
-plants drawn from the fitted region instead of the uniform box drops
-retention on every parameter: k 25 to 9 per cent, tau 36 to 4, max_rate 50
-to 14, phi0 25 to 12. It also flips the speed limit from inert to
-meaningful: the cap binds for 1 plant in 2,000 under uniform sampling and
-8.28 per cent under weighted.
+### Parameter degeneracy (H1)
 
-**Exact degeneracy, on real data.** Refitting plant ZT0-1 with the rate cap
-removed gives RMSE 1.894 against 1.894 with the cap fitted. Identical, because
-the realised rate never reaches the cap. `max_rate` is not hard to recover
-from that curve, it is unrecoverable.
+After clustering 10,000 uniformly sampled simulated plants into six
+behavioural groups, within-cluster parameter ranges retain 25–50 per
+cent of the full sampled range. The largest cluster, containing 2,859
+plants, spans nearly the entire sampled ranges of `k`, `phi0` and
+`max_rate`.
 
-**H2, not supported yet.** A 45 degree light flip at hour 8 does not tighten
-parameter recovery on the cluster-retention metric. The metric is probably the
-weak part, not the hypothesis.
+### Empirically weighted population
 
-## Scope, stated so nobody oversells it
+Repeating the analysis with plants sampled from the region defined by
+the 44 clean measured-data fits reduces parameter-range retention for
+every parameter: `k` from 25 to 9 per cent, `tau` from 36 to 4 per cent,
+`max_rate` from 50 to 14 per cent and `phi0` from 25 to 12 per cent. The
+maximum-rate limit constrains 8.28 per cent of trajectories in the
+weighted population, compared with approximately 1 in 2,000 under
+uniform sampling.
 
-This is a model study. Every result describes the simulator, not real plants,
-except in `fit_real.py` where measured data is used explicitly and named. The
-toy model is not a functional-structural plant model, not a crop-yield tool,
-and not evidence about any real species. The gap between the two is exactly
-what H5 measures and nothing more.
+### Exact degeneracy in a measured trajectory
+
+Refitting plant ZT0-1 without the maximum-rate limit gives an RMSE of
+1.894 degrees, identical to the fit obtained with the limit included.
+The observed bend rate never reaches the limit, so that parameter has no
+effect on this trajectory and is unidentifiable from it.
+
+### Dynamic light regime (H2)
+
+A 45-degree change in light direction at hour 8 did not improve parameter
+recovery under the cluster-retention metric. This result is interpreted
+primarily as evidence that a more sensitive identifiability metric is
+required.
+
+## Scope and limitations
+
+BendLab is a model-identifiability study. Except where measured data are
+explicitly used, the results describe properties of the four-parameter
+simulator rather than properties of living plants. The model is a minimal
+phenomenological representation of phototropic bending; it is not a
+functional-structural plant model, a crop-growth model or a physiological
+model of auxin transport and differential growth.
+
+Accordingly, simulation results should not be interpreted as evidence
+about a particular species. The measured-data fits quantify the model's
+ability to reproduce stem-angle trajectories under the stated conditions
+and do not by themselves establish a biological mechanism.
 
 ## Data and attribution
 
-Real stem-angle data: **S13 Data** from *Multiple light signaling pathways
-control solar tracking in sunflowers*, PLOS Biology 2023,
-[doi 10.1371/journal.pbio.3002344](https://doi.org/10.1371/journal.pbio.3002344).
-PLOS Biology publishes under CC BY, so the file is included here with
-attribution. Downloaded 11 October 2026, 67,115 bytes, SHA-256
+Measured stem-angle data are from **S13 Data** accompanying *Multiple
+light signaling pathways control solar tracking in sunflowers*, PLOS
+Biology (2023), doi:
+[10.1371/journal.pbio.3002344](https://doi.org/10.1371/journal.pbio.3002344).
+PLOS Biology articles are published under CC BY; the file is included
+with attribution. Downloaded 11 October 2026; 67,115 bytes; SHA-256
 `1257f4069f4fb600d0bddb616110772af28552dc43ad330c18aa3dea58a590b7`.
 
-The model form descends from classical phototropism work: the Cholodny-Went
-theory of tropic curvature and the Blaauw sine law for first positive
-phototropism. See `docs/DATA_SOURCES.md` for the full reading list.
+The model form is related to classical phototropism theory, including
+the Cholodny–Went hypothesis and the Blaauw sine law for first positive
+phototropism. Sources and candidate datasets are reviewed in
+`docs/DATA_SOURCES.md`.
 
-## How we work
+## Reporting standards
 
-Hypotheses and falsification criteria are written before the experiment that
-tests them. A hypothesis that fails is abandoned, not reworded. Negative
-results get reported with the same prominence as positive ones. Baselines are
-reproduced before anything new is claimed. Bugs found in our own code are
-written down with the numbers they affected.
+Hypotheses and falsification criteria are specified before the
+corresponding analyses are run. Unsupported hypotheses are reported as
+such rather than reformulated after inspection of the results. Negative
+results, corrections and analysis errors are documented with the
+numerical results they affected. Baselines are reported alongside new
+methods, and independent checks are used where practicable.
 
-## Authors
+## Authors and contributions
 
-- Anadi Tripathi — [@Yash-Tripath1](https://github.com/Yash-Tripath1)
-- Umaid
+- **Anadi Tripathi** ([@Yash-Tripath1](https://github.com/Yash-Tripath1)) — project lead; model implementation, analyses and repository
+- **Umaid** — collaborator; code review and crossover connectivity analysis
 
-AI tools used: Arena.ai Agent Mode for ideation, code, debugging and drafting.
-All data sources, licences and checksums are recorded above and in `docs/`.
+AI-assisted tools (Arena.ai Agent Mode) were used for ideation, code
+development, debugging and drafting. Data sources, licences and checksums
+are recorded in this document and in `docs/`.
 
 ## Licence
 
-Code: MIT, see [LICENSE](LICENSE). Data in `data/real/` remains under the
-PLOS CC BY terms of the source article.
+Code is released under the MIT licence; see [LICENSE](LICENSE). Data in
+`data/real/` remain subject to the CC BY terms of the source article.

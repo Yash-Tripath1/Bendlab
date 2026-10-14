@@ -18,10 +18,10 @@ from sim import batch_simulate, simulate
 
 OUT = "results/figures/explainer2_dashboard.png"
 fig, ax = plt.subplots(2, 3, figsize=(16, 9))
-fig.suptitle("BendLab, the story so far — every panel drawn from the raw "
-             "files, nothing hand-placed", fontsize=13, weight="bold")
+fig.suptitle("BendLab: parameter degeneracy, model fitting and hypothesis tests",
+             fontsize=13, weight="bold")
 
-# ---- panel 1: the money shot. Two plants, different dials, same curve.
+# ---- Panel 1: parameter degeneracy (two parameter sets, nearly identical trajectories).
 fits = pd.read_csv("results/fit_fig1c.csv")
 clean = fits[fits["at_bound"] == "[]"]
 pop = pd.DataFrame(weighted_population(4_000, 77, clean), columns=PARAM_NAMES)
@@ -41,46 +41,44 @@ for _ in range(400_000):
 a, b = pair
 pa, pb = P[a], P[b]
 ax[0, 0].plot(t, th[:, a], lw=2.2, color="tab:blue",
-              label="Plant A: k=%.1f tau=%.1f cap=%.0f light=%.0f"
+              label="Parameter set A: k=%.1f, tau=%.1f, max_rate=%.0f, phi0=%.0f"
                     % tuple(pa))
 ax[0, 0].plot(t, th[:, b], lw=2.2, ls="--", color="tab:red",
-              label="Plant B: k=%.1f tau=%.1f cap=%.0f light=%.0f"
+              label="Parameter set B: k=%.1f, tau=%.1f, max_rate=%.0f, phi0=%.0f"
                     % tuple(pb))
-ax[0, 0].set_title("1. A tenfold speed-limit difference,\none curve (within "
-                   "%.1f deg)" % np.abs(th[:, a] - th[:, b]).max(),
+ax[0, 0].set_title("1. Parameter degeneracy: a tenfold difference in\nmaximum bend rate (trajectories within %.1f deg)"
+                   % np.abs(th[:, a] - th[:, b]).max(),
                    fontsize=11)
 ax[0, 0].set_xlabel("hours")
 ax[0, 0].set_ylabel("stem angle (deg)")
 ax[0, 0].legend(fontsize=7.5, loc="lower right")
 
-# ---- panel 2: reality check. One real sunflower vs our fake one.
+# ---- Panel 2: comparison with a measured sunflower trajectory.
 df = load_long(sheet="Fig1C")
 g = df[df["plant"] == "ZT0-1"].sort_values("t")
 fr = fits[fits["plant"] == "ZT0-1"].iloc[0]
 yc = run_model(fr.k, fr.tau, fr.max_rate, fr.phi0,
                g["t"].to_numpy(float))
 ax[0, 1].plot(g["t"], g["angle"], "o", ms=4, color="tab:green",
-              label="real sunflower (PLOS S13)")
+              label="Measured sunflower trajectory (PLOS S13)")
 ax[0, 1].plot(g["t"], yc, lw=2, color="black",
-              label="our fake plant (RMSE %.1f deg)" % fr.rmse)
-ax[0, 1].set_title("2. The reality check: a real sunflower\nseedling vs our "
-                   "simulated one", fontsize=11)
-ax[0, 1].set_xlabel("hours (zeitgeber time)")
+              label="Model fit (RMSE %.1f deg)" % fr.rmse)
+ax[0, 1].set_title("2. Model fit to measured trajectory ZT0-1", fontsize=11)
+ax[0, 1].set_xlabel("elapsed time (h)")
 ax[0, 1].set_ylabel("stem angle (deg)")
 ax[0, 1].legend(fontsize=8)
 
-# ---- panel 3: the ladder (H8).
-ax[0, 2].bar(["no data\nat all", "one 6-hour\ncurve", "full 24-hour\nbudget"],
+# ---- Panel 3: predictive identification by information level (H8).
+ax[0, 2].bar(["No plant-specific\ndata", "One 6 h static\ntrajectory", "Full 24 h\nbudget"],
              [30, 44, 89], color=["tab:gray", "tab:orange", "tab:green"],
              width=0.55)
 for i, v in enumerate([30, 44, 89]):
     ax[0, 2].text(i, v + 2, "%d%%" % v, ha="center", weight="bold")
 ax[0, 2].set_ylim(0, 105)
-ax[0, 2].set_ylabel("plants correctly predicted, per 100")
-ax[0, 2].set_title("3. The identification ladder:\nmeasuring helps a lot; "
-                   "being clever about it, not at all", fontsize=11)
+ax[0, 2].set_ylabel("successful predictions per 100 plants")
+ax[0, 2].set_title("3. Predictive identification by information level\n(no adaptive-selection benefit in v1)", fontsize=11)
 
-# ---- panel 4: Umaid's breeding test. Child drift vs parent separation.
+# ---- Panel 4: crossover connectivity (recombinant deviation vs source separation).
 rows = []
 rng2 = np.random.default_rng(11)
 tries = 0
@@ -88,50 +86,46 @@ while len(rows) < 40 and tries < 400_000:
     tries += 1
     a2, b2 = rng2.integers(0, len(pop), 2)
     if np.abs(th[:, a2] - th[:, b2]).max() < 3.0:
-        kid = (P[a2] + P[b2]) / 2
-        kid[3] = P[a2][3]
-        kdf = pd.DataFrame([kid], columns=PARAM_NAMES)
+        recombinant = (P[a2] + P[b2]) / 2
+        recombinant[3] = P[a2][3]
+        kdf = pd.DataFrame([recombinant], columns=PARAM_NAMES)
         _, ck = batch_simulate(kdf["k"], kdf["tau"], kdf["max_rate"],
                                kdf["phi0"], None, 24.0, record_dt=0.5)
         rows.append((abs(P[a2][0] - P[b2][0]) / full[0],
                      float(np.abs(ck[:, 0] - th[:, a2]).max())))
 rows = np.array(rows)
 ax[1, 0].scatter(rows[:, 0], rows[:, 1], s=28, color="tab:purple", alpha=0.8)
-ax[1, 0].axhline(3.0, color="red", ls="--", label="still 'the same plant' "
-                 "(3 deg)")
-ax[1, 0].set_xlabel("how different the parents' k dial was\n(fraction of the "
-                    "full range)")
-ax[1, 0].set_ylabel("how far the child's curve drifted (deg)")
-ax[1, 0].set_title("4. Umaid's breeding test: children of look-alike\n"
-                   "parents mostly bend like their parents", fontsize=11)
+ax[1, 0].axhline(3.0, color="red", ls="--", label="trajectory-equivalence threshold (3 deg)")
+ax[1, 0].set_xlabel("difference in source response gain\n(fraction of the full range)")
+ax[1, 0].set_ylabel("maximum deviation of recombinant trajectory (deg)")
+ax[1, 0].set_title("4. Crossover connectivity: recombinant trajectories\nremain close to the source trajectories", fontsize=11)
 ax[1, 0].legend(fontsize=8)
 
-# ---- panel 5: the scoreboard.
+# ---- Panel 5: hypothesis status summary.
 ax[1, 1].axis("off")
 lines = [
-    ("H1  behaviour hides the dials", "ALIVE (weaker among real plants)",
+    ("H1  Behaviour does not identify parameters", "SUPPORTED (weaker in the weighted population)",
      "tab:green"),
-    ("H2  a light flip reveals more", "DEAD (on our metrics)", "tab:red"),
-    ("H3  hidden cliffs in the dials", "DEAD (map is smooth)", "tab:red"),
-    ("H4  moving sun changes the piles", "ALIVE (piles do not persist)",
+    ("H2  A light-direction change improves recovery", "NOT SUPPORTED (cluster-retention metric)", "tab:red"),
+    ("H3  Discontinuities occur in parameter space", "FALSIFIED (response surface is smooth)", "tab:red"),
+    ("H4  Moving light changes cluster membership", "SUPPORTED (clusters do not persist)",
      "tab:green"),
-    ("H5  fake plants bend believably", "ALIVE (all six start times)",
+    ("H5  Model reproduces measured trajectories", "SUPPORTED (all six stimulus start times)",
      "tab:green"),
-    ("H6  identical twins can breed", "ALIVE (soft walls, some leakage)", "tab:green"),
-    ("H7  better light shows exist", "UNPROVEN (gap too small)",
+    ("H6  The degenerate parameter set is connected", "SUPPORTED (with incomplete retention)", "tab:green"),
+    ("H7  Protocols differ materially in recovery error", "NOT SUPPORTED (observed gap 0.091 < 0.10)",
      "tab:orange"),
-    ("H8  smart beats random measuring", "REDESIGN (game too easy)",
+    ("H8  Adaptive selection outperforms baselines", "NOT ASSESSABLE (v1 design saturated)",
      "tab:orange"),
 ]
-ax[1, 1].text(0.02, 0.98, "THE SCOREBOARD", fontsize=12, weight="bold",
+ax[1, 1].text(0.02, 0.98, "HYPOTHESIS STATUS", fontsize=12, weight="bold",
               va="top")
 for i, (q, v, c) in enumerate(lines):
     ax[1, 1].text(0.02, 0.88 - i * 0.115, q, fontsize=9.5, va="top")
     ax[1, 1].text(0.05, 0.835 - i * 0.115, v, fontsize=8.5, va="top", color=c)
-ax[1, 1].set_title("5. Eight hypotheses, four alive, two dead,\nand that is what a "
-                   "round of research is for", fontsize=11)
+ax[1, 1].set_title("5. Hypothesis status summary", fontsize=11)
 
-# ---- panel 6: the audit. Simulation against textbook physics.
+# ---- Panel 6: validation against the closed-form damped-pendulum solution.
 k, tau, A = 200.0, 1.0, 10.0
 w0 = np.sqrt(k * np.pi / 180 / tau)
 z = 1 / (2 * tau * w0)
@@ -140,11 +134,10 @@ tt, thh = simulate(k, tau, 1e6, lambda t: A, 20.0, dt=1 / 600)
 analytic = A - A * np.exp(-z * w0 * tt) * (np.cos(wd * tt)
                                            + (z * w0 / wd) * np.sin(wd * tt))
 ax[1, 2].plot(tt, analytic, lw=2.5, color="tab:blue",
-              label="textbook damped-pendulum formula")
+              label="Analytical damped-pendulum solution")
 ax[1, 2].plot(tt[::20], thh[::20], ".", ms=3, color="tab:red",
-              label="our simulator (every 20th step)")
-ax[1, 2].set_title("6. The audit: our simulator vs closed-form\nphysics — "
-                   "they agree to 0.01 degrees", fontsize=11)
+              label="Simulator output (every 20th step)")
+ax[1, 2].set_title("6. Simulator validation against the\nclosed-form solution (agreement within 0.01 deg)", fontsize=11)
 ax[1, 2].set_xlabel("hours")
 ax[1, 2].set_ylabel("stem angle (deg)")
 ax[1, 2].legend(fontsize=8)

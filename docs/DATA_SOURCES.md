@@ -1,66 +1,64 @@
-# Where plant data actually comes from
+# Data sources
 
-The short answer to "where do we get data like the hackathon gave us": the
-hackathon did not hand us measured data. It handed us a **generator**
-(`kit.py`, `build_public_data.py`) plus the outputs of that generator in
-`data/public_01` … `data/public_10`, and a `data_manifest.json` recording seeds
-and splits. Everything synthetic came from code they wrote.
+This document records the provenance of the measured data used by
+BendLab and identifies candidate datasets for subsequent validation. It
+also distinguishes measured data from reference simulations. Only the
+PLOS Biology S13 dataset is currently used in the fitting pipeline.
 
-For a plant model we supply our own generator. Real data has one job here:
-H5, the anchor that keeps the model honest.
+## Tier 1 — datasets suitable for immediate analysis
 
-## Tier 1 — ready now, curve-shaped, matches our state variable
-
-| Source | What it gives | Access |
+| Source | Data provided | Access |
 |---|---|---|
-| PLOS Biol 2023, doi 10.1371/journal.pbio.3002344, S13 Data | stem angle time series, phototropism and heliotropism, 48 plants across six light treatments in `Fig1C` alone | direct download, already in `data/real/` |
-| Atamian et al. 2016, *Science* 353:587–590, doi 10.1126/science.aaf9793 | the heliotropism result our clock term exists to reproduce: east side grows faster by day, west side at night, mature plants fix east | paywalled, check IITM library access |
-| Orbovic, Poff & DeGroot 1993, *Plant Physiology* 103:157–163 | elongation rates of both flanks of Arabidopsis hypocotyls during first and second positive phototropism | free, PMC158958 |
-| Blaauw sine law (first positive phototropism) | the classical quantitative relation our `sin(phi - theta)` term is a descendant of | primary literature |
+| Brooks, Atamian & Harmer (2023), *PLOS Biology*, doi:10.1371/journal.pbio.3002344, S13 Data | Stem-angle time series for phototropism and heliotropism experiments; sheet Fig1C contains 48 plants in six stimulus-start-time groups | Public download; included in `data/real/` |
+| Atamian et al. (2016), *Science* 353:587–590, doi:10.1126/science.aaf9793 | Quantitative results on circadian regulation of sunflower heliotropism, including day/night growth asymmetry and orientation of mature plants | Subscription access may be required |
+| Orbovic & Poff (1993), *Plant Physiology* 103:157–163 | Growth distribution during first positive phototropic curvature of Arabidopsis hypocotyls | Public, PMC158958 |
+| Blaauw sine law | Classical quantitative relationship between stimulus direction and first positive phototropic curvature | Primary literature |
 
-The PLOS S13 file is the only one that is already a clean table. Everything
-else needs either library access or figure digitising.
+The S13 workbook is the only source presently available as a structured,
+analysis-ready table. The remaining sources require institutional access
+or extraction of numerical values from published figures.
 
-Scoped 13 October 2026: the Orbovic & Poff (1993) curves most often
-reproduced are **mean curvature time courses** for first positive
-phototropism (blue light at t = 0, minutes scale), including the
-temperature series (15/25/28 degC) re-plotted in later work. They are
-population means, not per-plant curves, so they can validate curve
-*shape* (including whether a two-phase rise appears outside our
-sunflower data) but cannot enter the per-plant fitting pipeline.
-Digitisation has not started.
+### Orbovic & Poff (1993)
 
-## Tier 2 — figure digitising, when a paper only shows a plot
+The widely reproduced Orbovic & Poff curves are population-mean curvature
+time courses for first positive phototropism, with blue-light stimulation
+beginning at time zero and measurements on a minutes timescale; a
+temperature series (15, 25 and 28 °C) is also reported. Because the data
+are population means rather than individual-plant trajectories, they are
+suitable for external validation of trajectory shape, including whether
+a two-phase rise occurs outside the sunflower dataset, but not for the
+per-plant fitting pipeline. Digitisation has not yet been performed.
 
-- WebPlotDigitizer (automeris.io/wpd), free, browser-based
-- Workflow: save the figure PNG, set axes from two labelled points, click the
-  curve, export CSV
-- Every digitised curve gets a provenance row: paper, DOI, figure number,
-  date, who digitised it, and the two calibration points used
-- Digitised points carry error. Propagate it, or restrict claims to shape
-  rather than exact values
+## Tier 2 — numerical extraction from published figures
 
-## Tier 3 — large phenotyping datasets, useful later, not for v0
+Where numerical data are available only as figures, the following
+procedure will be used:
 
-| Source | Content | Access |
+1. extract the data with WebPlotDigitizer or an equivalent tool;
+2. calibrate each axis using at least two labelled points;
+3. record the publication, DOI, figure number, extraction date, operator
+   and calibration points for every extracted curve;
+4. represent digitisation uncertainty in subsequent analyses, or restrict
+   conclusions from digitised data to trajectory shape.
+
+## Tier 3 — larger phenotyping and modelling resources
+
+| Resource | Content | Access |
 |---|---|---|
-| TERRA-REF | field phenotypes and imaging for sorghum and wheat | open, USDA Ag Data Commons mirrors, e.g. doi 10.15482/USDA.ADC/1529177, CC0 |
-| OpenAlea | functional-structural plant modelling in Python, with runnable examples such as the Adel wheat model | open source |
-| CPlantBox | root and shoot architecture simulation, Python bindings | open source |
-| PCSE / WOFOST | process-based crop growth models, the real version of a GDD toy | open source |
-| GrowliFlower, PlantCLEF | image datasets, not angle time series | open |
+| TERRA-REF | Field phenotypes and imaging for sorghum and wheat | Public; USDA Ag Data Commons mirrors include doi:10.15482/USDA.ADC/1529177 (CC0) |
+| OpenAlea | Functional-structural plant modelling in Python | Open source |
+| CPlantBox | Root and shoot architecture simulation with Python bindings | Open source |
+| PCSE / WOFOST | Process-based crop-growth models | Open source |
+| GrowliFlower, PlantCLEF | Image datasets; not stem-angle time series | Public |
 
-TERRA-REF and the modelling platforms are worth knowing about. None of them is
-the right starting point for a bending-angle study: they answer growth and
-architecture questions, and our state variable is one angle.
+These resources are not appropriate starting points for the present
+analysis because they address growth, architecture or classification
+questions rather than the time course of a single stem angle.
 
-## The mysimulator.uk pages
+## External simulations used as references
 
-Both links are teaching visualisations with a stated accuracy caveat — the
-agronomy page says outright that its moisture, photoperiod and yield terms are
-"simplified teaching approximations". Treat them as UI references for our own
-demo, not as data and not as a model to validate against.
-
-The phototropism page's auxin lit/shaded split is a good visual language for
-showing why a stem bends. The GDD page is the agronomy framing, which is a
-different research question from ours.
+Interactive plant-growth and tropism simulations available at
+mysimulator.uk may be useful as references for interface design and for
+qualitative presentation of light-dependent bending. They are teaching
+visualisations accompanied by accuracy caveats and are not used as data,
+parameter sources or validation benchmarks in this project.

@@ -1,89 +1,98 @@
-# BendLab, explained without jargon
+# BendLab project overview
 
-Written for anyone opening the repo cold, including future us.
+## Summary
 
-## The one-paragraph version
+BendLab examines whether the parameters of a minimal phototropic bending
+model can be identified from observed stem-angle trajectories. A
+four-parameter model is used to generate populations of simulated plants,
+simulate their responses under defined light regimes, and cluster the
+resulting trajectories by behaviour. The central question is whether
+plants with similar bending behaviour necessarily have similar underlying
+parameters.
 
-Plants bend toward light. We built a fake plant on a computer with four
-dials, made 10,000 of them with random dial settings, watched them all bend,
-and sorted them into piles by *how* they bent. Then we asked: if I hand you a
-bending curve, can you work out the dials? The answer, so far, is no. Many
-different plants produce the same curve.
+The current results indicate that they do not. Behaviourally similar
+simulated plants can retain a substantial proportion of the full parameter
+range, and one parameter, the maximum bend rate, can be exactly
+unidentifiable when the observed trajectory never reaches that limit.
 
-## The four dials
+## Model parameters
 
-| Dial | Code name | What it means |
+| Parameter | Symbol | Interpretation |
 |---|---|---|
-| How strongly it responds to light | `k` | a plant with high `k` feels the light more urgently |
-| How long it takes to react | `tau` | the delay between light changing and the plant starting to move |
-| Fastest it can bend | `max_rate` | a speed limit, in degrees per hour |
-| Where the light is | `phi0` | the angle the plant is trying to reach |
+| Response gain | `k` | Strength of the response to the angular difference between the stem and the light direction |
+| Sensing lag | `tau` | Time constant with which the bend rate approaches its stimulus-dependent value |
+| Maximum bend rate | `max_rate` | Upper bound on the rate of change of stem angle, in degrees per hour |
+| Light angle | `phi0` | Direction of the incident light under the static-light regime, in degrees |
 
-That is the whole plant. Four numbers and one equation.
+The simulator integrates a two-state model for stem angle and bend rate.
+Its purpose is not to reproduce the complete physiology of phototropism,
+but to provide a controlled system in which known parameter values can be
+compared with the information recoverable from observed behaviour.
 
-## Why use a fake plant at all
+## Rationale for simulation
 
-Real experiments are slow. One Arabidopsis seedling, one light condition, one
-afternoon, and you have a single curve. A simulation gives you 10,000 curves
-in five seconds, and, more importantly, it gives you the dial settings, which
-a real plant never tells you.
+A measured plant provides a trajectory but not the internal parameter
+values that generated it. Simulation provides both. Large simulated
+populations therefore allow the mapping from parameters to behaviour to
+be examined directly, including whether that mapping is one-to-one.
 
-The price is that a fake plant can only ever tell you about itself. That is
-why `fit_real.py` exists: it checks the fake plant against real measurements
-before anyone is allowed to take the rest seriously.
+Simulation alone is insufficient, however, because conclusions may apply
+only to the model. For that reason, the model is also fitted to measured
+sunflower trajectories in the published PLOS Biology dataset. Those fits
+define the empirically plausible parameter region used for the weighted
+simulation experiments.
 
-## What "degeneracy" means here
+## Parameter degeneracy
 
-Two different sets of dial settings can produce curves you cannot tell apart.
+Parameter degeneracy occurs when different parameter combinations produce
+trajectories that cannot be distinguished at the available measurement
+resolution. BendLab provides both approximate and exact examples.
 
-The cleanest example we found is exact, not approximate. Plant ZT0-1 in the
-real data has a speed limit, `max_rate`. When we refit that plant with the
-speed limit removed entirely, the fit quality is 1.894 degrees of error. With
-the limit fitted, it is 1.894 degrees. Identical, to the last decimal, because
-the plant never actually reaches its speed limit during the experiment. The
-limit leaves no trace on the curve, so no amount of careful measurement could
-recover it.
+The exact example is provided by plant ZT0-1. Refitting that measured
+curve after removing the maximum-rate limit gives an RMSE of 1.894
+degrees, identical to the fit obtained with the limit included. The
+trajectory never reaches the fitted cap; consequently, the cap leaves no
+observable trace and cannot be recovered from that curve, regardless of
+measurement precision within the stated model.
 
-That is degeneracy: information the experiment simply does not contain.
+## Principal findings
 
-## What we found
+**Model adequacy.** Across 48 measured sunflower trajectories, the
+median per-plant RMSE is 1.80 degrees, compared with a median
+across-plant standard deviation of 8.58 degrees. The model error is
+therefore smaller than the variation among measured plants in all six
+stimulus-start-time groups.
 
-**The model is close enough to real plants to be worth studying.** Fitted
-against 48 real sunflower curves, our error was 5.07 degrees. Real plants in
-that same dataset differ from each other by 8.58 degrees. Our model is wrong
-by less than plants naturally vary.
+**Behaviour does not uniquely identify parameters.** Among 10,000
+uniformly sampled simulated plants clustered into six behavioural
+groups, the largest cluster contains 2,859 plants and spans nearly the
+complete ranges of response gain, maximum bend rate and light angle.
+Across clusters, approximately 25–50 per cent of each parameter range
+is retained within behaviourally similar groups.
 
-**Knowing what a plant does does not tell you what it is.** We sorted 10,000
-simulated plants into six piles by behaviour. The largest pile, 2,859 plants,
-contained essentially every possible value of the light angle, the response
-strength and the speed limit, while its members bent almost identically. On
-average a behavioural pile still holds a quarter to a half of the full range
-of every dial.
+**Clusters primarily separate response magnitude.** The behavioural
+clusters distinguish stronger from weaker responders more clearly than
+they identify distinct parameter combinations.
 
-**The piles are about speed, not direction.** The clusters separate
-fast-benders from slow-benders. How fast a plant moves comes through clearly.
-Where it ends up, much less so.
+**A mid-course change in light direction did not improve recovery under
+the initial metric.** A 45-degree change in light angle at hour 8 did not
+consistently reduce within-cluster parameter spread. This result is
+interpreted as a limitation of the cluster-retention metric as much as a
+property of the light regime.
 
-**Changing the light mid-experiment did not help, on our first test.** We
-moved the light 45 degrees at hour 8 and re-clustered. The piles did not get
-any better at predicting dials. We think our measuring stick is too blunt
-here, not that the idea is wrong, but that is a suspicion and not a result.
+## Implications
 
-## Why anyone should care
+These results caution against treating parameters fitted to a single
+trajectory as direct measurements when the underlying model contains
+unidentifiable or weakly identifiable directions. They also motivate the
+subsequent experimental-design question addressed by BendLab: which
+light protocols provide additional information that separates plants
+whose behaviour is indistinguishable under static light?
 
-If behaviour cannot identify the underlying parameters, then a whole class of
-modelling paper is on shakier ground than it looks: the ones that fit a model
-to a curve and report the fitted parameters as if they were measurements. Our
-result says the curve often does not contain that information.
+## Recommended reading order
 
-It also points somewhere useful. If one light condition cannot separate two
-plants, maybe a different one can. Finding which experiments *do* carry
-information is the next question, and it is a more interesting one than the
-one we started with.
-
-## Reading order for the repo
-
-1. `PROBLEM_STATEMENT.md` — the question and the five hypotheses
-2. `docs/RESULTS_ROUND0.md` — what came out, including what failed
-3. `sim.py` — the model, about 60 lines of actual logic
-4. `docs/DATA_SOURCES.md` — where the real data came from and where more lives
+1. `PROBLEM_STATEMENT.md` — research question, model and hypotheses
+2. `docs/RESULTS_ROUND0.md` — model fitting and degeneracy results
+3. `docs/RESULTS_ROUND1.md` — protocol, connectivity and identification analyses
+4. `docs/RESULTS_ROUND2_ZT9.md` — diagnostic analysis of the remaining ZT9 model limitation
+5. `docs/DATA_SOURCES.md` and `docs/DATA_CONTRACT.md` — data provenance and handling rules

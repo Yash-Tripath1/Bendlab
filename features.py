@@ -16,7 +16,7 @@ def time_to_threshold(times, thetas, level: float) -> float:
 
 
 def half_rise_time(times, thetas) -> float:
-    """Time to reach half of the trajectory's own peak. Scale-free."""
+    """Time required to reach half of the trajectory peak; invariant to angle scale."""
     peak = float(np.max(thetas))
     if peak <= 0:
         return float(times[-1] + 1.0)
@@ -37,7 +37,7 @@ def terminal_error(times, thetas, phi0: float) -> float:
 
 
 def overshoot(times, thetas) -> float:
-    """Peak above final value. Captures plants that swing past the light."""
+    """Difference between peak and final angle; quantifies overshoot beyond the final orientation."""
     return float(np.max(thetas) - thetas[-1])
 
 
@@ -51,13 +51,13 @@ def peak_rate(times, thetas) -> float:
 
 
 def reversal(times, thetas) -> float:
-    """Largest drop from peak to end. Detects plants that give up."""
+    """Largest reduction from peak angle to the final angle."""
     return float(np.max(thetas) - thetas[-1])
 
 
 def auroc(times, thetas) -> float:
     """Area under the angle curve, normalised by duration. A single scalar
-    summarising 'how bent was this plant, on average, over the run'."""
+    summarising the average stem angle over the observation period."""
     if len(times) < 2:
         return 0.0
     span = times[-1] - times[0]

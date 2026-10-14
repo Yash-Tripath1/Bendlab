@@ -1,13 +1,13 @@
-"""Compile the whole report stack into one dated, printable PDF.
+"""Compile the project reports and figures into a dated, printable PDF.
 
 Usage: python make_print_edition.py
 Output: ../bendlab_print_edition_<date>.pdf  (next to the repo, not inside
-it: a printed snapshot should live outside the thing it snapshots)
+it: the dated snapshot is stored separately from the repository it records).
 
-Every page carries the snapshot date in the footer, so a stray page found
-later can always be told apart from a newer claim. Hand-rolled markdown
-renderer on top of fpdf2: headings, paragraphs, bullets, code, tables
-(monospaced), images embedded at full width.
+Every page carries the snapshot date in the footer so that pages from
+different versions can be distinguished. The script contains a minimal
+Markdown renderer based on fpdf2, supporting headings, paragraphs, lists,
+code blocks, tables and full-width images.
 """
 
 import re
@@ -15,30 +15,45 @@ import datetime
 import numpy as np  # noqa: F401  (kept for parity with repo scripts)
 from fpdf import FPDF
 
-DATE = "2026-10-13"
+DATE = "2026-10-14"
 DOCS = [
-    ("README.md", "Front page"),
-    ("PROBLEM_STATEMENT.md", "The question, as written before any run"),
-    ("docs/EXPLAINER.md", "Explainer, part 1"),
-    ("docs/EXPLAINER_PART2.md", "Explainer, part 2"),
-    ("docs/RESULTS_ROUND0.md", "Round 0 results"),
-    ("docs/RESULTS_ROUND1.md", "Round 1 results and the audit"),
-    ("docs/RESULTS_ROUND2_ZT9.md", "Round 2 opener: the ZT9 autopsy"),
-    ("docs/IDENT_GAME.md", "Round 2 design: the identification game"),
-    ("docs/DATA_SOURCES.md", "Where plant data comes from"),
+    ("README.md", "Repository overview"),
+    ("PROBLEM_STATEMENT.md", "Problem statement"),
+    ("docs/EXPLAINER.md", "Project overview"),
+    ("docs/EXPLAINER_PART2.md", "Project overview: experiment series and validation"),
+    ("docs/RESULTS_ROUND0.md", "Results I: model fitting and parameter degeneracy"),
+    ("docs/RESULTS_ROUND1.md", "Results II: experiment series 1 and independent audit"),
+    ("docs/RESULTS_ROUND2_ZT9.md", "Results III: ZT9 diagnostic analysis"),
+    ("docs/ADAPTIVE_IDENTIFICATION.md", "Adaptive identification experiment: design specification"),
+    ("docs/DATA_SOURCES.md", "Data sources"),
     ("docs/DATA_CONTRACT.md", "Data contract"),
 ]
 EXTRA_FIGS = [("results/figures/real_seedlings_dashboard.png",
-               "Appendix A: the real seedlings, imported and simulated"),
-              ("results/figures/zt9_autopsy_dashboard.png",
-               "Appendix B: the ZT9 autopsy")]
+               "Appendix A: measured sunflower trajectories and model predictions"),
+              ("results/figures/zt9_diagnostic_dashboard.png",
+               "Appendix B: ZT9 diagnostic analysis")]
 
 SAFE = {0x2014: "-", 0x2013: "-", 0x2026: "...", 0x2192: "->",
         0x2212: "-", 0x2265: ">=", 0x2264: "<=", 0x2248: "~",
-        0x00D7: "x", 0x2019: "'", 0x2018: "'", 0x201C: '"', 0x201D: '"'}
+        0x00D7: "x", 0x2019: "'", 0x2018: "'", 0x201C: '"', 0x201D: '"',
+        0x207B: "-", 0x00B9: "1", 0x00B2: "2", 0x00B3: "3", 0x2074: "4"}
 
 
 def safe(s):
+    # Render mathematical notation readably with the core PDF fonts:
+    # remove TeX delimiters and expand the small set of commands used here.
+    s = s.replace("$$", "").replace("$", "")
+    for tex, plain in ((r"\dot{\theta}", "d(theta)/dt"),
+                       (r"\dot{r}", "d(r)/dt"),
+                       (r"\operatorname{clip}", "clip"),
+                       (r"\theta", "theta"), (r"\tau", "tau"),
+                       (r"\phi", "phi"), (r"\varepsilon", "epsilon"),
+                       (r"\sin", "sin"), (r"\times", "x"),
+                       (r"_{\max}", "_max"), (r"^\circ", " deg"),
+                       (r"\mathrm{h}", "h"), (r"\left", ""),
+                       (r"\right", ""), (r"\qquad", " "), (r"\,", " "),
+                       (r"\!", "")):
+        s = s.replace(tex, plain)
     return s.translate(SAFE)
 
 
@@ -60,7 +75,7 @@ pdf.add_page()
 pdf.set_font("Helvetica", "B", 30)
 pdf.cell(0, 20, "BendLab", align="C", new_x="LMARGIN", new_y="NEXT")
 pdf.set_font("Helvetica", "", 13)
-pdf.cell(0, 9, "Simulating and clustering plant responses to light",
+pdf.cell(0, 9, "Parameter identifiability in a minimal model of phototropic stem bending",
          align="C", new_x="LMARGIN", new_y="NEXT")
 pdf.ln(6)
 pdf.set_font("Helvetica", "B", 12)
@@ -68,10 +83,10 @@ pdf.cell(0, 9, "PRINT EDITION - snapshot of %s" % DATE, align="C",
          new_x="LMARGIN", new_y="NEXT")
 pdf.set_font("Helvetica", "", 10)
 pdf.multi_cell(0, 6, align="C", text=(
-    "Anadi Tripathi and Umaid. Everything in this bundle is also in the\n"
-    "GitHub repository Yash-Tripath1/Bendlab, where it lives as markdown.\n"
-    "Print this cover on top of the stack and write the date on the spine.\n"
-    "A page without this date in its footer is an old page."))
+    "Anadi Tripathi and Umaid. This print edition reproduces the contents of the\n"
+    "GitHub repository Yash-Tripath1/Bendlab as a dated snapshot. The snapshot\n"
+    "date is printed in the footer of every page so that versions can be\n"
+    "distinguished."))
 pdf.ln(8)
 pdf.set_font("Helvetica", "B", 12)
 pdf.cell(0, 8, "Contents", new_x="LMARGIN", new_y="NEXT")

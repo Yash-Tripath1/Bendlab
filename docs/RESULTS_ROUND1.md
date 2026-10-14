@@ -1,272 +1,312 @@
-# Results, round 1 — the complete fake-plant suite — 13 October 2026
+# Results II: synthetic-population experiment series
 
-All experiments in this file run entirely on simulated plants drawn from the
-weighted population (clean fits, round 0 section 5). No new real data. Source:
-`round1.py`, seeded, total wall time 14 seconds on one core. Every threshold
-was declared in the script before the first run.
+**Date:** 13 October 2026  
+**Source:** `round1.py`  
+**Population:** simulated plants sampled from the empirically weighted
+parameter region
 
-Dashboard: `results/figures/round1_dashboard.png`.
+All experiments in this document use simulated plants drawn from the
+weighted population derived from the clean measured-data fits. No
+additional measured data were introduced. All decision thresholds were
+specified in the analysis script before the results were examined.
+Total elapsed time was approximately 14 seconds on one processor core.
 
-> **Amendment, 13 October 2026.** This suite was rerun on the
-> clock-corrected weighted population (44 clean fits spanning all six
-> stimulus start times; the original run drew from 28 morning-only fits
-> produced by a time-base bug in `fit_real.py` -- see the retraction in
-> `docs/RESULTS_ROUND0.md`, bug log). All numbers below are from the
-> corrected run. Three verdicts are unchanged (H3 falsified, H6
-> supported with leakage, H7 not supported as declared; H8 still
-> saturated). **One verdict flipped: H4.** On the corrected population
-> the behaviour clusters do *not* persist across light regimes
-> (ARI 0.442, against 0.606 originally reported), so H4 is supported,
-> not falsified. The original H4 reading is retracted wherever it
-> appears in this file.
+Summary figure: `results/figures/round1_dashboard.png`.
 
-## H3: cliffs in parameter space — FALSIFIED
+> **Amendment, 13 October 2026.** This experiment series was rerun using
+> the clock-corrected weighted population (44 clean fits spanning all six
+> stimulus-start times). The original run used 28 morning-only fits
+> produced by the time-base error in `fit_real.py` (see the correction in
+> `docs/RESULTS_ROUND0.md`). All numerical values below are from the
+> corrected run. Three conclusions are unchanged: H3 falsified as
+> specified, H6 supported with incomplete retention, and H7 not supported
+> under its declared criterion; H8 remains saturated. **The H4 conclusion
+> changed.** On the corrected population, behavioural clusters do not
+> persist across light regimes (ARI 0.442, compared with 0.606 in the
+> original run); H4 is therefore supported rather than falsified. The
+> original H4 interpretation is retracted.
 
-Dense 64 x 64 grid over (k, tau) at phi0 = 45 deg, cap = 30 deg/h, static
-light, 24 h. Declared cliff criterion: adjacent-cell jump in half-rise time
-above 2.0 h.
+## H3: Discontinuities in parameter space — falsified as specified
 
-Result: **0 of 8,064 edges flagged. Largest adjacent jump 1.00 h.**
+A dense 64 × 64 grid was evaluated over response gain (`k`) and sensing
+lag (`tau`) at `phi0 = 45` degrees and `max_rate = 30` degrees h⁻¹ under
+static light for 24 h. The pre-specified discontinuity criterion was an
+adjacent-cell change in half-rise time greater than 2.0 h.
 
-Behaviour varies smoothly across the plausible region. There is no hidden
-cliff where a tiny parameter change flips the qualitative response, at this
-resolution and these feature definitions. H3 is abandoned as stated. Caveat:
-a finer grid or sharper features (for instance overshoot under flip regimes)
-could still find discontinuities; "smooth here" is not "smooth everywhere".
+**Result:** 0 of 8,064 adjacent edges satisfied the criterion. The
+largest adjacent change was 1.00 h.
 
-## H4: do clusters survive a moving sun? — SUPPORTED
+Behaviour therefore varies smoothly over the sampled parameter region at
+this grid resolution and under the selected feature definitions. H3 is
+not retained. This conclusion does not exclude discontinuities at finer
+resolution or under alternative behavioural features, such as overshoot
+under step-change regimes.
 
-Same 6,000 weighted plants clustered under static light and under a 12 h
-sawtooth sweep (+/-45 deg around each plant's own phi0), same six features,
-six clusters each. Declared persistence threshold: ARI >= 0.50.
+## H4: Persistence of behavioural clusters across light regimes — supported
 
-Result: **ARI = 0.442.** Clusters do not persist across regimes.
+The same 6,000 weighted simulated plants were clustered under static light
+and under a 12 h sawtooth light sweep (±45 degrees about each plant's own
+`phi0`), using the same six behavioural features and six clusters in each
+regime. Cluster persistence was defined in advance as an adjusted Rand
+index (ARI) of at least 0.50.
 
-The behavioural classes are partly properties of the light show, not just
-of the plant: a moving sun repartitions the population. (The original run
-reported ARI 0.606 and the opposite conclusion; that population excluded
-every afternoon plant because of the clock bug, and morning-only plants
-apparently sort more stably. Retracted.) Consequence: a cluster label is
-a statement about a plant *under a protocol*, not a plant type -- which
-is good news for H2's underlying hope that richer regimes reveal more,
-even though H2's own cluster metric still does not show it, and a
-warning against reifying the six classes anywhere downstream.
+**Result:** ARI = 0.442.
 
-## H6: is the degenerate set connected? — SUPPORTED, WITH LEAKAGE
+The behavioural clusters do not persist across the two light regimes. The
+classes are therefore properties of the plant–protocol combination rather
+than intrinsic plant categories. The original analysis reported ARI
+0.606 and the opposite conclusion; that population excluded all afternoon
+stimulus-start groups because of the time-base error and is retracted.
 
-Umaid's crossover test. 300 pairs of behaviourally identical parents
-(same static cluster), uniform gene crossover, mutation on each gene with
-probability 0.5 and sd = 10 per cent of the weighted range, offspring
-assigned to the nearest cluster centroid.
+An implication is that a cluster label should not be interpreted as a
+plant type independent of the measurement protocol. This finding is
+consistent with the motivation for H2—that richer light regimes may reveal
+additional structure—although H2's cluster-retention metric did not itself
+demonstrate improved parameter recovery.
 
-| Parents | Offspring stay in class |
+## H6: Connectivity of the degenerate parameter set — supported with incomplete retention
+
+Two behaviourally equivalent source parameter vectors were recombined
+parameter by parameter. Each parameter of the recombinant was selected
+from one of the two sources with equal probability; mutation was then
+applied independently to each parameter with probability 0.5 and standard
+deviation equal to 10 per cent of the weighted parameter range. Each
+recombinant was assigned to the nearest behavioural-cluster centroid.
+
+| Source pair | Recombinants assigned to the reference source class |
+|---|---:|
+| Same behavioural cluster (n = 300) | **57.3%** |
+| Different clusters; first source class (n = 234) | 29.5% |
+| Different clusters; either source class (n = 234) | 53.8% |
+
+Recombinants of behaviourally equivalent sources remained in the source
+class at approximately twice the rate obtained when scored against the
+first source class of cross-cluster controls. The degenerate set is
+therefore connected over the sampled neighbourhood rather than consisting
+entirely of isolated parameter combinations. Retention is nevertheless
+incomplete: 42.7 per cent of same-cluster recombinants were assigned
+outside the source class. The region is thus connected but not flat, and
+search or sampling procedures traversing it require repeated membership
+assessment.
+
+The comparison against the first source class (57.3 versus 29.5 per cent)
+is the more informative control. Assignment to either source class in
+cross-cluster pairs is a union event over two classes and therefore has a
+higher chance rate.
+
+## H7: Differences in identifiability among light protocols — not supported as specified
+
+For each protocol, 1,000 weighted simulated plants were simulated.
+Gaussian observation noise with standard deviation 2 degrees was added,
+and each plant's parameters were estimated by those of its nearest
+neighbour in trajectory space. Recovery error was defined as the absolute
+parameter difference divided by the population 5–95 percentile span.
+H7 required a best-to-worst protocol difference of at least 0.10 in mean
+relative error.
+
+| Protocol | Duration (h) | Mean relative error | `k` | `tau` | `max_rate` | `phi0` |
+|---|---:|---:|---:|---:|---:|---:|
+| `dflip16` | 16 | **0.153** | 0.111 | 0.085 | 0.246 | 0.168 |
+| `flip12_14` | 14 | 0.178 | 0.154 | 0.149 | 0.239 | 0.171 |
+| `sweep12` | 12 | 0.183 | 0.143 | 0.172 | 0.272 | 0.143 |
+| `flip4_8` | 8 | 0.236 | 0.186 | 0.188 | 0.290 | 0.282 |
+| `static6` | 6 | 0.244 | 0.226 | 0.190 | 0.278 | 0.280 |
+
+**Result:** best-to-worst difference = 0.091, below the specified 0.10
+threshold. H7 is therefore not supported as declared.
+
+Two descriptive observations are reported without altering that
+conclusion. First, the ordering is consistent: every dynamic protocol
+ranked above static light, and the two-step protocol ranked first.
+Second, `max_rate` had the largest recovery error under nearly every
+protocol, consistent with the exact unidentifiability demonstrated for
+non-saturating trajectories. Under the two-step protocol, `tau` was the
+most accurately recovered parameter (0.085). These observations do not
+meet the pre-specified criterion for H7.
+
+## H8: Adaptive protocol selection — original design saturated
+
+The experiment used 500 hidden weighted plants, a 24 h observation
+budget, additive noise of 2 degrees, and a hypothesis set of 3,000
+weighted parameter vectors. After the budget was spent, each policy was
+scored by prediction of the held-out `ramp24` trajectory. Success was
+defined as prediction RMSE no greater than 5 degrees.
+
+| Policy | Successful predictions per 100 plants |
+|---|---:|
+| Random | **89.4** |
+| Greedy expected-information-gain | 88.6 |
+| Fixed (`dflip16`) | 83.2 |
+| Plug-in Thompson sampling | 63.2 |
+
+For greedy versus fixed selection, the paired win/tie/loss counts were
+37/406/10.
+
+The principal result is the saturation of the design. Under a 24 h
+budget, observation itself provides most of the attainable predictive
+information: random protocol selection produced 89.4 successful
+predictions per 100 plants. Adaptive selection did not improve on random
+selection, and repeated use of the single highest-ranked protocol
+performed worse than mixed selection.
+
+The substantially lower value for plug-in Thompson sampling (63.2 per
+100; binomial standard error approximately 2 per 100) is interpreted as a
+consequence of the plug-in approximation used in this implementation,
+which bases decisions on individual posterior samples and can select
+protocols that reduce entropy without improving held-out prediction. It
+is not interpreted as evidence against Thompson sampling in general.
+
+A more demanding version of the experiment has been specified in advance
+in `docs/ADAPTIVE_IDENTIFICATION.md`. Until the design discriminates among
+policies, H8 cannot be assessed.
+
+## Summary of hypothesis status after experiment series 1
+
+| Hypothesis | Status |
 |---|---|
-| Same cluster (n=300) | **57.3%** |
-| Cross-cluster control, mother's class (n=234) | 29.5% |
-| Cross-cluster control, either parent's class | 53.8% |
+| H1 | Supported under uniform sampling; weaker but present under weighted sampling |
+| H2 | Not supported under the cluster-retention metric |
+| H3 | Falsified as specified: no discontinuities at the sampled resolution |
+| H4 | Supported: behavioural clusters do not persist across light regimes (ARI 0.442) |
+| H5 | Supported in all six stimulus-start-time groups; 4/48 fits bound-pinned (ZT9) |
+| H6 | Supported with incomplete retention: connected degenerate region, 42.7% of recombinants assigned outside the source class |
+| H7 | Not supported under the declared threshold (observed difference 0.091 < 0.10) |
+| H8 | Not assessable in the original saturated design |
 
-Reading: offspring of equivalent parents stay equivalent at about twice
-the control rate, so the degenerate set is **connected, not a scatter of
-isolated islands** — small genetic steps mostly stay inside. But 43 per cent
-leak out, so it is a valley with soft walls, not a flat neutral plane.
-Evolutionary or sampling methods walking the set are meaningful, but need to
-check membership at every step. Note the generous control: "either parent's
-class" for cross-cluster pairs (53.8%) is a union of two classes; the
-informative comparison is 57.3 against 29.5.
+## Interpretation
 
-## H7: do protocols differ in what they reveal? — NOT SUPPORTED (as declared)
+Of the eight hypotheses, H3 and H7 were not retained under their
+pre-specified criteria, H8 could not be assessed under the original
+design, H2 remains dependent on an inadequate metric, and H1, H4, H5 and
+H6 were supported with the qualifications stated above.
 
-1,000 weighted plants per protocol. Recovery test: add 2 deg Gaussian noise
-(low end of round-0 fit residuals), find the nearest other plant's noisy
-curve, take that plant's parameters as the guess. Metric: mean relative
-error, |true - recovered| divided by the population's 5-95 span. Declared
-support threshold: best-worst gap >= 0.10.
+Taken together, the corrected results support three conclusions:
 
-| Protocol | cost (h) | mean rel. err | k | tau | cap | phi0 |
-|---|---|---|---|---|---|---|
-| dflip16   | 16 | **0.153** | 0.111 | 0.085 | 0.246 | 0.168 |
-| flip12_14 | 14 | 0.178 | 0.154 | 0.149 | 0.239 | 0.171 |
-| sweep12   | 12 | 0.183 | 0.143 | 0.172 | 0.272 | 0.143 |
-| flip4_8   | 8  | 0.236 | 0.186 | 0.188 | 0.290 | 0.282 |
-| static6   | 6  | 0.244 | 0.226 | 0.190 | 0.278 | 0.280 |
+1. observed bending behaviour is informative, but it is a property of the
+   plant under a particular light protocol rather than a protocol-independent
+   plant type;
+2. the underlying parameters are less identifiable than the behaviour;
+3. none of the light protocols evaluated changed that relationship by an
+   amount meeting the pre-specified criterion.
 
-Result: gap = 0.091 < 0.10. **H7 not supported as declared.**
+The earlier description of behavioural type as robust across regimes was
+based on the retracted H4 result and is withdrawn.
 
-Two honest observations anyway, logged as description, not as rescued
-claims. The ordering is consistent and sensible: every dynamic protocol
-beats static light, and the double flip wins. And the cap is the worst-
-recovered parameter under every protocol bar one statistical tie with
-phi0 under static6 (0.24 to 0.29), exactly as the round-0
-exact-degeneracy result predicts; tau, by contrast, is now the
-best-recovered dial under the double flip (0.085). The threshold was
-ours and arguably strict; what the declared test says is that no
-protocol is a game-changer over another.
+## Limitations
 
-## H8: the identification game — pre-mortem CONFIRMED
+- With the exception of the H5 fits, the experiments characterise the
+  simulator rather than living plants. After the 13 October clock
+  correction, the fitted population spans all six stimulus-start times.
+  Its principal limitation is the exclusion of four ZT9 plants whose
+  rapid onset is outside the dynamics of the present model; ZT9 is
+  therefore represented by two of its six plants in the weighted
+  population.
+- Nearest-neighbour recovery (H7) is a coarse identifiability proxy. A
+  posterior-volume or Fisher-information analysis could produce a different
+  protocol ranking.
+- The use of six clusters is a declared modelling choice rather than a
+  derived optimum. The H4 ARI and the H6 retention rate are conditional on
+  that choice.
+- The H8 hypothesis set is finite (3,000 parameter vectors). A continuous
+  posterior representation would smooth the posterior-mean prediction and
+  might increase all success rates.
 
-500 weighted plants, 24 h budget, menu with costs (static6, flip4_8,
-flip12_14, sweep12, dflip16), 2 deg noise, success = predict the held-out
-ramp protocol (phi0 -30 to +30 over 24 h, never in the menu) within 5 deg
-RMSE. Hypothesis set: 3,000 weighted draws. Policies: random, fixed (H7's
-best, dflip16), greedy one-step expected-information-gain, plug-in Thompson.
+## Independent audit
 
-| Policy | success per 100 |
-|---|---|
-| random   | **89.4** |
-| greedy   | 88.6 |
-| fixed    | 83.2 |
-| thompson | 63.2 |
+Following critical review of the initial results, the principal findings
+were re-derived through independent code paths in `audit_round1.py`, and
+the simulator was compared with closed-form solutions in limiting regimes.
+All checks passed. The audit verified the following.
 
-Greedy vs fixed, paired W/T/L: 37/406/10.
+- **Simulator against analytical mechanics.** In the relevant limit, the
+  model is equivalent to a damped pendulum in the angle between stem and
+  light. Simulated overshoot agreed with the closed-form prediction to
+  0.001 degrees in two damping regimes (10.067 versus 10.068 degrees and
+  14.17 versus 14.18 degrees), and the oscillation period agreed to
+  0.002 h (3.488 versus 3.490 h). Three independent integration paths
+  agreed to within $1.4\times10^{-14}$.
+- **H5 from the source data.** All 48 per-plant RMSEs were recomputed
+  from the original workbook and saved parameters using elapsed time since
+  stimulus onset: median 1.801 degrees (reported 1.80), median spread
+  8.582 degrees (reported 8.58), with per-plant deviation below
+  $10^{-14}$. A regression check requires each fitted start time to
+  equal the stimulus-onset ZT of its treatment group and confirms the
+  number of bound-pinned fits, preventing silent recurrence of the
+  time-base error.
+- **Exact degeneracy.** RMSE for ZT0-1 with and without the maximum-rate
+  limit was 1.8939 degrees in both cases.
+- **Parameter retention.** Independent recomputation gave 9.3, 3.7, 13.6
+  and 11.9 per cent for `k`, `tau`, `max_rate` and `phi0`, respectively,
+  compared with the reported 9, 4, 14 and 12 per cent.
+- **H4 stability.** ARI values across three clustering seeds were 0.442,
+  0.442 and 0.444, all below the 0.50 persistence threshold. The corrected
+  H4 conclusion is therefore not attributable to a particular clustering
+  seed.
+- **Information levels for H8.** Successful prediction increased from
+  30 per cent with no plant-specific data to 44 per cent after one noisy
+  six-hour static trajectory and 89 per cent under the full budget. The
+  high full-budget performance is thus attained progressively and is not
+  explained by a single short trajectory alone.
 
-**The headline is the pre-mortem, confirmed almost word for word.** With a
-24 h budget, *measuring at all* is a step function: even random protocol
-choice identifies 89 plants in 100. Adaptive intelligence buys nothing over
-rolling dice, and the single "best" protocol is actually worse than
-mixing. This is structurally the same negative result as the matching
-hackathon's "asking is a step function, not a lever", in a different domain,
-found by a different team member (Umaid's crossover aside, the pre-mortem
-was written before any of this ran).
+Three errors were identified in the initial version of the audit. All
+three occurred in the audit code rather than in the analysis pipeline,
+and their failure modes are relevant to the use of independent checks.
 
-The plug-in Thompson policy's 63.2 is far below the rest (binomial SE
-about 2 per 100) and is read as a design artifact of the plug-in
-approximation chasing posterior entropy on single samples, not as
-evidence against Thompson sampling itself.
+1. The analytical pendulum calculation treated angle in degrees as though
+   it were in radians, overstating the natural frequency by a factor of
+   13.4 and producing an apparent simulator failure. After correction,
+   theory and simulation agree to three decimal places.
+2. The first H1 check tested the stronger proposition that plants in the
+   same cluster have nearly identical trajectories. That proposition was
+   not part of H1. Same-cluster trajectories can differ by approximately
+   13 degrees at a given time because clustering summarises trajectories by
+   features rather than requiring pointwise identity. The stated H1 claim,
+   parameter-range retention, reproduces.
+3. The first H8 check asserted that one short trajectory was already
+   sufficient for successful prediction. The corrected information-level
+   analysis gives 44 per cent for that condition.
 
-Consequence for round 2: the game as specified is too easy to discriminate
-policies. Harder variants, in rough order of promise: cut the budget to
-8-12 h; raise the success bar (eps = 2 deg); raise the noise to 5 deg; make
-the held-out protocol a genuine extrapolation (ramp beyond any phi0 the
-policy has seen). Until the game is hard, H8's adaptive-vs-fixed question is
-unanswerable, and running fancier policies would be theater.
+A fourth error, larger in consequence than these three, was identified
+after the audit: the ZT time-base error in `fit_real.py` (see
+`docs/RESULTS_ROUND0.md`). The initial audit did not detect it because its
+H5 check used the same absolute-ZT convention as the fitting code. The
+check therefore verified the arithmetic of an incorrectly defined
+quantity. Both scripts have been corrected, and the audit now evaluates
+elapsed time and includes the regression check described above. This is
+recorded because an independent code path does not constitute an
+independent audit if it shares the assumption under examination.
 
-## Status after round 1
+The audit also refined the interpretation of H6. Connectivity holds for
+typical curve-equivalent pairs but is not uniform over the full parameter
+range. In a sample of 40 curve-equivalent pairs, 24 recombinant parameter
+vectors remained within 3 degrees of the source trajectories, with median
+maximum deviation 1.88 degrees. Deviation tended to increase with
+separation in `k`: median 1.53 degrees below 0.1 of the parameter range
+and 3.4–4.4 degrees above that value, although only six of the 40 pairs
+were in the more separated group. For the most widely separated equivalent
+pair identified, separation was concentrated in `max_rate` (22 versus
+260 degrees h⁻¹, the exactly unidentifiable parameter), and the midpoint
+trajectory deviated by only 1.07 degrees. An earlier apparent 33-degree
+separation effect did not reproduce on the corrected population and is
+attributed to the morning-only sample. Whether the connected region
+narrows at its most extreme points remains unresolved. The audit also
+confirmed that `phi0`, as the experimental light condition, must be held
+fixed in crossover analyses rather than averaged between sources.
 
-| # | Status |
-|---|---|
-| H1 | supported (uniform), weaker but present (weighted) |
-| H2 | not supported on cluster metrics |
-| H3 | falsified — smooth map, no cliffs at this resolution |
-| H4 | supported — clusters do not persist across regimes (ARI 0.442) |
-| H5 | passed 6/6 blocks on the corrected clock; 4/48 fits bound-pinned (ZT9) |
-| H6 | supported with leakage — connected valley, 43% crossover escape |
-| H7 | not supported as declared; dynamic protocols order above static |
-| H8 | unanswerable as specified — game saturated by random play |
+## Computational cost
 
-## What round 1 says overall
-
-Two of eight hypotheses are dead as declared (H3, H7), one is
-unanswerable until redesigned (H8), one is alive on a metric we do not
-trust (H2), and the survivors are H1 (degeneracy), H4 (classes are
-regime-dependent), H5 (the anchor) and H6 (connectivity, Umaid's). A
-first round that kills half of what it touches is a first round that was
-worth running: every death here was cheap (seconds of compute) and each
-one narrows round 2. The consistent story across everything, corrected:
-**a plant's behaviour is readable but is a property of the plant
-*under a protocol*, not of the plant alone; the plant's parameters are
-harder still; and no light show we tried changes that trade-off by
-much.** (The first version of this paragraph called the behavioural
-type "robust" on the strength of the retracted H4 result.)
-
-## Limitations, stated
-
-- Everything here is the simulator studying itself; H5 is the only bridge to
-  real plants. Since the 13 October clock correction the bridge spans all
-  six stimulus start times; its weak point is now the four ZT9 plants
-  whose sub-three-minute onset the model's lag cannot express, so ZT9 is
-  under-represented in the weighted population (2 of 6 plants).
-- Nearest-neighbour recovery (H7) is a crude identifiability proxy; a
-  posterior-volume metric could reorder protocols.
-- Clustering into six groups is a declared choice, not a derived one; H4's
-  ARI and H6's retention both inherit it.
-- The H8 hypothesis set is finite (3,000 draws); a true grid posterior would
-  smooth the posterior-mean prediction and likely raise all success rates.
-
-## Audit, 13 October
-
-Prompted by a collaborator who did not trust the results (correctly applied
-pressure). `audit_round1.py` re-derives the findings through independent code
-paths and validates the simulator against closed-form physics. Final state:
-all checks pass. What it verified:
-
-- **Simulator against analytical physics.** The model is mathematically a
-  damped pendulum in the angle to the light. Simulated overshoot matches the
-  closed form to 0.001 deg in two damping regimes (10.067 vs 10.068, 14.17 vs
-  14.18) and the oscillation period to 0.002 h (3.488 vs 3.490). Three
-  independent integrators agree to 1.4e-14.
-- **H5 from raw data.** All 48 per-plant RMSEs recomputed from the original
-  xlsx and the saved parameters, on elapsed time since stimulus onset:
-  median 1.801 (reported 1.80), spread 8.582 (reported 8.58), per-plant
-  deviation below 1e-14. A regression guard (check 3d) asserts every
-  plant's fitted start equals its block's ZT and pins down the
-  bound-pinned count, so the clock bug cannot return silently.
-- **Exact degeneracy.** Cap-in vs cap-out RMSE on ZT0-1: 1.8939 vs 1.8939.
-- **Retention numbers.** Independently recomputed: 9.3 / 3.7 / 13.6 / 11.9
-  per cent against the reported 9 / 4 / 14 / 12.
-- **H4 stability.** ARI across three clustering seeds: 0.442, 0.442, 0.444 --
-  stably *below* the 0.50 persistence threshold. The corrected verdict
-  (clusters do not persist) is not a seed artifact.
-- **H8 ladder.** No data 30 per cent, one noisy 6 h static curve 44, full
-  budget 89. The saturation is real but it is earned rung by rung; the
-  budget is not redundant.
-
-Three bugs were found during the audit, and all three were **in the audit,
-not in the project**, which is recorded because the failure modes are
-instructive:
-
-1. The pendulum prediction forgot that theta is in degrees while sin() takes
-   radians, overstating the natural frequency by a factor of 13.4 and
-   "detecting" a simulator failure that did not exist. Corrected, theory and
-   simulation agree to three decimals.
-2. The first H1 probe tested "same cluster implies same curve", which the
-   project never claimed. Same-cluster plants can differ by ~13 deg
-   pointwise; a cluster is a similarity of summaries, not an identity of
-   curves. The actual claim (parameter retention) reproduces.
-3. The first H8 probe asserted one cheap curve already suffices. It does not
-   (44 per cent), and the corrected ladder is the stronger result.
-
-A fourth bug, larger than these three combined, arrived after the audit:
-the ZT time-base error in `fit_real.py` (13 October, found by Yash;
-full account in `docs/RESULTS_ROUND0.md`). The audit did not catch it
-because its H5 check evaluated curves on the same raw-ZT convention as
-the fitter -- it shared the assumption it was meant to test. The audit
-now evaluates on elapsed time and carries a regression guard
-(check 3d). Recorded here because it is the audit's real failure mode:
-an independent code path with a non-independent assumption is only
-half an audit.
-
-One genuine refinement to H6 came out of the audit: connectivity of the
-degenerate set holds for typical pairs but is not uniform. For
-curve-equivalent pairs, 24/40 crossover children (light held fixed, phi0
-not averaged) stay within 3 deg, median drift 1.88 deg, and drift tends
-to grow with parental k-separation (median 1.53 deg below 0.1 of the
-range, 3.4-4.4 deg above it, though only 6 of 40 pairs sit up there).
-The single most-separated equivalent pair the search could find turns
-out to be separated almost entirely in the cap (22 against 260 deg/h,
-the exactly-degenerate dial) and its midpoint drifts only 1.07 deg --
-so the dramatic 33 deg "pinch-off" reported by the first audit run was
-an artifact of the morning-only population and does not reproduce. The
-valley is connected; whether it pinches at its true extremes is still
-open. Also noted: phi0 is an experimental condition, not a plant trait,
-so any crossover test must hold it fixed.
-
-## Why this runs in seconds, not hours
-
-The full suite performs about 44.1 million Euler updates, roughly 10 flops
-each, about 0.44 GFLOP on one core. Each update advances two state variables
-with six arithmetic operations. The matching hackathon, for contrast, ran a
-maximum-weight matching on a general graph of up to 200 members per decision
-day (blossom algorithm, superlinear in the node count), across 60-day
-episodes and 1,326 of them, under a 10-second per-decision budget. Orders of
-magnitude more work per step, orders of magnitude more steps. The speed here
-is arithmetic, not a shortcut.
+The full experiment suite performs approximately 44.1 million Euler
+integration steps. Each step updates two state variables using six
+arithmetic operations, corresponding to approximately 0.44 GFLOP on one
+processor core. The short runtime follows from the low dimensionality of
+the model and does not affect the interpretation of the results.
 
 ## Files
 
 | File | Content |
 |---|---|
-| `round1.py` | the whole suite, all constants declared at the top |
-| `audit_round1.py` | independent re-derivation of every finding |
-| `results/round1_h7_protocols.csv` | protocol recovery table |
-| `results/round1_h8_policies.csv` | policy success table |
-| `results/figures/round1_dashboard.png` | six-panel dashboard |
+| `round1.py` | Complete analysis script; all constants and criteria are declared at the top |
+| `audit_round1.py` | Independent re-derivation and analytical validation |
+| `results/round1_h7_protocols.csv` | Protocol-recovery table |
+| `results/round1_h8_policies.csv` | Policy-performance table |
+| `results/figures/round1_dashboard.png` | Six-panel summary figure |

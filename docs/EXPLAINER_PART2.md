@@ -1,154 +1,137 @@
-# BendLab, explained — part 2
+# BendLab project overview: experiment series and validation
 
-Continuation of `EXPLAINER.md`. Part 1 ended with: fake plants exist, they
-bend believably, and watching one bend tells you less than you'd think about
-its dials. Part 2 is what happened after: we made the fake plants *realistic*,
-ran every remaining experiment, got audited, and found bugs — including one,
-spotted by Anadi Tripathi, that reversed two of our headlines. That one gets its
-own telling below, because it is the most instructive thing in the project
-so far.
+This document summarises the completed simulation experiments, the audit
+of those experiments, and two analysis errors that materially affected
+earlier conclusions. The corresponding six-panel summary figure is
+`results/figures/explainer2_dashboard.png`.
 
-Companion figure: `results/figures/explainer2_dashboard.png`. Six panels,
-every one drawn directly from the raw files. The section numbers below match
-the panel numbers.
+## 1. Behavioural degeneracy
 
-## 1. Two completely different plants, one curve
+The summary figure compares two simulated plants whose maximum bend
+rates differ by approximately an order of magnitude (251 and 24 degrees
+per hour), while their remaining parameters are similar. Their stem-angle
+trajectories agree within 1.3 degrees over 24 hours. Neither trajectory
+approaches its maximum-rate limit, so that limit has no observable effect
+on the measured behaviour.
 
-This is the whole thesis in one picture. Plant A's dials read
-k=7.9, tau=4.8, cap=251, light=43 degrees. Plant B's read k=9.4,
-tau=6.4, cap=24, light=40 degrees. Their curves agree within 1.3
-degrees for a full day -- while one plant's speed limit is *ten times*
-the other's.
+This example illustrates the broader result quantified in the results
+documents: behavioural clusters retain substantial ranges of all four
+model parameters, particularly in the uniform parameter population.
 
-Why can this happen? Neither plant ever bends anywhere near its speed
-limit, so the limit leaves no trace on the curve. A dial that never
-comes into play might as well not exist, and the curve records *what
-happened*, not *why*. That is degeneracy in its purest form, and the
-broader version -- whole clusters of look-alike plants spanning most of
-every dial's range -- is measured properly in the results documents.
-The picture is the entire argument in miniature.
+## 2. Comparison with measured sunflower trajectories
 
-## 2. The reality check
+The model was fitted independently to 48 sunflower stem-angle
+trajectories from Brooks et al. (2023). The median per-plant RMSE after
+correction of the time-base error is 1.80 degrees, compared with a median
+across-plant standard deviation of 8.58 degrees in the measured data.
 
-Before any of this matters, the fake plant has to bend like a real one. The
-green dots are one real sunflower seedling from a published paper. The black
-line is our fake plant fitted to it. They agree to within about 2 degrees,
-and that real plant even overshoots and then relaxes — a wiggle our model
-reproduces, because our model is secretly a damped pendulum (see panel 6).
+An earlier analysis incorrectly interpreted midday and afternoon
+treatments as poorly represented by the model. That conclusion has been
+retracted. The source data use zeitgeber time (ZT), and each treatment
+group was first exposed to unilateral blue light at a different ZT.
+Fitting elapsed time since each plant's stimulus onset, rather than
+absolute ZT, gives acceptable fits for all six treatment groups.
 
-One caveat we used to keep repeating: that this only holds for
-morning-light treatments, because the midday and afternoon experiments
-could not be fit. **That caveat was wrong, and it was ours, not the
-plants'.** The paper's clock is zeitgeber time -- hours since the
-chamber lights came on -- and each group of plants got its side light
-switched on at a different time of day. We fed the raw clock to a
-fitter that assumed the light had been on since hour zero, so an
-afternoon plant looked impossibly slow and the fitter duly reported
-impossibly slow plants. On the corrected clock (time since *its* light
-came on) every group fits, afternoon included, to about 2 degrees.
-The one genuine oddity left is the ZT9 group, which starts bending
-faster than our model's shortest allowed lag. A model that tells you
-where it stops working is a working model; a team that checks whether
-the failure is in the model or in its own timestamps is a working
-team. Full retraction: `RESULTS_ROUND0.md`, bug log.
+The remaining systematic limitation concerns four ZT9 plants. Their
+curves show a rapid rise, a reduction in bend rate, and a subsequent
+second rise. The single-lag model cannot reproduce that two-phase rate
+profile. The diagnostic analysis is reported in
+`docs/RESULTS_ROUND2_ZT9.md`.
 
-## 3. The identification ladder
+## 3. Adaptive identification experiment
 
-Question: can we tell which plant is which, from its curves? Three rungs:
+The H8 experiment asks whether adaptive selection of light protocols
+improves identification relative to random or fixed protocol selection.
+Identification is scored by prediction of a held-out light-ramp
+trajectory, not by recovery of the exact parameter vector.
 
-- guess from nothing at all (predict with the average plant): 30 per cent
-- one single 6-hour curve, plus the crudest possible matching: 44 per cent
-- a full day of light experiments: 89 per cent
+Three reference levels were obtained:
 
-Two things fall out. Measuring helps a lot: 30 to 44 to 89. And within the
-full-day rung, it makes almost no difference *how cleverly you choose* the
-experiments: random choice scores 89, our smartest policy 88.6. The matching
-hackathon found the same shape of truth in a completely different problem:
-"doing it at all" is the step function, "doing it smart" is not a lever.
-Two projects, one lesson, and we predicted it before running.
+- no plant-specific measurement: 30 per cent successful prediction;
+- one noisy six-hour static-light trajectory: 44 per cent;
+- the full 24-hour protocol budget: 89 per cent.
 
-## 4. Umaid's breeding test
+Within the full-budget condition, random protocol selection achieved
+89.4 successful predictions per 100 plants, compared with 88.6 for the
+greedy adaptive policy. The experiment therefore does not support an
+advantage for the implemented adaptive policies at that budget. A more
+demanding version has been specified in advance in
+`docs/ADAPTIVE_IDENTIFICATION.md`.
 
-Umaid asked: take two plants that bend the same way, breed them (mix their
-dials), does the child bend the same way too? If yes, the zone of identical
-twins is connected — you can walk from one twin to another through small
-changes without ever leaving the zone. If no, it's scattered islands.
+## 4. Crossover connectivity analysis
 
-The dots are 40 breeding experiments. Near the left (similar parents)
-most children stay under the dashed "same plant" line; further right
-the drift grows, though the far-right sample is thin. So: a connected
-valley with soft walls, not scattered islands and not a flat plain
-either. (An earlier run claimed the valley dramatically "pinches off"
-at the edges; on the corrected population that does not reproduce, and
-we have said so in the results document rather than quietly keeping
-the prettier sentence.) It also means the crossover idea is a
-meaningful tool here — for typical pairs.
+H6 examines whether the set of parameter combinations producing similar
+behaviour is connected. Pairs of behaviourally equivalent simulated
+plants were recombined parameter by parameter, with mutation, and the
+resulting parameter vectors were assigned to behavioural clusters.
 
-## 5. The scoreboard
+For 300 same-cluster source pairs, 57.3 per cent of recombinants
+remained in the source cluster, compared with 29.5 per cent for
+cross-cluster controls when scored against the first source cluster.
+This supports a connected degenerate region with incomplete retention,
+rather than a set of isolated parameter combinations. The term
+"crossover" here denotes recombination of numerical parameter vectors;
+it does not simulate biological inheritance.
 
-Eight hypotheses: four alive, two dead, one unproven, one sent back
-for redesign. That is a healthy round. A round where everything survives is
-a round where you tested nothing. Dead hypotheses here were cheap: seconds
-of compute, no lab animals, no broken equipment. The scoreboard is the
-project's honest state, and the survivors are the ones round two
-builds on.
+## 5. Hypothesis status
 
-## 6. The audit, or: trust nothing, including this document
+| Hypothesis | Current status |
+|---|---|
+| H1: behaviour does not uniquely identify parameters | Supported |
+| H2: a light-direction change improves parameter recovery | Not supported under the cluster-retention metric |
+| H3: behaviour contains discontinuities in parameter space | Falsified as specified |
+| H4: behavioural clusters do not persist across light regimes | Supported |
+| H5: the model reproduces measured sunflower trajectories | Supported, with the ZT9 limitation |
+| H6: the degenerate parameter set is connected | Supported, with incomplete recombinant retention |
+| H7: protocols can be ranked by identifiability gain | Not supported under the declared threshold |
+| H8: adaptive protocol selection improves identification | Not assessable in the saturated v1 design; v2 specified |
 
-Someone (fairly) said they did not trust the results, and that the whole
-thing running in seconds smelled fishy. So a separate script re-derived
-every number from the raw files, and the simulator was checked against
-physics with a closed-form answer — the damped pendulum formula you can
-derive with pen and paper. Panel 6 is that check: the blue line is the
-formula, the red dots are the simulator, and they sit on top of each other
-through four oscillations. The simulator is right.
+## 6. Independent audit and analysis errors
 
-The audit found three bugs along the way, and all three were in the audit
-itself:
+The audit script re-derives the principal numerical results and compares
+the simulator with the analytical solution of the equivalent damped
+pendulum in limiting regimes. Simulated overshoot and oscillation period
+agree with the corresponding closed-form values to the stated tolerances.
 
-1. It forgot that our angles are degrees while the sine formula wants
-   radians. Classic. It briefly "proved" the simulator was wrong when the
-   simulator was the correct one.
-2. It tested a claim we never made — that same-cluster plants have
-   identical curves. Clusters are "similar summaries", not "same curves".
-3. It guessed one cheap curve would be enough to identify plants. It is not
-   (44 per cent); the ladder is the truth.
+Three errors were identified in an earlier version of the audit:
 
-None of the project's numbers changed because of these three. All of the
-audit's own claims changed. But the audit also has a fourth chapter, and
-this one is not funny. When Anadi Tripathi found the clock bug described in
-section 2, it emerged that the audit's own reality check had evaluated
-the fits on the same wrong clock as the fitter -- so it had verified,
-beautifully and to fourteen decimal places, the arithmetic of a wrong
-quantity. An independent code path that shares the assumption under
-test is only half an audit. The audit now fits on elapsed time, asserts
-every plant's start time against its treatment label, and prints ALL
-CHECKS PASSED -- a claim that now includes a guard against the exact
-bug it once missed. The lesson is not "the audit was bad", it is that
-the second pair of eyes matters, that an audit must be audited too,
-and that sometimes the second pair of eyes belongs to the person who
-was told to just photograph the argument and send it over.
+1. omission of the degree-to-radian factor in the analytical natural
+   frequency;
+2. evaluation of a stronger cluster claim than the one made by the
+   project;
+3. an incorrect preliminary assertion that one short trajectory was
+   sufficient for identification.
 
-## Why seconds is not suspicious
+A fourth and more consequential error occurred in the fitting pipeline:
+use of absolute zeitgeber time as elapsed stimulus time. The initial
+audit did not detect that error because its H5 check used the same
+time-base convention as the fitting code. Both scripts have been
+corrected, and the audit now includes a regression check requiring each
+plant's fitted start time to equal the stimulus-onset ZT of its
+treatment group.
 
-The whole suite does about 44 million tiny arithmetic updates. A modern
-laptop does a few billion of those per second. The matching hackathon felt
-slow because its work was different: each day of each episode ran a
-graph-matching algorithm over 200 people, and there were over a thousand
-episodes under a 10-second-per-decision budget. Same computer class, a
-thousand times more work. Speed is arithmetic, not cheating.
+## Computational cost
 
-## Where the story goes next
+The completed experiment suite performs approximately 44 million
+fixed-step integration updates. Its short runtime follows from the low
+dimensionality of the model (two state variables) and does not indicate
+omitted computation. Runtime is not used as evidence for or against any
+scientific claim.
 
-The fake-plant side is nearly done. What remains is the bridge to real
-plants: explain the ZT9 group's impossibly fast first hour (probably a
-shorter lag than our model allows, possibly something the paper's
-time-of-day gating does at that hour), add a second real dataset
-(Arabidopsis curves, digitised from a 1993 paper), and make the
-identification game harder so cleverness has something to bite on.
-Then, and only then, does this start to look like a paper — see the
-README for the paper question answered honestly.
+## Future directions
 
-Reading order for new readers: `EXPLAINER.md`, this file, then
-`RESULTS_ROUND0.md` and `RESULTS_ROUND1.md` for the grown-up versions of
-the same numbers.
+The principal next steps are:
+
+1. specify and evaluate a model extension containing circadian
+   modulation of response gain and an autostraightening term;
+2. test that extension by fitting an initial segment of each measured
+   trajectory and forecasting the remainder;
+3. obtain an independent curvature dataset for external shape validation;
+4. evaluate the pre-specified second version of the adaptive
+   identification experiment;
+5. extend the model to field heliotropism only after the angle
+   conventions and solar trajectory for those data have been specified.
+
+The minimal model will be retained as the reference model. Any extension
+will be considered an improvement only if it improves prediction on
+held-out data relative to that reference.

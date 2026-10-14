@@ -1,6 +1,6 @@
-# Data contract
+# Data specification and handling rules
 
-## Real data: `data/real/stem_angles_plosbiol2023_s13.xlsx`
+## Measured data: `data/real/stem_angles_plosbiol2023_s13.xlsx`
 
 Source: "Multiple light signaling pathways control solar tracking in sunflowers",
 PLOS Biology 2023, doi [10.1371/journal.pbio.3002344](https://doi.org/10.1371/journal.pbio.3002344),
@@ -9,7 +9,7 @@ SHA-256 `1257f4069f4fb600d0bddb616110772af28552dc43ad330c18aa3dea58a590b7`.
 
 Sheets, as read with pandas `ExcelFile`:
 
-| Sheet | Time column | Time range | Rows | Plant columns | What it is |
+| Sheet | Time column | Time range | Rows | Plant columns | Content |
 |---|---|---|---|---|---|
 | `Fig1B` | `ZT` | 4.0 – 20.0 | 33 | 3 | stem angle, half-hour steps |
 | `Fig1C` | `ZT` | 0.0 – 41.5 | 112 | 48 | stem angle across six light treatments, half-hour steps |
@@ -17,8 +17,9 @@ Sheets, as read with pandas `ExcelFile`:
 | `Fig4A` | `ZT` | 0 – 77 | 78 | 17 | stem angle, hourly |
 | `Fig4J` | `ZT` | 0 – 97 | 98 | 15 | stem angle, hourly |
 
-`read.me` states: stem angle measurements for plants undergoing phototropism or
-heliotropism; data were used to plot figures 1B, 1C, 2B, 4A, 4J.
+The workbook `read.me` sheet states that the data comprise stem-angle
+measurements for plants undergoing phototropism or heliotropism and were
+used to plot Figures 1B, 1C, 2B, 4A and 4J.
 
 Verified parse of `Fig1C` to long form: 2,606 non-null rows, angle range
 -2.759 to 78.143 degrees. Per-block row counts and ranges:
@@ -32,8 +33,8 @@ Verified parse of `Fig1C` to long form: 2,606 non-null rows, angle range
 | `ZT12` | 540 | -2.759 | 78.143 |
 | `ZT16` | 468 | -1.571 | 70.937 |
 
-Row counts differ by block because plants drop out at different times, not
-because of a parsing difference.
+Row counts differ among blocks because the observation windows differ;
+this is a property of the source table rather than a parsing difference.
 
 ### `Fig1C` treatment blocks
 
@@ -48,64 +49,80 @@ Column prefixes encode the treatment. Counts as counted from the header:
 | `ZT12` | 9 |
 | `ZT16` | 9 |
 
-Total 48 columns. The paper defines what each block is; read it before
-assigning meaning.
+The total is 48 plant columns. Treatment interpretation follows the
+definitions in Brooks et al. (2023).
 
 ### Units and handling rules
 
-- Angle is in degrees. Sign convention is whatever the paper uses — confirm
-  against the figures before comparing signs across sheets.
-- Sheets are ragged: `Fig1C` cells are empty outside each plant's own window.
-  Parse as long form and drop nulls rather than filling them.
-- Time base differs by sheet. `ZT` is zeitgeber time (hours since lights on).
-  `Fig2B` uses plain `time` in hours. Do not concatenate sheets without
-  converting to a common base and recording which sheet each row came from.
-- **`Fig1C` stimulus onset (the rule whose absence cost us a retraction).**
-  ZT is the plant's absolute clock, not time since stimulus. In Fig 1C each
-  block was first exposed to unilateral blue light at its own ZT (Fig 1
-  legend, Brooks et al. 2023), so a plant's first non-null cell is its
-  stimulus onset and its angle there is 0 by construction. Any fit,
-  simulation or feature that consumes these curves must use elapsed time
-  `t - t_first` per plant. Feeding raw ZT to a model that assumes the
-  stimulus started at t = 0 makes late blocks look pathologically slow
-  (in our case: `tau` pinned at its bound for all 18 ZT12/ZT16 plants).
-  Added 13 Oct 2026 after exactly that bug shipped; see the bug log in
-  `docs/RESULTS_ROUND0.md`. `fit_real.py` enforces this by shifting
-  inside `fit_plant`, and `audit_round1.py` check 3d guards it.
-- Sampling differs by sheet: `Fig1B` and `Fig1C` are half-hourly, the rest
-  hourly. Interpolate explicitly when comparing, and say so.
+- Angle is in degrees. The sign convention is that of the source
+  publication; it must be confirmed against the published figures before
+  signs are compared across sheets.
+- The sheets are ragged: `Fig1C` cells are empty outside each plant's
+  observation window. Data must be parsed in long form, with missing cells
+  omitted rather than imputed.
+- The time base differs by sheet. `ZT` denotes zeitgeber time (hours since
+  the start of the photoperiod). `Fig2B` uses experimental time in hours.
+  Sheets must not be concatenated without conversion to a common time base
+  and retention of the source-sheet identifier.
+- **`Fig1C` stimulus onset.** Zeitgeber time is an absolute circadian
+  time, not elapsed time since stimulation. In Fig1C, each treatment
+  group was first exposed to unilateral blue light at its own ZT (Fig. 1
+  legend, Brooks et al. 2023). A plant's first non-missing observation
+  therefore defines its stimulus onset, and its angle at that time is zero
+  by construction. Every fit, simulation or feature calculation using
+  these trajectories must use elapsed time, `t - t_first`, calculated
+  separately for each plant. Supplying absolute ZT to a model that assumes
+  stimulation at $t=0$ causes later stimulus-start groups to appear
+  artificially slow; in the initial analysis this placed `tau` at its upper
+  bound for all 18 ZT12/ZT16 plants. This rule was added on 13 October
+  2026 after that error had entered the results (see
+  `docs/RESULTS_ROUND0.md`, Section 8). `fit_real.py` applies the shift in
+  `fit_plant`, and check 3d of `audit_round1.py` provides a regression test.
+- Sampling intervals differ by sheet: `Fig1B` and `Fig1C` are half-hourly,
+  whereas the remaining sheets are hourly. Any interpolation used for
+  comparison must be specified in the analysis.
 
-### The other sheets, scoped 13 October 2026 (read before touching)
+### Additional sheets assessed on 13 October 2026
 
-| Sheet | What it actually is (paper legends) | Angle convention | Model status |
+| Sheet | Experiment (according to the published legend) | Angle convention | Current status |
 |---|---|---|---|
-| `Fig1B` | phototropism time course, blue light from ZT3, n=3 (Fig 1B) | change from 0 at onset | candidate validation set; tiny n |
-| `Fig2B` | stem angles of field-grown heliotropic plants, n=6 (Fig 2B) | **absolute** stem angle (~71-122 deg), oscillates day/night | needs a moving-sun model; do not fit with the static model |
-| `Fig4A` | chamber-grown plants transplanted to the field after sunset, initiation of heliotropism, n=17 (Fig 4A) | **absolute** stem angle (~64-119 deg) | needs moving sun + night return |
-| `Fig4J` | plants in filter boxes: Clear, blue-depleted, red-depleted, n=5 each (Fig 4J) | plotted **Z-score-normalised** in the paper; sheet values look like degrees (~64-112) | **do not model until the normalisation question is resolved against S15 Data** |
+| `Fig1B` | Phototropism time course following blue-light stimulation at ZT3, n=3 | Change from zero at stimulus onset | Candidate validation set; very small sample size |
+| `Fig2B` | Stem angles of field-grown heliotropic plants, n=6 | **Absolute** stem angle (approximately 71–122 degrees), varying between day and night | Requires a moving-sun model; not to be fitted with the static-light model |
+| `Fig4A` | Chamber-grown plants transplanted to the field after sunset; initiation of heliotropism, n=17 | **Absolute** stem angle (approximately 64–119 degrees) | Requires a moving-sun model with night-time reorientation |
+| `Fig4J` | Plants in filter enclosures: clear, blue-depleted and red-depleted light, n=5 per treatment | Published figure is **Z-score normalised**; workbook values resemble degrees (approximately 64–112) | **Not to be modelled until the normalisation is resolved against S15 Data** |
 
-Rules that follow from the Fig1C clock bug: (1) absolute-angle sheets
-must have their angle convention established before any fit -- our
-model's theta is a change from vertical rest, theirs is not obviously
-the same number; (2) every new sheet gets its stimulus-onset and
-time-zero written here first; (3) `Fig4J`'s three filter groups are
-treatments applied to the light, not plant genotypes.
+Three handling rules follow from the Fig1C time-base error: (1) for
+absolute-angle sheets, the angle convention must be established before
+fitting, because the model variable $	heta$ represents deviation from
+an initially vertical orientation and is not necessarily commensurate
+with the published absolute angle; (2) the stimulus onset and time-zero
+definition for every new sheet must be recorded here before analysis;
+(3) the three Fig4J filter groups are treatments applied to the incident
+light, not plant genotypes.
 
 ### Licence
 
-PLOS Biology publishes under CC BY (confirmed on the journal's information
-page, October 2026): articles and their supporting files may be copied and
-redistributed with attribution. This file is therefore included in
-`data/real/` with attribution in `README.md`. Keep the citation, the download
-date and the checksum attached to the file wherever it moves.
+PLOS Biology publishes under CC BY (confirmed from the journal's
+information page in October 2026); articles and supporting files may be
+copied and redistributed with attribution. The workbook is therefore
+included in `data/real/`, with attribution in `README.md`. The citation,
+download date, byte size and checksum must accompany the file in any
+redistribution.
 
-## Synthetic data
+## Simulated data
 
-Not yet written. When it is, this section gets the same treatment: generator
-name, seed rule, parameter ranges and their units, output schema, and the
-train/validation/test split with disjoint seeds.
+Simulated populations are generated by `generate_plants.py`. A simulated
+plant is a four-parameter vector (`k`, `tau`, `max_rate`, `phi0`). The
+uniform population samples the declared parameter box; the empirically
+weighted population bootstrap-resamples the clean measured-data fits and
+applies 15 per cent lognormal multiplicative jitter. Every population is
+generated from a declared integer seed recorded in the generating script.
+Simulated trajectories and behavioural features are written to the CSV
+files listed in the relevant results documents.
 
-## Provenance
+## Provenance requirements
 
-Record for every file: source URL or DOI, download date, byte size, and a
-checksum. If a file is regenerated, the old one is renamed, not overwritten.
+Every externally obtained data file must be accompanied by its source URL
+or DOI, download date, byte size and checksum. Superseded generated files
+retained for provenance must be versioned or renamed rather than silently
+overwritten.

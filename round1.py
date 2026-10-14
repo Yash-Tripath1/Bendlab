@@ -1,13 +1,15 @@
-"""Round 1: the complete fake-plant suite.
+"""Experiment series 1: synthetic-population analyses.
 
-Runs every untested hypothesis that needs no new real data: H3 (cliffs in
-parameter space), H4 (cluster transfer to a moving sun), H6 (crossover
-connectivity of the degenerate set), H7 (protocol ranking by identifiability)
-and H8 (the adaptive identification game).
+This script evaluates the hypotheses that require no additional measured
+data: H3 (discontinuities in parameter space), H4 (cluster transfer across
+light regimes), H6 (connectivity of the degenerate parameter set), H7
+(protocol ranking by parameter identifiability) and H8 (adaptive protocol
+selection for predictive identification).
 
-Discipline note: every threshold and design choice below is declared at the
-top of this file and was fixed before the first run. Results are reported as
-they come out; a hypothesis that fails is abandoned, not reworded.
+Design note: all thresholds and analysis choices are declared at the top of
+this file and were fixed before the corresponding runs. Unsupported
+hypotheses are reported as unsupported and are not reformulated after
+inspection of the results.
 
 Run after fit_real.py and sweep_weighted.py (needs results/fit_fig1c.csv).
 """
@@ -49,14 +51,14 @@ N_CLUSTERS = 6
 # H6: crossover test
 H6_PAIRS = 300
 H6_MUT_PROB = 0.5
-H6_MUT_SD_FRAC = 0.10  # mutation sd, fraction of the weighted range per gene
+H6_MUT_SD_FRAC = 0.10  # mutation standard deviation, as a fraction of the weighted range for each parameter
 
 # H7: protocol ranking by nearest-neighbour recovery under noise
 H7_POP = 1_000
 SIGMA_OBS = 2.0        # degrees, from round-0 fit residuals (2-5 deg, low end)
 H7_GAP_SUPPORT = 0.10  # best-worst gap in mean relative error to call H7 supported
 
-# H8: identification game
+# H8: adaptive identification experiment
 H8_PLANTS = 500
 H8_HYP = 3_000
 H8_BUDGET = 24.0
@@ -123,7 +125,7 @@ def run_protocol(pop: pd.DataFrame, name: str):
 def library(pop: pd.DataFrame, name: str) -> np.ndarray:
     """Noiseless curves for the H8 hypothesis set, shape (n_plants, n_time).
 
-    Transposed relative to run_protocol because the game indexes by plant.
+    Transposed relative to run_protocol because the H8 analysis indexes by plant.
     """
     return run_protocol(pop, name)[1].T
 
@@ -167,7 +169,7 @@ def run_h3() -> dict:
         "max_jump_h": round(float(max(dk.max(), dt_.max())), 2),
         "half_rise": hr, "final": final, "ks": ks, "taus": taus,
     }
-    print("[H3] edges flagged as cliffs: %d/%d (%.2f%%), max adjacent jump %.2f h"
+    print("[H3] edges meeting the discontinuity criterion: %d/%d (%.2f%%); maximum adjacent change %.2f h"
           % (cliff_edges, total_edges, 100 * cliff_edges / total_edges,
              out["max_jump_h"]))
     return out
@@ -210,18 +212,18 @@ def run_h4_h6(clean: pd.DataFrame):
     hi = vals.max(axis=0)
     mut_sd = H6_MUT_SD_FRAC * (hi - lo)
 
-    def breed(i, j):
+    def recombine(i, j):
         mask = rng.random(len(PARAM_NAMES)) < 0.5
-        child = np.where(mask, vals[i], vals[j])
+        recombinant = np.where(mask, vals[i], vals[j])
         hits = rng.random(len(PARAM_NAMES)) < H6_MUT_PROB
-        child = child + hits * rng.normal(0.0, 1.0, len(PARAM_NAMES)) * mut_sd
-        return np.clip(child, lo, hi)
+        recombinant = recombinant + hits * rng.normal(0.0, 1.0, len(PARAM_NAMES)) * mut_sd
+        return np.clip(recombinant, lo, hi)
 
     centroids = KMeans(N_CLUSTERS, n_init=10,
                        random_state=SEED_BASE).fit(Xs).cluster_centers_
 
-    def cluster_of(child_vals: np.ndarray) -> np.ndarray:
-        cpop = pop_frame(child_vals)
+    def cluster_of(recombinant_vals: np.ndarray) -> np.ndarray:
+        cpop = pop_frame(recombinant_vals)
         ct, cth = batch_simulate(cpop["k"], cpop["tau"], cpop["max_rate"],
                                  cpop["phi0"], light_static, T_END,
                                  record_dt=RECORD_DT)
@@ -239,21 +241,21 @@ def run_h4_h6(clean: pd.DataFrame):
                            for _ in range(H6_PAIRS)])
     diff_pairs = diff_pairs[lab_s[diff_pairs[:, 0]] != lab_s[diff_pairs[:, 1]]]
 
-    kids_same = cluster_of(np.array([breed(i, j) for i, j in same_pairs]))
-    keep_same = float(np.mean(kids_same == lab_s[same_pairs[:, 0]]))
+    recombinants_same = cluster_of(np.array([recombine(i, j) for i, j in same_pairs]))
+    keep_same = float(np.mean(recombinants_same == lab_s[same_pairs[:, 0]]))
 
-    kids_diff = cluster_of(np.array([breed(i, j) for i, j in diff_pairs]))
-    keep_diff_mom = float(np.mean(kids_diff == lab_s[diff_pairs[:, 0]]))
-    keep_diff_any = float(np.mean((kids_diff == lab_s[diff_pairs[:, 0]])
-                                  | (kids_diff == lab_s[diff_pairs[:, 1]])))
+    recombinants_diff = cluster_of(np.array([recombine(i, j) for i, j in diff_pairs]))
+    keep_diff_first = float(np.mean(recombinants_diff == lab_s[diff_pairs[:, 0]]))
+    keep_diff_any = float(np.mean((recombinants_diff == lab_s[diff_pairs[:, 0]])
+                                  | (recombinants_diff == lab_s[diff_pairs[:, 1]])))
 
-    print("[H6] same-cluster parents: %.1f%% of offspring stay in the class "
-          "(n=%d)" % (100 * keep_same, len(same_pairs)))
-    print("[H6] cross-cluster control: %.1f%% land in mother's class, "
-          "%.1f%% in either parent's (n=%d)"
-          % (100 * keep_diff_mom, 100 * keep_diff_any, len(diff_pairs)))
+    print("[H6] same-cluster source pairs: %.1f%% of recombinants assigned "
+          "to the source class (n=%d)" % (100 * keep_same, len(same_pairs)))
+    print("[H6] cross-cluster controls: %.1f%% assigned to the first source "
+          "class; %.1f%% to either source class (n=%d)"
+          % (100 * keep_diff_first, 100 * keep_diff_any, len(diff_pairs)))
     return {"ari": ari, "verdict": verdict, "keep_same": keep_same,
-            "keep_diff_mom": keep_diff_mom, "keep_diff_any": keep_diff_any,
+            "keep_diff_first": keep_diff_first, "keep_diff_any": keep_diff_any,
             "n_same": len(same_pairs), "n_diff": len(diff_pairs)}
 
 
@@ -271,7 +273,7 @@ def run_h7(clean: pd.DataFrame) -> pd.DataFrame:
         obs = th + noise
         nn = NearestNeighbors(n_neighbors=2).fit(obs.T)
         _, idx = nn.kneighbors(obs.T)
-        rec = params[idx[:, 1]]  # nearest OTHER plant's parameters
+        rec = params[idx[:, 1]]  # parameters of the nearest distinct plant
         rel_err = np.abs(params - rec) / span
         rows.append({
             "protocol": name, "cost_h": dur,
@@ -399,13 +401,13 @@ def make_figure(h3, h46, h7, h8, clean):
                            light_static, T_END, record_dt=RECORD_DT)
 
     fig, ax = plt.subplots(2, 3, figsize=(15.5, 8.6))
-    fig.suptitle("BendLab round 1 - the complete fake-plant suite "
+    fig.suptitle("BendLab experiment series 1: synthetic-population analyses "
                  "(13 October 2026)", fontsize=13, weight="bold")
 
     a = ax[0, 0]
     im = a.pcolormesh(h3["ks"], h3["taus"], h3["half_rise"].T,
                       shading="auto", cmap="viridis")
-    a.set_title("H3: time-to-half-rise over (k, tau)\nsmooth map, %.1f%% cliff edges"
+    a.set_title("H3: half-rise time over (k, tau)\nno discontinuity edges detected (%.1f%%)"
                 % (100 * h3["edge_frac"]))
     a.set_xlabel("k (per hour)")
     a.set_ylabel("tau (hours)")
@@ -417,19 +419,19 @@ def make_figure(h3, h46, h7, h8, clean):
               label="persist threshold %.1f" % H4_ARI_PERSIST)
     a.set_ylim(0, 1)
     a.set_title("H4: cluster agreement across regimes\nARI = %.3f -> %s"
-                % (h46["ari"], "persist" if h46["ari"] >= H4_ARI_PERSIST
-                   else "do NOT persist"))
+                % (h46["ari"], "clusters persist" if h46["ari"] >= H4_ARI_PERSIST
+                   else "clusters do not persist"))
     a.legend()
     a.set_ylabel("adjusted Rand index")
 
     a = ax[0, 2]
-    a.bar(["same-cluster\nparents", "cross-cluster\n(mother)",
-           "cross-cluster\n(either)"],
-          [100 * h46["keep_same"], 100 * h46["keep_diff_mom"],
+    a.bar(["Same-cluster\nsource pair", "Cross-cluster\n(first source)",
+           "Cross-cluster\n(either source)"],
+          [100 * h46["keep_same"], 100 * h46["keep_diff_first"],
            100 * h46["keep_diff_any"]],
           color=["tab:green", "tab:orange", "tab:red"], width=0.55)
     a.set_ylim(0, 100)
-    a.set_title("H6: offspring stay in the parents'\nbehaviour class (%)")
+    a.set_title("H6: percentage of recombinant parameter vectors\nassigned to the source behavioural class")
     a.set_ylabel("percent")
 
     a = ax[1, 0]
@@ -437,8 +439,7 @@ def make_figure(h3, h46, h7, h8, clean):
     a.invert_yaxis()
     for i, (e, c) in enumerate(zip(h7["mean_rel_err"], h7["cost_h"])):
         a.text(e + 0.005, i, "%.2f (%.0fh)" % (e, c), va="center", fontsize=9)
-    a.set_title("H7: parameter recovery error by protocol\n(lower = more "
-                "revealing; cost in hours)")
+    a.set_title("H7: parameter-recovery error by protocol\n(lower indicates greater identifiability; duration in hours)")
     a.set_xlabel("mean relative error")
 
     a = ax[1, 1]
@@ -447,15 +448,14 @@ def make_figure(h3, h46, h7, h8, clean):
     a.bar(h8["policy"], h8["success_per_100"],
           color=[colors[p] for p in h8["policy"]], width=0.55)
     a.set_ylim(0, 100)
-    a.set_title("H8: identification game, %d plants\npredict unseen ramp "
+    a.set_title("H8: adaptive identification experiment, %d plants\nheld-out ramp prediction "
                 "within %.0f deg" % (H8_PLANTS, H8_EPS))
     a.set_ylabel("success per 100")
 
     a = ax[1, 2]
     for j in range(0, 150):
         a.plot(t, th[:, j], color="green", alpha=0.15, lw=0.7)
-    a.set_title("The weighted population\n150 realistic plants under static "
-                "light")
+    a.set_title("Empirically weighted population\n150 simulated trajectories under static light")
     a.set_xlabel("hours")
     a.set_ylabel("stem angle (deg)")
 
@@ -475,7 +475,7 @@ def main():
     best = h7.iloc[0]["protocol"]
     h8 = run_h8(clean, best_protocol=best)
     make_figure(h3, h46, h7, h8, clean)
-    print("\ntotal wall time %.0f s" % (time.time() - t0))
+    print("\ntotal elapsed time: %.0f s" % (time.time() - t0))
 
 
 if __name__ == "__main__":

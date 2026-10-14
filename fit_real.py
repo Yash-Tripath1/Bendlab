@@ -1,4 +1,4 @@
-"""H5: can the toy model reproduce real stem-angle curves?
+"""H5: assessment of the minimal model against measured stem-angle trajectories.
 
 Fits (k, tau, max_rate, phi0) per plant against the PLOS S13 Fig1C data with
 bounded least-squares (scipy least_squares), static light.
@@ -12,8 +12,8 @@ day"). Every fit therefore runs on elapsed time, t - t_first, with the
 model at rest (theta = 0, lamp just switched on) at the plant's first
 timestamp. The first version of this script integrated with the lamp on
 from ZT 0 and scored only from the first timestamp, so a ZT16 plant had
-to explain 16 unobserved hours of bending it never did; the only escape
-was tau at its upper bound. That artifact produced the retracted round-0
+to explain 16 unobserved hours of bending that were not part of the
+observed trajectory; the only available compensation was tau at its upper bound. That artifact produced the retracted round-0
 claim that "static light fails by time of day" (20/48 fits pinned, all
 ZT12/ZT16). On the corrected time base 4/48 fits touch a bound, all of
 them ZT9 plants at the tau LOWER bound. See docs/RESULTS_ROUND0.md,
@@ -24,9 +24,9 @@ Verdict rule, stated before fitting:
   the median across-plant standard deviation at matched timestamps, i.e. the
   model is wrong by less than plants differ from each other.
 
-The spread proxy is deliberately generous to the model: it counts genuine
-plant-to-plant differences as if they were measurement noise, so passing is
-the easy bar and failing is meaningful.
+The spread measure is conservative in favour of the model because genuine
+plant-to-plant differences are included in the denominator; consequently,
+satisfying this criterion is a comparatively weak adequacy requirement.
 """
 
 from __future__ import annotations
@@ -39,13 +39,14 @@ from data_real import load_long
 
 DT = 1.0 / 60.0  # one minute integration step
 
-# Bounds: wide enough to contain any plausible plant, tight enough that the
-# optimizer cannot escape to overflow. tau was widened 12 -> 48 h on 12 Oct
-# (declared next-step 1) after round 0 found 20/48 fits pinned at the old
-# upper bound; the 13 Oct time-base correction (module docstring) showed
-# those pins were a clock artifact, not plants asking for a longer lag.
-# The bounds stay wide: a bound-pinned fit must not define the plausible
-# region, whichever wall it ends up on.
+# Parameter bounds. These are sufficiently wide to contain plausible
+# parameter values while preventing numerical overflow. The tau bound was
+# increased from 12 to 48 h on 12 October after the initial analysis found
+# 20/48 fits at the former upper bound. The time-base correction of
+# 13 October showed that those boundary solutions arose from the timestamp
+# error rather than from a requirement for a longer lag. The wider bounds
+# are retained, and bound-pinned fits are excluded from the definition of
+# the empirically supported parameter region.
 LO = np.array([1e-3, 0.05, 0.5, 0.0])
 HI = np.array([50.0, 48.0, 200.0, 130.0])
 NAMES = ("k", "tau", "max_rate", "phi0")
@@ -148,10 +149,10 @@ def main() -> None:
     print("\noverall: median RMSE %.2f deg | median spread %.2f deg | ratio %.2f"
           % (fits["rmse"].median(), fits["spread"].median(),
              fits["rmse"].median() / fits["spread"].median()))
-    print("H5 verdict: %d/%d blocks pass (median rmse <= across-plant spread)"
+    print("H5 criterion: %d/%d groups satisfy median RMSE <= across-plant spread"
           % (int(summ["H5_pass"].sum()), len(summ)))
     nb = (fits["at_bound"] != "[]").sum()
-    print("plants with a parameter pinned at a bound: %d/%d" % (nb, len(fits)))
+    print("fits with a parameter at an optimisation bound: %d/%d" % (nb, len(fits)))
     fits.to_csv("results/fit_fig1c.csv", index=False)
     print("saved results/fit_fig1c.csv")
 
@@ -168,7 +169,7 @@ def degeneracy_check() -> None:
     df = load_long(sheet="Fig1C")
     g = df[df["plant"] == "ZT0-1"].sort_values("t")
     t, y = g["t"].to_numpy(float), g["angle"].to_numpy(float)
-    t = t - t[0]  # elapsed since stimulus onset (ZT0-1 starts at 0 anyway)
+    t = t - t[0]  # convert timestamps to elapsed time since stimulus onset
 
     print("\n=== degeneracy check, plant ZT0-1 ===")
     print(" tau fixed |    k  | max_rate |  phi0  |   RMSE")
@@ -188,14 +189,15 @@ def degeneracy_check() -> None:
             base_rmse = rmse
         print(f" {tau_fix:9.2f} | {res.x[0]:5.2f} | {res.x[1]:8.2f} "
               f"| {res.x[2]:6.2f} | {rmse:6.3f}")
-    print("(RMSE spread across the tau grid above = practical sloppiness)")
+    print("(The variation in RMSE across this tau grid measures practical parameter sloppiness.)")
 
     f = fit_plant(t, y)
     th = run_model(f["k"], f["tau"], 1e9, f["phi0"], t)  # cap removed
-    print("\ncap check: RMSE with fitted max_rate = %.3f, with cap removed = %.3f"
+    print("\nMaximum-rate check: RMSE with fitted max_rate = %.3f; with the limit removed = %.3f"
           % (f["rmse"], float(np.sqrt(np.mean((th - y) ** 2)))))
-    print("=> if these match, max_rate is not identifiable from this curve "
-          "whenever it exceeds the peak realised rate.")
+    print("Interpretation: equality of these values indicates that max_rate "
+          "is unidentifiable from this trajectory when it exceeds the "
+          "maximum realised bend rate.")
 
 
 if __name__ == "__main__":
