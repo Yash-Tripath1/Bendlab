@@ -1,0 +1,82 @@
+mega population n=400000 seed=20261014
+regime static ...
+  done (37.8s)
+regime flip8 ...
+  done (73.5s)
+regime sweep12 ...
+  done (109.0s)
+regime dflip ...
+  done (144.2s)
+regime ramp24 ...
+  done (181.6s)
+cluster summaries done (181.9s)
+nearest-neighbour recovery done (184.1s)
+  twin search 0/20000
+  twin search 1000/20000
+  twin search 2000/20000
+  twin search 3000/20000
+  twin search 4000/20000
+  twin search 5000/20000
+  twin search 6000/20000
+  twin search 7000/20000
+  twin search 8000/20000
+  twin search 9000/20000
+  twin search 10000/20000
+  twin search 11000/20000
+  twin search 12000/20000
+  twin search 13000/20000
+  twin search 14000/20000
+  twin search 15000/20000
+  twin search 16000/20000
+  twin search 17000/20000
+  twin search 18000/20000
+  twin search 19000/20000
+twin search done (231.5s)
+
+=== MEGA SWEEP SUMMARY ===
+{
+  "n_plants": 400000,
+  "seed": 20261014,
+  "runtime_seconds": 232.7,
+  "ari_vs_static": {
+    "static": 1.0,
+    "flip8": 0.31631703418796475,
+    "sweep12": 0.4364331204489852,
+    "dflip": 0.48756140666486864,
+    "ramp24": 0.44764095393295844
+  },
+  "median_within_cluster_iqr_frac_of_range": {
+    "k": 0.24947094916094753,
+    "tau": 0.3542040361116411,
+    "max_rate": 0.502091045938858,
+    "phi0": 0.24303472968826612
+  },
+  "nearest_neighbour_rank1_median_rel_error": {
+    "k": 0.011243523693963513,
+    "tau": 0.013935120640294563,
+    "max_rate": 0.3260455451622757,
+    "phi0": 0.010535306263733321
+  },
+  "twin_queries": 20000,
+  "twin_median_rmse_deg": 0.012626906806902633,
+  "twin_p95_rmse_deg": 0.0472455591261534,
+  "nontrivial_twins_rmse_below_1deg_and_mean_param_diff_above_025": 35,
+  "dashboard_examples": [
+    {
+      "plant_id": 397642,
+      "twin_id": 254726,
+      "trajectory_rmse_deg": 0.0
+    },
+    {
+      "plant_id": 93593,
+      "twin_id": 103003,
+      "trajectory_rmse_deg": 0.0
+    },
+    {
+      "plant_id": 254726,
+      "twin_id": 397642,
+      "trajectory_rmse_deg": 0.0
+    }
+  ]
+}
+saved results/figures/mega_sweep_dashboard.png
