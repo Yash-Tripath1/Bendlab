@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build the GitHub Pages site in docs/ from the standalone pages.
 
-Adds a shared tab bar (Simulator / Trained model / Curve fitter) to:
+Adds a shared tab bar (About / Simulator / Trained model / Curve fitter) to:
   bendlab_visual_simulator.html -> docs/index.html
   bendlab_model_demo.html       -> docs/model.html
   bendlab_curve_fitter.html     -> docs/fitter.html
@@ -20,6 +20,7 @@ NAV_CSS = """
 """
 
 PAGES = [
+    ("bendlab_about.html", "docs/about.html", "about", "1180px"),
     ("bendlab_visual_simulator.html", "docs/index.html", "simulator", "1480px"),
     ("bendlab_model_demo.html", "docs/model.html", "model", "1180px"),
     ("bendlab_curve_fitter.html", "docs/fitter.html", "fitter", "1180px"),
@@ -32,6 +33,7 @@ def nav(active: str, width: str) -> str:
     return (
         f'<nav class="site-nav" style="max-width:{width}">'
         '<span class="brand">BendLab</span>'
+        f'<a{cls("about")} href="about.html">About</a>'
         f'<a{cls("simulator")} href="index.html">Simulator</a>'
         f'<a{cls("model")} href="model.html">Trained model</a>'
         f'<a{cls("fitter")} href="fitter.html">Curve fitter</a>'

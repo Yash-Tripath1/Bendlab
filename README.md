@@ -76,6 +76,9 @@ result.
 | `gamma_zt9_test.py` | Evaluation of the proprioceptive candidate on ZT9-1 (negative result) |
 | `clock_validation.py` | In-sample reproduction and shared-clock held-out evaluation of the circadian-gating candidate |
 | `check_model_v2.py` | Regression checks: candidate simulators reduce to `sim.py` exactly at default settings |
+| `check_model_contract.py` | Regression checks for the implemented model definition: rate cap applied after the lag update, including a cap-binding light-reversal case |
+| `audit_followup.py` | External-audit follow-up: H1 to H3 as written, H7 at matched budget, weighted-population max_rate sensitivity, corrected H6/H8 reruns |
+| `exp_design_model_selection.py` | Model-selection design study for the two-source experiment (simulated datasets, per-seedling candidate fits, correct-selection probability) |
 | `vector_stimulus.py`, `vector_batch.py`, `vector_grand_atlas.py` | Multi-source stimulus comparison (physical vs transduced vs circumference-integrated), sensitivity atlas and model-discrimination map |
 | `exp_design.py` | Experimental-design power analysis for discriminating the stimulus models |
 | `phase_a.py` | Leave-one-block-out cross-validation, per-fit parameter uncertainty, and the Fig1B external check |
@@ -93,6 +96,9 @@ result.
 | `docs/RESULTS_ROUND1.md` | Results for H3–H8 and the independent audit |
 | `docs/RESULTS_ROUND2_ZT9.md` | Diagnostic analysis of the ZT9 residual pattern |
 | `docs/ADAPTIVE_IDENTIFICATION.md` | Design specification for the adaptive identification experiment, including pre-declared v2 |
+| `docs/AUDIT_RESPONSE_2026-10-16.md` | Response to the external audit of 2026-10-16: verified findings, fixes, and remaining open items |
+| `docs/AUDIT_FOLLOWUP_RESULTS.md` | Numerical results of the audit follow-up analyses (hypotheses as written, sensitivity, model-selection design) |
+| `docs/CURRENT_STATUS.md` | Canonical one-page summary of established results, withdrawals, and open questions |
 | `docs/DATA_SOURCES.md` | Data provenance and candidate external datasets |
 | `docs/DATA_CONTRACT.md` | Dataset structure, units, sampling and parsing rules |
 | `data/real/` | Measured dataset; see attribution below |

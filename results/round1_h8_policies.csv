@@ -1,5 +1,5 @@
 policy,success_per_100,n
 random,89.4,500
-fixed,83.2,500
+fixed,83.4,500
 greedy,88.6,500
 thompson,63.2,500

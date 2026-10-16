@@ -56,28 +56,32 @@ a parameter region supported by experimental data.
 ## 2. Model
 
 Let $\theta(t)$ denote stem angle and $r(t)$ the instantaneous rate of
-change of stem angle. The model is
+change of stem angle. The implemented model is the discrete update
 
 $$
-\dot{\theta} = r,
-\qquad
-\tau \dot{r}
-=
+r_{n+1} =
 \operatorname{clip}\!\left(
-  k \sin(\phi(t)-\theta),\,
-  -r_{\max},\,
-  r_{\max}
-\right) - r,
+  r_n + \frac{\Delta t}{\tau}
+  \left( k \sin(\phi_n - \theta_n) - r_n \right),
+  \ -r_{\max}, \ r_{\max}
+\right),
+\qquad
+\theta_{n+1} = \theta_n + r_{n+1} \Delta t,
 $$
 
-where:
+where $\phi_n = \phi(t_n)$ is the light angle at step $n$. State angles
+are stored in degrees; the sine argument is converted to radians. Note
+that the cap is applied to the bend rate $r$ **after** each lag update,
+not to the stimulus term before the lag; this ordering is part of the
+model definition, is what `sim.py` implements, and is exercised by the
+checks in `check_model_contract.py`.
 
 | Parameter | Unit | Interpretation |
 |---|---:|---|
-| $k$ | degrees h$^{-2}$ | Response gain to the angular difference between light direction and stem axis |
+| $k$ | degrees h$^{-1}$ | Response gain: the bend rate the response is driven toward per unit sine of the angular difference between light direction and stem axis |
 | $\tau$ | h | Time constant of the sensing and response lag |
 | $r_{\max}$ (`max_rate`) | degrees h$^{-1}$ | Maximum permitted bend rate |
-| $\phi_0$ | degrees | Light direction under a static-light regime |
+| $\phi_0$ | degrees | Effective light (target) angle under a static-light regime. In fits to measured plants it is a per-plant fitted parameter and may absorb lamp geometry and initial-orientation offsets; it should not be read as a directly measured lamp azimuth |
 
 The term $\sin(\phi-\theta)$ follows the qualitative form of the
 Blaauw sine law for first positive phototropism. The first-order lag

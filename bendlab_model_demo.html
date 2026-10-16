@@ -111,7 +111,7 @@
           <tr><td>18</td><td>4.4%</td><td>2.7%</td><td>1.6 deg</td><td>44.2%</td></tr>
           <tr><td>24</td><td>3.8%</td><td>3.1%</td><td>1.5 deg</td><td>44.3%</td></tr>
         </table>
-        <p class="small" style="margin-top:8px">tau reveals itself early, phi0 sharpens steadily, k settles late, and max_rate stays unknown at every window: when the bend-rate cap never binds, no amount of extra observation creates the missing information. With 1 degree of independent noise on every reading, full-day errors rise to roughly 27%. Training ranges: k 0.05 to 3, tau 0.25 to 6 h, max_rate 2 to 40 deg/h, phi0 5 to 85 deg.</p>
+        <p class="small" style="margin-top:8px">tau reveals itself early, phi0 sharpens steadily, k settles late, and max_rate stays unknown at every window: when the bend-rate cap never binds, no amount of extra observation creates the missing information. With 1 degree of independent noise on every reading, full-day errors rise to roughly 27%. <b>Do not apply this model to real measured curves</b>: fitted sunflower parameters often lie outside the training ranges below, and the model has only ever seen simulator output. The ensemble spread shown with each prediction is disagreement among three networks; it is not a calibrated confidence interval. Training ranges: k 0.05 to 3, tau 0.25 to 6 h, max_rate 2 to 40 deg/h, phi0 5 to 85 deg.</p>
       </div>
     </div>
   </div>
