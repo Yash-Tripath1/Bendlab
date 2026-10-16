@@ -71,6 +71,17 @@ result.
 | `make_explainer_figures.py` | Construction of the six-panel results summary figure |
 | `real_seedling_sim.py` | Simulations of measured-data parameter sets under alternative light protocols |
 | `zt9_diagnostics.py` | Residual, lag-bound sensitivity and stall-timing analyses for the ZT9 model limitation |
+| `sim_gamma.py` | Model v2 candidate A: simulator with a proprioceptive (autostraightening) term |
+| `sim_clock_gamma.py` | Model v2 candidate B: simulator with circadian gating of sensitivity, optionally combined with the proprioceptive term |
+| `gamma_zt9_test.py` | Evaluation of the proprioceptive candidate on ZT9-1 (negative result) |
+| `clock_validation.py` | In-sample reproduction and shared-clock held-out evaluation of the circadian-gating candidate |
+| `check_model_v2.py` | Regression checks: candidate simulators reduce to `sim.py` exactly at default settings |
+| `vector_stimulus.py`, `vector_batch.py`, `vector_grand_atlas.py` | Multi-source stimulus comparison (physical vs transduced vs circumference-integrated), sensitivity atlas and model-discrimination map |
+| `exp_design.py` | Experimental-design power analysis for discriminating the stimulus models |
+| `phase_a.py` | Leave-one-block-out cross-validation, per-fit parameter uncertainty, and the Fig1B external check |
+| `probe_claude.py` | Stall-locking (circular statistics with permutation tests), overshoot census, and fixed-light-angle refits |
+| `big_sweep.py`, `mega_sweep.py` | Uniform-population degeneracy sweeps at 100,000 and 400,000 plants |
+| `bendlab_visual_simulator.html` | Standalone browser simulator (same integrator; stem outline schematic) |
 | `make_print_edition.py` | Compilation of the project documents into a dated printable PDF |
 | `docs/EXPLAINER.md` | Project overview |
 | `docs/EXPLAINER_PART2.md` | Overview of the simulation experiments, validation and corrections |
