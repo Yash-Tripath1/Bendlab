@@ -82,6 +82,10 @@ result.
 | `probe_claude.py` | Stall-locking (circular statistics with permutation tests), overshoot census, and fixed-light-angle refits |
 | `big_sweep.py`, `mega_sweep.py` | Uniform-population degeneracy sweeps at 100,000 and 400,000 plants |
 | `bendlab_visual_simulator.html` | Standalone browser simulator (same integrator; stem outline schematic) |
+| `train_inverse_model.py`, `train_inverse_model_v2.py`, `train_inverse_model_v3.py` | Training of the neural inverse model (curve to parameters); v2 uses 100,000 plants and noise augmentation, v3 is a single any-hour network trained with random observation cutoffs (4 to 24 h) |
+| `bendlab_model_demo.html` | Trained inverse model running in the browser (weights embedded), with validation statistics and a simulator self-check |
+| `bendlab_curve_fitter.html` | Deterministic bounded least-squares curve fitter running in the browser, with identifiability diagnostics |
+| `build_site.py` | Builds the GitHub Pages site in `docs/` (Simulator, Trained model and Curve fitter tabs) from the standalone pages |
 | `make_print_edition.py` | Compilation of the project documents into a dated printable PDF |
 | `docs/EXPLAINER.md` | Project overview |
 | `docs/EXPLAINER_PART2.md` | Overview of the simulation experiments, validation and corrections |
