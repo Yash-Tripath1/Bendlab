@@ -83,6 +83,17 @@ result.
 | `data/real/` | Measured dataset; see attribution below |
 | `results/` | Numerical outputs required to reproduce the reported results |
 
+## Interactive figure
+
+An interactive, browser-based figure of the BendLab model (live simulation
+with parameter controls and the max_rate identifiability demonstration) was
+built with [Anima](https://github.com/Garinmckayl/anima) by Natnael Getenew:
+https://anima.arcumet.com/examples/sunflower-bend/sunflower-bend.html
+
+The figure's integrator was reviewed against `sim.py` and found faithful;
+the stem outline in the figure is schematic, with stem angle, bend rate and
+the trajectory chart constituting the model outputs.
+
 ## Reproduction
 
 Python 3.10 or later is required. Commands should be run from the
