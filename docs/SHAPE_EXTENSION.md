@@ -149,7 +149,9 @@ attributable to the features alone.
 | `check_multiseg.py` | regression checks: exact reduction, uniform invariance, batch/single agreement, determinism, cap contract, zeta behaviour |
 | `shape_degeneracy.py` | H-SHAPE v1: the pre-registered tip-only vs shape comparison |
 | `shape_degeneracy_v2.py` | H-SHAPE-v2: the corrected comparison (pre-registered in the results document) |
-| `docs/SHAPE_EXTENSION_RESULTS.md` | numerical results, diagnosis, v2 pre-registration and outcome |
+| `shape_probe_exploratory.py` | Exploratory probe of identification metrics (not confirmatory) |
+| `shape_identification_v3.py` | Pre-registered twin-refinement identification study on a fresh population |
+| `docs/SHAPE_EXTENSION_RESULTS.md` | numerical results, diagnosis, v2 and v3 pre-registrations and outcomes |
 
 Reproduction (from the repository root):
 

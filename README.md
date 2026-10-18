@@ -89,6 +89,8 @@ result.
 | `check_multiseg.py` | Regression checks for the shape-extension simulator: exact reduction, uniform invariance, batch/single agreement, determinism, cap contract, zeta behaviour |
 | `shape_degeneracy.py` | H-SHAPE v1: tip-only vs shape-feature clustering comparison (falsified as specified; empty shape channel diagnosed) |
 | `shape_degeneracy_v2.py` | H-SHAPE-v2: corrected comparison with the sensitivity gradient (pre-registered; NOT SUPPORTED, shape identifies only the shape-making parameters) |
+| `shape_probe_exploratory.py` | Exploratory probe: nearest-neighbour recovery, twin refinement, flexible decoding (labelled non-confirmatory) |
+| `shape_identification_v3.py` | Pre-registered twin-refinement study on a fresh population (SUPPORTED for k and phi0) |
 | `bendlab_visual_simulator.html` | Standalone browser simulator (same integrator; stem outline schematic) |
 | `train_inverse_model.py`, `train_inverse_model_v2.py`, `train_inverse_model_v3.py` | Training of the neural inverse model (curve to parameters); v2 uses 100,000 plants and noise augmentation, v3 is a single any-hour network trained with random observation cutoffs (4 to 24 h) |
 | `bendlab_model_demo.html` | Trained inverse model running in the browser (weights embedded), with validation statistics and a simulator self-check |

@@ -185,7 +185,153 @@ Files: `results/shape_degeneracy_v2_features.csv.gz`,
 `results/shape_degeneracy_v2_summary.json`,
 `results/figures/shape_retention_v2.png`.
 
-## 6. Summary
+## 7. Exploratory probe (NOT confirmatory)
+
+`shape_probe_exploratory.py` was run on the saved v2 population to
+decide whether a confirmatory study is warranted and what protocol it
+should use. Everything in this section is exploratory: no hypothesis
+tested here may be reported as confirmed. Outputs:
+`results/shape_probe_exploratory.csv`.
+
+Probe A (nearest-neighbour recovery, median |param difference| / full
+range): with COMBINED features the behavioural twin's parameter error
+falls to 5.0% (k), 4.3% (phi0), 7.1% (zeta) against 11.8%, 10.2%, 19.1%
+with tip-only features.
+
+Probe B (twin refinement — the original shape method, stated properly:
+among a plant's 20 nearest tip-space neighbours, pick the one closest in
+shape space): error falls from 11.8% to 6.0% (k), 10.2% to 5.5% (phi0),
+24.7% to 13.9% (c), 19.1% to 8.6% (zeta). tau and max_rate do not
+improve. The oracle (best of the 20 per parameter) sits at 0.7–1.6%:
+there is headroom that shape does not capture for tau and max_rate.
+
+Probe C (ExtraTrees, 5-fold CV R2): COMBINED features give 0.926 (k),
+0.759 (tau), 0.957 (phi0), 0.916 (zeta) against tip-only 0.677, 0.513,
+0.621, 0.300. max_rate is at chance in every arm (-0.03 to -0.01),
+consistent with H1's exact-degeneracy result for non-binding caps.
+
+Reading: the H-SHAPE-v2 negative was a decoder failure (shape dimensions
+displacing tip dimensions in a KMeans distance, scored by the blunt
+cluster-retention metric), not an information failure. Shape features
+identify parameters, and among tip-space curve twins they identify which
+twin is which — the original idea of this extension.
+
+## 8. Twin-refinement v3 (pre-registered)
+
+Written before the v3 run. Protocol and threshold were informed by the
+section-7 exploration; the guard against over-fitting to that
+exploration is that v3 runs on a FRESH population with new seeds.
+
+**Population.** n = 10,000, the four-parameter uniform box of
+`generate_plants.py` at seed 101; c ~ Uniform[0, 1] (seed 102);
+zeta ~ Uniform[0, 1] (seed 103). Protocol unchanged: static light,
+24 h, 0.5 h records, n_seg = 5, zeta-gradient model of section 4.
+
+**Primary protocol (the original shape method).** Standardise tip
+features (6) and shape features (8) separately. For each plant, take its
+20 nearest neighbours in tip-feature space (behavioural twins under the
+current observable). Among those 20, pick the one nearest in
+shape-feature space. Identification error per parameter = median
+|parameter difference| / full population range, reported for the plain
+tip nearest neighbour and the refined pick.
+
+**Hypothesis (v3).** Twin refinement reduces the median normalised
+parameter error by at least 25 per cent relative to the plain tip
+nearest neighbour, for at least two of the four original parameters
+(k, tau, max_rate, phi0).
+
+**Falsification.** Fewer than two of the four show a reduction of at
+least 25 per cent.
+
+**Secondary outputs (reported, no verdict).** Oracle (best of the 20
+per parameter); nearest-neighbour recovery for tip-only, shape-only and
+combined arms; ExtraTrees 5-fold CV R2 for the three arms; results for
+the extension parameters c and zeta.
+
+**Declared expectations.** The exploration suggests k and phi0 will
+qualify and tau and max_rate will not (max_rate because the cap rarely
+binds — an exact-degeneracy property from H1, not a method failure).
+The criterion is unchanged by this expectation.
+
+## 9. Twin-refinement v3: results
+
+Run: `python shape_identification_v3.py`, 18 October 2026, on the fresh
+population of section 8 (seeds 101/102/103), after section 8 was
+specified.
+
+Primary protocol (20 tip-space twins refined by shape):
+
+| Parameter | tip twin | refined | oracle | reduction |
+|---|---:|---:|---:|---:|
+| k | 11.86% | 6.03% | 0.81% | **+49.2%** |
+| tau | 10.36% | 11.02% | 1.11% | -6.4% |
+| max_rate | 28.98% | 28.66% | 1.68% | +1.1% |
+| phi0 | 10.54% | 5.70% | 0.71% | **+45.9%** |
+| c | 23.41% | 13.75% | 1.54% | +41.3% |
+| zeta | 18.54% | 8.83% | 1.32% | +52.4% |
+
+**Verdict against the pre-registered criterion (>= 25 per cent error
+reduction for >= 2 of the four original parameters): SUPPORTED.**
+Exactly the two parameters declared as likely qualifiers do qualify:
+k (+49.2 per cent) and phi0 (+45.9 per cent). tau and max_rate behave
+as declared: no improvement. The fresh population reproduces the
+exploratory effect sizes closely (exploration: k 48.8 per cent, phi0
+45.9 per cent), so the section-7 protocol choice did not over-fit.
+
+Secondary outputs (reported, no verdict):
+
+NN recovery, median |difference| / full range:
+
+| Parameter | tip | shape | combined |
+|---|---:|---:|---:|
+| k | 11.86% | 12.44% | 4.92% |
+| tau | 10.36% | 19.73% | 10.05% |
+| max_rate | 28.98% | 28.83% | 28.55% |
+| phi0 | 10.54% | 5.22% | 4.47% |
+| c | 23.41% | 7.67% | 10.63% |
+| zeta | 18.54% | 15.70% | 6.99% |
+
+ExtraTrees 5-fold CV R2:
+
+| Parameter | tip | shape | combined |
+|---|---:|---:|---:|
+| k | 0.677 | 0.604 | 0.924 |
+| tau | 0.522 | 0.187 | 0.761 |
+| max_rate | -0.024 | -0.006 | -0.009 |
+| phi0 | 0.625 | 0.915 | 0.962 |
+| c | 0.056 | 0.792 | 0.786 |
+| zeta | 0.286 | 0.509 | 0.913 |
+
+**Reading.** The method works. Among plants with indistinguishable
+tip-angle behaviour, the curvature profile selects the right plant
+about half the identification error away from guessing: k error is
+halved and phi0 error is halved, and the flexible decoder raises R2 to
+0.92-0.96 for k and phi0 and 0.76 for tau with combined observables.
+What shape cannot do is equally clear and equally informative:
+
+- **max_rate** stays at chance in every arm. The oracle row (1.68 per
+  cent) shows the 20 twins do contain near-correct max_rate values, but
+  shape cannot tell which — and when the rate cap does not bind, no
+  observable can (the H1 exact-degeneracy result). This is a property
+  of the parameter under static light, not of the method.
+- **tau** does not improve under twin refinement (though the combined
+  decoder recovers it at R2 0.76): among tip twins, shape distance does
+  not rank lag similarity. The oracle gap (1.11 per cent vs 11.02 per
+  cent) says the information is present in the candidate set; a richer
+  shape-time feature set or the moving-light arm is the declared route.
+
+**Conclusion for the shape-measurement question.** Measuring angles
+between the vertical and multiple points of the stem does make plants
+tell apart what a single bending curve conflates — for the response
+gain and the target angle, and for the shape-making parameters of the
+model class. It is not a universal key (tau, max_rate under non-binding
+caps), and it requires a decoder that respects what each observable
+carries (refinement among twins, or a flexible joint decoder), not a
+flat clustering metric. The pre-registered criterion is met.
+
+Files: `results/shape_identification_v3.csv`,
+`results/shape_identification_v3_summary.json`,
+`results/figures/twin_refinement_v3.png`.
 
 1. The v1 model class has an empty shape channel (uniform chains rotate
    rigidly and attract curvature to zero); its pre-registered test was
@@ -199,7 +345,7 @@ Files: `results/shape_degeneracy_v2_features.csv.gz`,
    releases the drive parameters.
 3. Methodological result, the firmest of the three: the cluster-retention
    metric has now produced one structurally uninformative result (v1) and
-   one metric-limited negative (v2). The shape hypothesis is neither
-   confirmed nor refuted for the original parameters; testing it further
-   requires the declared follow-ups (shape-only arm, nearest-neighbour
-   recovery, moving light, noise), each pre-registered separately.
+   one metric-limited negative (v2). For the original parameters the
+   hypothesis needed a different decoder to be tested fairly; that test
+   (twin refinement and flexible decoding, sections 7-9) is SUPPORTED for
+   k and phi0.
