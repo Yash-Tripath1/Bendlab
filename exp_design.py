@@ -30,6 +30,18 @@ Method
     significant at p < 0.05. A 60-degree, equal-intensity control
     condition, where the models nearly agree, should give power near
     0.05 and validates the Monte-Carlo machinery.
+
+Caution (added after external review): the Welch calculation measures
+separation between simulated outcome distributions under two candidate
+mechanisms. It is NOT the probability that a real experiment, analysed
+with a model-selection procedure, would identify the correct mechanism,
+because a laboratory observes one group of seedlings and must select
+among models while also fitting their parameters. Sample sizes from
+this script should be treated as an optimistic screening bound only.
+A valid design study must simulate full datasets under each mechanism,
+apply the actual planned selection procedure (with parameter-fitting
+uncertainty and biological variation), and report the probability of
+correct selection.
 """
 
 from __future__ import annotations

@@ -54,10 +54,17 @@ N_POP = 3_000
 REC = 0.25  # trajectory recording interval (h)
 
 
-def pop_trajectories(fit_frame, seed):
+def pop_trajectories(fit_frame, seed, t_end=32.5):
+    """Simulate the weighted population to t_end hours.
+
+    t_end defaults to 32.5 h, the longest measured Fig1C duration, so
+    predictions and observations share a horizon. (Before 2026-10-16 the
+    horizon was 24 h and np.interp silently held predictions constant
+    beyond it; see docs/AUDIT_RESPONSE_2026-10-16.md.)
+    """
     pop = weighted_population(N_POP, seed=seed, fit_frame=fit_frame)
     times, th = batch_simulate_static(pop[:, 0], pop[:, 1], pop[:, 2],
-                                      pop[:, 3], 24.0, record_dt=REC)
+                                      pop[:, 3], t_end, record_dt=REC)
     return times, th
 
 
@@ -72,11 +79,12 @@ def eval_curves(times, th, obs):
     """obs: list of (plant, t_elapsed, y). Returns per-plant rows."""
     med, lo, hi = band_stats(times, th)
     rows = []
-    finals_pred = th[-1]
+    finals_pred = []
     for plant, te, y in obs:
         m_i = np.interp(te, times, med)
         lo_i = np.interp(te, times, lo)
         hi_i = np.interp(te, times, hi)
+        finals_pred.append(float(m_i[-1]))
         rows.append({
             "plant": plant,
             "median_curve_rmse_deg": float(np.sqrt(np.mean((m_i - y) ** 2))),

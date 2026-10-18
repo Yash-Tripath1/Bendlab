@@ -1,5 +1,5 @@
 {
-  "runtime_seconds": 17.5,
+  "runtime_seconds": 21.0,
   "lobo_held_out": {
     "median_curve_rmse_deg_overall": 11.753905539393841,
     "mean_band_coverage": 0.8806529779744067,
@@ -7,35 +7,35 @@
       "ZT0": {
         "rmse": 16.25,
         "coverage": 0.869,
-        "wasserstein_deg": 8.78
+        "wasserstein_deg": 7.85
       },
       "ZT12": {
-        "rmse": 14.38,
+        "rmse": 14.39,
         "coverage": 0.726,
-        "wasserstein_deg": 10.06
+        "wasserstein_deg": 13.76
       },
       "ZT16": {
         "rmse": 11.92,
         "coverage": 0.878,
-        "wasserstein_deg": 4.77
+        "wasserstein_deg": 8.9
       },
       "ZT3": {
         "rmse": 9.75,
         "coverage": 0.974,
-        "wasserstein_deg": 5.79
+        "wasserstein_deg": 6.87
       },
       "ZT6": {
         "rmse": 11.75,
         "coverage": 0.867,
-        "wasserstein_deg": 7.58
+        "wasserstein_deg": 7.85
       },
       "ZT9": {
-        "rmse": 8.2,
+        "rmse": 8.17,
         "coverage": 0.97,
-        "wasserstein_deg": 9.26
+        "wasserstein_deg": 8.28
       }
     },
-    "in_sample_median_rmse_deg": 9.368436033864704,
+    "in_sample_median_rmse_deg": 9.353705066160387,
     "in_sample_mean_coverage": 0.9128884233050899
   },
   "fit_uncertainty_median_rel_se": {

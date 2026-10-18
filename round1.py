@@ -213,10 +213,13 @@ def run_h4_h6(clean: pd.DataFrame):
     mut_sd = H6_MUT_SD_FRAC * (hi - lo)
 
     def recombine(i, j):
-        mask = rng.random(len(PARAM_NAMES)) < 0.5
-        recombinant = np.where(mask, vals[i], vals[j])
-        hits = rng.random(len(PARAM_NAMES)) < H6_MUT_PROB
-        recombinant = recombinant + hits * rng.normal(0.0, 1.0, len(PARAM_NAMES)) * mut_sd
+        # phi0 is held fixed from the first parent (external audit note,
+        # 2026-10-16): crossover and mutation act on k, tau, max_rate only.
+        mask = rng.random(3) < 0.5
+        child = np.where(mask, vals[i, :3], vals[j, :3])
+        hits = rng.random(3) < H6_MUT_PROB
+        child = child + hits * rng.normal(0.0, 1.0, 3) * mut_sd[:3]
+        recombinant = np.concatenate([child, vals[i, 3:]])
         return np.clip(recombinant, lo, hi)
 
     centroids = KMeans(N_CLUSTERS, n_init=10,
@@ -332,8 +335,13 @@ def run_h8(clean: pd.DataFrame, best_protocol: str) -> pd.DataFrame:
                 if kind == "random":
                     pick = afford[prng.integers(len(afford))]
                 elif kind == "fixed":
-                    pick = best_protocol if best_protocol in afford \
-                        else min(afford, key=lambda n: PROTOCOLS[n][0])
+                    # Fixed policy as specified: repeat the preferred
+                    # protocol while it fits the budget, then stop. (An
+                    # earlier version silently switched to the shortest
+                    # affordable protocol; corrected 2026-10-16.)
+                    if best_protocol not in afford:
+                        break
+                    pick = best_protocol
                 else:
                     w = np.exp(logw - logw.max())
                     w /= w.sum()

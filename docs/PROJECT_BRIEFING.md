@@ -1,5 +1,8 @@
 # BendLab — Complete Project Briefing
 
+> **Status note, 16 October 2026.** This briefing is superseded by `docs/CURRENT_STATUS.md`, the canonical summary. Several claims here (hypothesis verdicts, H6 connectivity, vector sample sizes) were corrected or withdrawn after external review; see `docs/AUDIT_FOLLOWUP_RESULTS.md`.
+
+
 **For:** Anadi Tripathi and Umaid
 **Date:** 15 October 2026
 **Status:** Active independent computational research project. Repository: https://github.com/Yash-Tripathi/Bendlab
@@ -133,12 +136,12 @@ The models disagree *in silico*; the practical question is whether the disagreem
 **Validation:** at the control condition, power came out at **0.044–0.051** — statistically indistinguishable from the 5% false-positive rate, exactly as it must if the machinery is honest.
 
 **Findings:**
-- At the best condition (**160° separation, 2:1 intensity ratio**, final-angle readout, σ = 2° noise), the models separate with 80% power at remarkably small samples: **n = 5** per group (physical vs transduced), **n = 10** (transduced vs circumference), **n = 15** (physical vs circumference, the hardest pair). A design with **n = 20 seedlings per condition** separates all three models with >90% power.
+- At the best condition (**160 degrees separation, 2:1 intensity ratio**, final-angle readout, sigma = 2 degrees noise), the simulated final-angle distributions differ most strongly. An earlier version of this briefing quoted Welch-test sample sizes (n = 5 to 20 per group) as model-discrimination power. That interpretation is **withdrawn**: a Welch test between samples simulated under two candidate mechanisms measures distribution separation, not the probability that an experiment plus a model-selection procedure would identify the correct mechanism. Those sample sizes should not be quoted.
 - **Measurement precision is nearly irrelevant; plant variability is the bottleneck.** Raising noise from σ = 0.5° to σ = 5° barely changes the required n (15 → 20 for the hardest pair). A phone camera and a protractor app would, statistically speaking, be enough; more seedlings beat better cameras.
 - **Final angle at 24 h is the best readout.** The 2 h early angle is nearly useless for discrimination (power < 0.10 at n = 20) — early on, all models predict similar small bends. Trajectory averaging (12/18/24 h) is slightly worse than the final angle alone.
 - Several geometries work, not just the champion: 120°/2:1 and 140°/3:1 need only n = 10–15 for every pair.
 
-**Bottom line:** distinguishing the three stimulus models does not require a large facility. It requires two opposed LED panels at a calibrated ratio, ~20 seedlings per condition, and a camera. This converts BendLab from "interesting simulation" into a **concrete, costed experimental proposal** — the natural thing to put in front of an experimental collaborator.
+**Bottom line (revised):** the two-source geometry is a promising, inexpensive candidate design, and the three stimulus models make clearly different predictions under it. A defensible sample size requires a further simulation study: generate full datasets under each candidate mechanism, apply the actual planned model-selection procedure (including parameter-fitting uncertainty and biological variation), and report how often it selects the correct model. Until that is done, the vector results are model predictions that motivate a test, not a costed, statistically validated protocol.
 
 Files: `exp_design.py`; `results/exp_design_power.csv`; `results/exp_design_recommendations.csv`; `results/figures/exp_design_dashboard.png`.
 
@@ -155,17 +158,18 @@ Files: `exp_design.py`; `results/exp_design_power.csv`; `results/exp_design_reco
 
 ---
 
-## 10. People and outreach status
+## 10. External input
 
-- **Agueda De La Vega** (PhD student, Meroz Lab, Tel Aviv) replied to our outreach and sent three papers (Bastien et al. 2012; Rivière & Meroz 2023; Kempinski et al. 2026), all read and incorporated above. **We have not yet replied.** The reply should now lead with the Section 8 result — it is directly in her lab's territory and asks a question her group is equipped to judge.
-- **Anima** (open-source tool for interactive scientific figures): its creator offered informally to prototype a BendLab figure. Contact via LinkedIn stalled (the platform blocks messages to non-connections); a connection request with a short note, or a GitHub issue on the Anima repository, are the open routes. Low priority; BendLab does not depend on it.
-- Draft outreach emails to several other researchers exist (`bendlab_outreach_emails.md`). Nothing has been sent by anyone except the initial Agueda contact.
+Papers and criticism received from external researchers during the
+project have been incorporated into the analyses above. Correspondence
+and outreach records are maintained privately by the authors and are
+not part of this public document.
 
 ---
 
 ## 11. Recommended next steps (in order)
 
-1. **Reply to Agueda**, leading with the vector-sum result and the experimental-design finding ("~20 seedlings at 160°/2:1 separates all three stimulus models"). Ask for criticism of the design, not favours.
+1. **Seek external criticism** of the vector-stimulus predictions and of the model-selection experimental design (Section 8), before any sample-size claim is quoted.
 2. **Model v2 specification** (on paper, before code): biphasic-memory vs proprioception arms, judged on held-out ZT9/non-ZT9 data under preregistered criteria.
 3. **Fit the moving-sun panels** (Fig2B, Fig4A) now that moving-sun stimulus machinery exists — the next real-data validation.
 4. Publish the visual simulator via GitHub Pages (push + enable; five minutes).

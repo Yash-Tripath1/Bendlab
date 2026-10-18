@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BendLab: About and Results</title>
+<style>
+  :root{--bg:#eef2ee;--card:#ffffff;--ink:#16231b;--muted:#6d7c72;--line:#dce5dd;--green:#177245;--green-dark:#0f5a35;--soft:#eef7f1}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+  header,main,footer{max-width:1180px;margin:0 auto;padding-left:28px;padding-right:28px}
+  header{padding-top:22px} h1{font-size:24px;margin:0 0 6px} h2{font-size:16px;margin:0 0 10px}
+  header p, .small{color:var(--muted);font-size:13.5px;line-height:1.65}
+  main{padding-top:16px;padding-bottom:26px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media (max-width:880px){main{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .wide{grid-column:1/-1}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+  th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+  ul{margin:6px 0 0;padding-left:18px;color:var(--muted);font-size:13.5px;line-height:1.65}
+  b{color:var(--ink)} a{color:var(--green-dark)}
+  footer{padding-bottom:22px;color:var(--muted);font-size:12px;line-height:1.6}
+  .num{font-weight:700;color:var(--ink)}
+</style>
+</head>
+<body>
+<header>
+  <h1>About BendLab</h1>
+  <p>BendLab asks a simple question with a measurable answer: when a sunflower seedling bends toward light, which of its internal settings does the bending curve actually reveal, and which stay hidden?</p>
+</header>
+<main>
+  <div class="card wide">
+    <h2>The question</h2>
+    <p class="small">We model a seedling with four settings: sensitivity (k), response lag (tau), a bend-rate cap (max_rate), and an effective light angle (phi0). If two very different settings produce the same curve, the curve cannot tell them apart, and any method that claims to read them off, from curve fitting to a neural network, is guessing. BendLab measures exactly where that information limit sits. It is a model-identifiability study, not yet evidence for a particular biological mechanism.</p>
+  </div>
+
+  <div class="card">
+    <h2>Key results</h2>
+    <ul>
+      <li><b>Degeneracy is real:</b> different parameter combinations produce nearly identical bending curves.</li>
+      <li><b>One dial is blind:</b> when the bend-rate cap never binds, max_rate cannot be recovered. Curve fits flag it in 47 of 48 measured plants; a 400,000-plant sweep and a trained neural network (about 44% error, versus 1 to 4% for the other dials) agree.</li>
+      <li><b>Fitting is not predicting:</b> the model fits published curves well in-sample (median 1.80 degrees) but predicts held-out groups weakly (11.75 degrees).</li>
+      <li><b>A candidate fix for the worst failures:</b> a shared circadian-clock term, fitted without the failing ZT9 group, improves all six held-out ZT9 plants (median 2.42 to 1.44 degrees). Promising, not confirmed.</li>
+      <li><b>Try it above:</b> the Simulator shows the model forward, the Trained model reads curves at any observation hour, and the Curve fitter fits with its uncertainty warnings attached.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>What is measured, what is simulated</h2>
+    <table>
+      <tr><th>Measured from real plants</th><th>Simulated only</th></tr>
+      <tr><td>48 published sunflower trajectories (Brooks et al. 2023) and their per-plant fits</td><td>Populations of up to 400,000 synthetic plants used for degeneracy and design analyses</td></tr>
+      <tr><td>Per-fit parameter uncertainties and block cross-validation on those fits</td><td>The neural inverse model, trained and validated entirely on simulator output</td></tr>
+      <tr><td>Three external check curves (Fig1B of the same study)</td><td>All protocol rankings, stimulus-model comparisons, and sample-size estimates</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>Limitations, in plain sight</h2>
+    <ul>
+      <li>The neural model has never seen a real plant. Fitted sunflower parameters often lie outside its training ranges, so do not apply it to measured curves.</li>
+      <li>One dataset, one species, one light quality underlies the population analyses.</li>
+      <li>Several earlier conclusions were corrected or withdrawn (a fitter time-base error, two hypothesis verdicts, one connectivity claim, one set of sample sizes). The corrections are documented in the repository, not buried.</li>
+      <li>Nothing here is a validated experimental protocol. The two-source design estimate (about 96% correct model selection at 20 seedlings per dataset) comes from a stated simulation procedure and awaits a laboratory.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Where to read more</h2>
+    <ul>
+      <li><a href="https://github.com/Yash-Tripath1/Bendlab/blob/main/docs/CURRENT_STATUS.md">Current status (canonical summary)</a></li>
+      <li><a href="https://github.com/Yash-Tripath1/Bendlab/blob/main/PROBLEM_STATEMENT.md">Problem statement and model definition</a></li>
+      <li><a href="https://github.com/Yash-Tripath1/Bendlab/blob/main/docs/AUDIT_FOLLOWUP_RESULTS.md">External-audit follow-up results</a></li>
+      <li><a href="https://github.com/Yash-Tripath1/Bendlab">Full repository on GitHub</a></li>
+    </ul>
+  </div>
+</main>
+<footer>
+  BendLab (open source). Educational, not peer reviewed. The tools on this site state their own validation results and limits next to their outputs.
+</footer>
+</body>
+</html>

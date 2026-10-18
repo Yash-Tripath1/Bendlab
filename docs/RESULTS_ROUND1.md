@@ -26,6 +26,22 @@ Summary figure: `results/figures/round1_dashboard.png`.
 > original run); H4 is therefore supported rather than falsified. The
 > original H4 interpretation is retracted.
 
+> **Amendment, 16 October 2026 (external-audit follow-up).** The
+> hypotheses were retested exactly as written in
+> `PROBLEM_STATEMENT.md`; see `docs/AUDIT_FOLLOWUP_RESULTS.md` for full
+> numbers. Revised verdicts: **H1 supported as written** (range-based
+> criterion); **H2 not supported as written** (only k improves, other
+> parameters move in the opposite direction); **H3 supported as written**
+> under the standardised behavioural-distance criterion (20 of 8,064
+> adjacent edges above 5x the median distance), superseding the
+> half-rise-criterion conclusion below; **H6 weakened to a local,
+> near-control-rate retention** with phi0 held fixed, and the
+> connectivity claim is withdrawn; **H7 not supported at matched
+> observation budget** (the apparent advantage is mostly observation
+> time); **H8 fixed policy corrected and rerun** (fixed 83.4 versus
+> random 89.4 successes per 100). Historical sections below are retained
+> unchanged as the record of the original analyses.
+
 ## H3: Discontinuities in parameter space — falsified as specified
 
 A dense 64 × 64 grid was evaluated over response gain (`k`) and sensing
@@ -164,14 +180,14 @@ policies, H8 cannot be assessed.
 
 | Hypothesis | Status |
 |---|---|
-| H1 | Supported under uniform sampling; weaker but present under weighted sampling |
-| H2 | Not supported under the cluster-retention metric |
-| H3 | Falsified as specified: no discontinuities at the sampled resolution |
+| H1 | Supported as written (range-based criterion, uniform sampling); see 16 Oct amendment |
+| H2 | Not supported as written: only k improves by >= 10 points; direction inconsistent |
+| H3 | Supported as written (behavioural-distance criterion); superseded 16 Oct 2026 |
 | H4 | Supported: behavioural clusters do not persist across light regimes (ARI 0.442) |
 | H5 | Supported in all six stimulus-start-time groups; 4/48 fits bound-pinned (ZT9) |
-| H6 | Supported with incomplete retention: connected degenerate region, 42.7% of recombinants assigned outside the source class |
-| H7 | Not supported under the declared threshold (observed difference 0.091 < 0.10) |
-| H8 | Not assessable in the original saturated design |
+| H6 | Weak local retention only (phi0 fixed); connectivity claim withdrawn 16 Oct 2026 |
+| H7 | Not supported: declared threshold missed, and matched-budget gap shrinks to 0.021 |
+| H8 | Fixed policy corrected and rerun: adaptive policies do not beat random in v1; v2 unrun |
 
 ## Interpretation
 
