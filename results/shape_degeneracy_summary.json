@@ -1,0 +1,29 @@
+{
+  "seed": 1,
+  "c_seed": 2,
+  "n_plants": 10000,
+  "n_seg": 5,
+  "t_end": 24.0,
+  "record_dt": 0.5,
+  "c_bounds": [
+    0.0,
+    1.0
+  ],
+  "criterion": ">=10 pp retention reduction for >=2 of 5 params",
+  "improved_params": [],
+  "supported": false,
+  "retention_tip_pct": {
+    "k": 25.32076454343545,
+    "tau": 35.618054420456694,
+    "max_rate": 50.16239608969587,
+    "phi0": 25.332967240925104,
+    "c": 50.95094169451298
+  },
+  "retention_shape_pct": {
+    "k": 25.413798187905996,
+    "tau": 35.51939245869853,
+    "max_rate": 50.126146689406724,
+    "phi0": 25.527712272401896,
+    "c": 51.258858934804884
+  }
+}
