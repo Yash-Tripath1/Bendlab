@@ -49,8 +49,9 @@ benchmark reproduces from a clean checkout.
   since advanced: 7f4e1481bc252fb88374f3d923ae6adac3e503a9
   (2026-10-23) added this Phase B0 package, and
   384e6881a14c5e167170098d4f65a0befacd4607 (2026-10-23) added the
-  audit fixes; 384e688 is the current main tip. Later documentation
-  corrections may advance it further.
+  audit fixes, and documentation corrections have followed (main tip
+  8860865 at the time of writing). Main is a moving target: this
+  snapshot statement, not the tip hash, is the provenance claim.
 - Shape-extension branch: github.com/umaidsiddiqui10/Bendlab,
   branch shape-extension,
   commit 494687940c3490d1af6e4ac36abf4a4a59adc7e5.
