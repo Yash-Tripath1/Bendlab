@@ -4,8 +4,11 @@
 (verified current on 2026-10-23; it advances the analysis snapshot
 `b09ea5aa6003082b41d726b2b8499ded313dcb21` by the Phase B0 package
 commit). **Work location:** branch `phase-b0-audit-fixes` in a fresh
-clone. Nothing pushed, merged, or altered on main; live site and
-published simulator/model untouched (verified, test log item 6).
+clone. **Status update:** those fixes are now ON main as commit
+`384e6881a14c5e167170098d4f65a0befacd4607` (2026-10-23); the earlier
+"prepared on a branch, not merged" wording is superseded. Live site
+and published simulator/model remain untouched (verified, test log
+item 6). A short documentation-corrections commit follows this one.
 
 ## Files changed
 - `02_workstream_A_external_benchmark/workstream_a/phase_b0_kempinski_benchmark.py`
@@ -70,7 +73,7 @@ GitHub Release asset or archive repository at the next release, and
 reference them by commit SHA/DOI from the README. Nothing was deleted:
 this decision needs approval.
 
-## Decision needed
-Approve (a) merging `phase-b0-audit-fixes` to main, and (b) the
-release/archive relocation above, or neither. Until then the branch
-exists only in the local clone prepared for this handoff.
+## Decision status
+(a) Merging the audit fixes to main: DONE (commit 384e688, above).
+(b) The release/archive relocation above: still open, needs approval.
+Nothing has been deleted.

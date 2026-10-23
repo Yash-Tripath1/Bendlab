@@ -16,14 +16,15 @@ PHASE_B0_REPORT.md (data audit, methods, held-out results, limitations,
 transfer recommendation), workstream_a/phase_b0_kempinski_benchmark.py,
 workstream_a/make_plots.py, workstream_a/outputs/ (per-plant metrics,
 benchmark_summary.json, four figures), tests_phase_b0.py.
-Run: python workstream_a/phase_b0_kempinski_benchmark.py <path-to-csv>
-(about 7.5 min), then python workstream_a/make_plots.py
+Run: python workstream_a/phase_b0_kempinski_benchmark.py [--data PATH]
+(PATH optional; default is the packaged 05_data_external/uni_trajectories.csv.
+About 7.5 min), then python workstream_a/make_plots.py
 
 ## 03_workstream_B_shape_extension_audit/
 Phase B0 Workstream B: audit of the shape-extension submission.
-SHAPE_EXTENSION_AUDIT.md, workstream_b/shape_audit_corrected_v1.py
-(versioned corrected rerun; submitted code preserved unchanged),
-workstream_b/corrected_audit_results.json,
+SHAPE_EXTENSION_AUDIT.md, workstream_b/shape_audit_corrected_v2.py
+(current portable corrected rerun; v1 retained on record unchanged),
+workstream_b/corrected_audit_results_v2.json,
 workstream_b/submitted_outputs/ (submitted v3 outputs, preserved).
 
 ## 04_shape_extension_branch/
@@ -36,17 +37,20 @@ docs/RESEARCH_NOTE_SHAPE_EXTENSION.md, shape result files.
 Run: python check_multiseg.py ; python shape_identification_v3.py
 
 ## 05_data_external/
-uni_trajectories.csv (unilateral-light trajectories). External dataset,
-CC-BY-4.0, included for reproducibility only; not BendLab version
-control.
+uni_trajectories.csv (unilateral-light trajectories, 2.1 MB). External
+dataset, CC-BY-4.0. The full Zenodo archive ZIP is not tracked; this
+single extracted CSV IS tracked in the repository, deliberately, so the
+benchmark reproduces from a clean checkout.
 
 ## Provenance
 - Canonical repository: github.com/Yash-Tripath1/Bendlab.
   b09ea5aa6003082b41d726b2b8499ded313dcb21 is the canonical SOURCE
   SNAPSHOT used for the Phase B0 analyses. The repository main has
   since advanced: 7f4e1481bc252fb88374f3d923ae6adac3e503a9
-  (2026-10-23) adds this Phase B0 package. Audit fixes are prepared on
-  the branch phase-b0-audit-fixes and are not merged without approval.
+  (2026-10-23) added this Phase B0 package, and
+  384e6881a14c5e167170098d4f65a0befacd4607 (2026-10-23) added the
+  audit fixes; 384e688 is the current main tip. Later documentation
+  corrections may advance it further.
 - Shape-extension branch: github.com/umaidsiddiqui10/Bendlab,
   branch shape-extension,
   commit 494687940c3490d1af6e4ac36abf4a4a59adc7e5.

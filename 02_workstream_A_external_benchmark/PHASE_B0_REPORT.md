@@ -12,8 +12,9 @@ interface: `sim.py`, `simulate(k, tau, max_rate, phi_fn, t_end, dt)` /
 `tau dr/dt = k sin(phi - theta) - r`, cap applied after the lag update,
 theta in degrees from vertical, 1-minute reference step
 (`PROBLEM_STATEMENT.md` §2, guarded by `check_model_contract.py`).
-**The model has no light-intensity input and no equilibrium mechanism:**
-under a fixed light angle phi its long-run equilibrium is theta = phi.
+**The model has no light-intensity input and no counteracting term:**
+under a fixed light angle phi its long-run equilibrium is theta = phi,
+so it has no intensity-dependent equilibrium.
 Changing the gain k cannot change that asymptote (it can change
 finite-time trajectories). What is benchmarked below as W1 is therefore
 not the published model unchanged: it is the published model plus a
@@ -148,7 +149,7 @@ error grows with intensity (median RMSE 10.3° at 0.7 W/m² → 16.4° at
 theta toward 90° while measured plants settle into an operational
 late-window plateau at 18–37°. The measured
 group means are also visibly non-monotone (rise, overshoot around
-8–10 h, settle), a shape no fixed-phi first-order model can produce.
+8–10 h, settle), a shape this model cannot produce under the known phi = 90° geometry (narrowed precisely below).
 See `fig1_mean_trajectories.png`, `fig2_heldout_by_intensity.png`.
 
 Leave-one-intensity-group-out (held group untouched in fitting and
@@ -158,8 +159,8 @@ extrapolation: at 0.7 W/m² W1 = 10.4° vs B2 = 9.6°; at 5.8 W/m²
 W1 = 16.5° vs B1 = 10.5° (endpoint-clamped) and B2 = 12.2°. The
 intensity law fitted without the endpoint does not rescue the top
 group, because in this model intensity changes speed, not the
-steady-state angle, and the data's steady state is what varies with
-intensity. A fixed-phi lag model is not incapable of overshoot in
+equilibrium angle, and the data's late-window plateau is what varies
+with intensity. A fixed-phi lag model is not incapable of overshoot in
 general (it can overshoot past a target); the limitation here is
 specific: with phi = 90° it cannot rise, peak at 25–45°, and turn back
 down while still far below 90°, which is the measured shape.
