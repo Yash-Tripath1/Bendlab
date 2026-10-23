@@ -1,6 +1,6 @@
 # BendLab complete code package
 
-Built 2026-10-26. Contents map (workstreams kept separate, as specified):
+Built 2026-10-23. Contents map (workstreams kept separate, as specified):
 
 ## 01_canonical_bendlab/
 The BendLab repository (scalar tip-angle model in sim.py, measured-data
@@ -41,8 +41,12 @@ CC-BY-4.0, included for reproducibility only; not BendLab version
 control.
 
 ## Provenance
-- Canonical repository: github.com/Yash-Tripath1/Bendlab,
-  commit b09ea5aa6003082b41d726b2b8499ded313dcb21.
+- Canonical repository: github.com/Yash-Tripath1/Bendlab.
+  b09ea5aa6003082b41d726b2b8499ded313dcb21 is the canonical SOURCE
+  SNAPSHOT used for the Phase B0 analyses. The repository main has
+  since advanced: 7f4e1481bc252fb88374f3d923ae6adac3e503a9
+  (2026-10-23) adds this Phase B0 package. Audit fixes are prepared on
+  the branch phase-b0-audit-fixes and are not merged without approval.
 - Shape-extension branch: github.com/umaidsiddiqui10/Bendlab,
   branch shape-extension,
   commit 494687940c3490d1af6e4ac36abf4a4a59adc7e5.

@@ -110,13 +110,23 @@ S13 tip angles via `fit_real.py` / `data_real.py`.
   numbers): **k +49.2%** (qualifies), **tau −6.4%** (does not),
   **max_rate +1.1%** (does not; consistent with the exact non-binding-cap
   degeneracy). Only 1 of 3 physiological parameters qualifies.
-- **Direct test (run here).** Repeating the primary protocol with phi0
-  fixed at 60 deg for every plant (known shared input; same seeds and
-  other parameters): k +33.4%, tau +13.1%, max_rate −0.8%. Shape
-  refinement still helps k materially, but the margin is smaller,
-  because much of the tip-space degeneracy in the submitted design was
-  manufactured by randomising phi0. (With phi0 fixed, the plain tip
-  twin is already far better: k tip-NN error 1.85% of range vs 11.86%.)
+- **Direct tests (run here).** Repeating the primary protocol with
+  phi0 fixed for every plant (known shared input; same seeds and other
+  parameters), at two values: **60 deg (sensitivity case):**
+  k +33.4%, tau +13.1%, max_rate −0.8%. **90 deg (the assay-matched
+  horizontal side-light angle):** k +36.7%, tau +5.2%, max_rate −0.3%.
+  Shape refinement still helps k materially in both, but the margin is
+  smaller than in the randomised-phi0 design, because much of the
+  tip-space degeneracy in the submitted design was manufactured by
+  randomising phi0. (With phi0 fixed at 60 deg, the plain tip twin is
+  already far better: k tip-NN error 1.85% of range vs 11.86%.)
+  In both fixed cases phi0 has zero range, so its normalised errors are
+  undefined: the version-2 rerun
+  (`workstream_b/shape_audit_corrected_v2.py`, portable paths, which
+  supersedes corrected v1 without altering it) serialises them as
+  JSON null with an explanatory note, never as NaN. Reporting k, tau
+  and max_rate separately from phi0, as this audit does, is the
+  required accounting under a standardised fixed-light assay.
 - **Recommended action.** In future reports: (i) headline k, tau,
   max_rate; (ii) report phi0 recovery separately and labelled as
   recovery of an imposed light-direction offset; (iii) pre-register any

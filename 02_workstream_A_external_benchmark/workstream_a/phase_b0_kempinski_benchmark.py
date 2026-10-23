@@ -1,8 +1,10 @@
 """Phase B0 Workstream A: external benchmark of BendLab's scalar tip-angle
 model on the Kempinski et al. (2026) unilateral-light archive.
 
-Standalone analysis. It imports the canonical model read-only from
-/home/user/bendlab/sim.py and does NOT modify it. The published model has
+Standalone analysis. It imports the canonical model read-only from the
+packaged snapshot (01_canonical_bendlab/sim.py; falls back to the
+repository-root sim.py, which is the same model) and does NOT modify it.
+The published model has
 no light-intensity input: intensity enters only through a clearly
 separated wrapper fitted here on training data only,
 
@@ -26,26 +28,39 @@ Outputs land in ./outputs/ next to this script.
 
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import sys
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
 from scipy.optimize import least_squares
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, "/home/user/bendlab")          # canonical model, read-only
+HERE = Path(__file__).resolve().parent
+PKG_ROOT = HERE.parents[1]                      # repository/package root
+_MODEL_DIR = PKG_ROOT / "01_canonical_bendlab"  # packaged canonical snapshot
+if not (_MODEL_DIR / "sim.py").exists():
+    _MODEL_DIR = PKG_ROOT                       # plain repository checkout
+sys.path.insert(0, str(_MODEL_DIR))             # canonical model, read-only
 from sim import batch_simulate                    # noqa: E402
 
-DATA = sys.argv[1] if len(sys.argv) > 1 else (
-    "/home/user/phase_b0/zenodo/extracted/00_Data/uni_trajectories.csv")
-OUT = os.path.join(HERE, "outputs")
-os.makedirs(OUT, exist_ok=True)
+_ap = argparse.ArgumentParser(description=__doc__)
+_ap.add_argument("--data", type=Path, default=PKG_ROOT / "05_data_external"
+                 / "uni_trajectories.csv",
+                 help="path to uni_trajectories.csv (default: packaged copy)")
+_ap.add_argument("--fit-subsample", type=int, default=4,
+                 help="fit on every Nth observation (default 4, about "
+                      "16-minute spacing; 1 = every observation)")
+_ARGS = _ap.parse_args()
+DATA = _ARGS.data
+OUT = HERE / "outputs"
+OUT.mkdir(parents=True, exist_ok=True)
 SEED = 42
 PHI_LIGHT = 90.0          # horizontal side light, degrees from vertical
 FIT_DT = 1.0 / 60.0       # model contract step (1 min)
-SUB = 4                   # fit on every 4th observed point (speed; eval on all)
+SUB = _ARGS.fit_subsample    # fit subsampling (see --fit-subsample); eval on all points
 
 
 # ---------------------------------------------------------------- data ----
@@ -171,7 +186,7 @@ def group_mean_curves(train_idx, plants):
     return {I: np.mean(v, axis=0) for I, v in curves.items()}
 
 
-def predict_group_mean(means, test_idx, plants):
+def predict_group_mean(means, test_idx, plants, recenter=False):
     out = {}
     Is = sorted(means)
     for i in test_idx:
@@ -189,7 +204,11 @@ def predict_group_mean(means, test_idx, plants):
                     w = (li - np.log(a_)) / (np.log(b_) - np.log(a_))
                     break
             curve = (1 - w) * means[lo_I] + w * means[hi_I]
-        out[p["id"]] = np.interp(p["t"], GRID, curve)
+        pred = np.interp(p["t"], GRID, curve)
+        if recenter:
+            base = np.interp(p["t"][0], GRID, curve)
+            pred = pred + (p["theta"][0] - base)
+        out[p["id"]] = pred
     return out
 
 
@@ -235,7 +254,7 @@ def per_plant_metrics(pred, plants_idx_list, plants, pred_name):
                "rmse_deg": float(np.sqrt(np.mean(err ** 2))),
                "mae_deg": float(np.mean(np.abs(err))),
                "final_err_deg": float(pr[-1] - p["theta"][-1])}
-        for lo, hi in ((0, 2), (2, 6), (6, 12), (12, 22.01)):
+        for lo, hi in ((0, 2), (2, 6), (6, 12), (12, 22.01), (4, 22.01)):
             m = (p["t"] >= lo) & (p["t"] < hi)
             row[f"rmse_{lo:g}_{min(hi,22):g}h"] = float(
                 np.sqrt(np.mean(err[m] ** 2))) if m.any() else np.nan
@@ -293,12 +312,15 @@ def main():
         held_rows += per_plant_metrics(
             predict_group_mean(means, test_idx, plants), test_idx, plants,
             "B1_group_mean_curve")
+        held_rows += per_plant_metrics(
+            predict_group_mean(means, test_idx, plants, recenter=True),
+            test_idx, plants, "B1r_group_mean_recentered")
         pers = {plants[i]["id"]: np.full(len(plants[i]["t"]),
                                          plants[i]["theta"][0])
                 for i in test_idx}
         held_rows += per_plant_metrics(pers, test_idx, plants, "B0_persistence")
     held = pd.DataFrame(held_rows)
-    held.to_csv(os.path.join(OUT, "plant_heldout_per_plant.csv"), index=False)
+    held.to_csv(str(OUT / "plant_heldout_per_plant.csv"), index=False)
     report["plant_heldout"] = [summarise(held[held.model == m], m)
                                for m in held.model.unique()]
     report["plant_heldout_by_intensity"] = (
@@ -313,9 +335,28 @@ def main():
     for _ in range(2000):
         diffs.append(np.median(rng.choice(vals, size=len(vals), replace=True)))
     report["bootstrap_W1_minus_B1_median_rmse_deg"] = {
+        "design": "unstratified plant bootstrap (batch structure unknown)",
         "point": float(np.median(vals)),
         "ci95": [float(np.percentile(diffs, 2.5)),
                  float(np.percentile(diffs, 97.5))]}
+    # stratified sensitivity: resample plants within each intensity stratum
+    piv_i = held.pivot_table(index="plant", columns="model",
+                             values="rmse_deg")
+    I_of = {p["id"]: p["I"] for p in plants}
+    piv_i["I"] = [I_of[i] for i in piv_i.index]
+    strata = [g["W1_bendlab_kI_phi90"].to_numpy()
+              - g["B1_group_mean_curve"].to_numpy()
+              for _, g in piv_i.groupby("I")]
+    sdiffs = []
+    for _ in range(2000):
+        pooled = np.concatenate([rng.choice(v, size=len(v), replace=True)
+                                 for v in strata])
+        sdiffs.append(np.median(pooled))
+    report["bootstrap_stratified_W1_minus_B1_median_rmse_deg"] = {
+        "design": "plant bootstrap stratified by intensity group",
+        "point": float(np.median(np.concatenate(strata))),
+        "ci95": [float(np.percentile(sdiffs, 2.5)),
+                 float(np.percentile(sdiffs, 97.5))]}
 
     # ---- leave-one-intensity-group-out
     intensities = sorted({p["I"] for p in plants})
@@ -336,7 +377,7 @@ def main():
         loio_rows += per_plant_metrics(predict_saturating(ms, test_idx, plants),
                                        test_idx, plants, "B2_saturating")
     loio = pd.DataFrame(loio_rows)
-    loio.to_csv(os.path.join(OUT, "loio_per_plant.csv"), index=False)
+    loio.to_csv(str(OUT / "loio_per_plant.csv"), index=False)
     loio_sum = (loio.groupby(["model", "I"])["rmse_deg"].median()
                 .unstack(0).reset_index())
     loio_sum["endpoint_extrapolation"] = loio_sum["I"].isin(
@@ -372,7 +413,7 @@ def main():
                 np.mean((pred[late] - p["theta"][late]) ** 2))),
             "final_err_deg": float(pred[-1] - p["theta"][-1])})
     calib = pd.DataFrame(calib_rows)
-    calib.to_csv(os.path.join(OUT, "per_plant_calibration.csv"), index=False)
+    calib.to_csv(str(OUT / "per_plant_calibration.csv"), index=False)
     report["per_plant_calibration_4h_to_22h"] = {
         "median_forecast_rmse_deg": float(calib["rmse_forecast_4_22h_deg"].median()),
         "median_final_err_deg": float(calib["final_err_deg"].median())}
@@ -381,6 +422,8 @@ def main():
     late_rows = held[held.model == "W1_bendlab_kI_phi90"]
     report["population_W1_forecast_rmse_12_22h_median_deg"] = float(
         late_rows["rmse_12_22h"].median())
+    report["population_W1_rmse_4_22h_common_window_median_deg"] = float(
+        late_rows["rmse_4_22h"].median())
 
     # ---- diagnostic: per-plant full-curve fits, phi fixed 90 vs phi free
     diag = []
@@ -416,7 +459,7 @@ def main():
                          "tau_fit": float(np.exp(sol.x[1])),
                          "max_rate_fit": float(np.exp(sol.x[2]))})
     diag = pd.DataFrame(diag)
-    diag.to_csv(os.path.join(OUT, "per_plant_fullfit_diagnostic.csv"), index=False)
+    diag.to_csv(str(OUT / "per_plant_fullfit_diagnostic.csv"), index=False)
     free = diag[diag["mode"] == "phi_free"]
     report["per_plant_fullfit_diagnostic"] = {
         "median_rmse_phi90_deg": float(diag[diag["mode"] == "phi90"]["rmse_deg"].median()),
@@ -427,7 +470,7 @@ def main():
         "note": "phi_free is an effective equilibrium/target angle per plant, "
                 "not the known 90 deg lamp geometry"}
 
-    with open(os.path.join(OUT, "benchmark_summary.json"), "w") as fh:
+    with open(str(OUT / "benchmark_summary.json"), "w") as fh:
         json.dump(report, fh, indent=2)
     print(json.dumps(report, indent=2))
 
