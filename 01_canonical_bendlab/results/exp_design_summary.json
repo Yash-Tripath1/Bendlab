@@ -1,0 +1,15 @@
+{
+  "n_population": 4000,
+  "repetitions_per_cell": 2000,
+  "runtime_seconds": 11.8,
+  "control_power_at_alpha_should_be_near_0.05": {
+    "physical vs transduced_source": 0.049,
+    "physical vs circumference": 0.044,
+    "transduced_source vs circumference": 0.051
+  },
+  "best_condition_160deg_ratio2_min_n_sigma2": {
+    "physical vs circumference": 15.0,
+    "physical vs transduced_source": 5.0,
+    "transduced_source vs circumference": 10.0
+  }
+}

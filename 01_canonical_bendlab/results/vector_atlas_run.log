@@ -1,0 +1,104 @@
+weighted population n=100000 from 44 clean fits
+reference sun-only simulation done (2.4s)
+circumference a=0.15 T=0.00 d=0.00 rmse=0.07 (4.9s)
+circumference a=0.15 T=0.00 d=0.06 rmse=12.78 (7.4s)
+circumference a=0.15 T=0.00 d=0.12 rmse=14.41 (9.6s)
+circumference a=0.15 T=0.00 d=0.20 rmse=15.39 (11.8s)
+circumference a=0.15 T=0.00 d=0.30 rmse=16.00 (13.7s)
+circumference a=0.15 T=0.10 d=0.00 rmse=0.07 (16.3s)
+circumference a=0.15 T=0.10 d=0.06 rmse=6.99 (18.5s)
+circumference a=0.15 T=0.10 d=0.12 rmse=9.37 (21.0s)
+circumference a=0.15 T=0.10 d=0.20 rmse=11.55 (23.5s)
+circumference a=0.15 T=0.10 d=0.30 rmse=13.10 (25.9s)
+circumference a=0.15 T=0.25 d=0.00 rmse=0.07 (28.4s)
+circumference a=0.15 T=0.25 d=0.06 rmse=6.58 (31.0s)
+circumference a=0.15 T=0.25 d=0.12 rmse=8.84 (33.1s)
+circumference a=0.15 T=0.25 d=0.20 rmse=11.05 (35.6s)
+circumference a=0.15 T=0.25 d=0.30 rmse=12.70 (37.7s)
+circumference a=0.30 T=0.00 d=0.00 rmse=0.07 (40.3s)
+circumference a=0.30 T=0.00 d=0.06 rmse=9.19 (42.6s)
+circumference a=0.30 T=0.00 d=0.12 rmse=11.70 (45.1s)
+circumference a=0.30 T=0.00 d=0.20 rmse=13.41 (47.4s)
+circumference a=0.30 T=0.00 d=0.30 rmse=14.55 (49.6s)
+circumference a=0.30 T=0.10 d=0.00 rmse=0.07 (52.1s)
+circumference a=0.30 T=0.10 d=0.06 rmse=6.53 (54.4s)
+circumference a=0.30 T=0.10 d=0.12 rmse=8.82 (57.0s)
+circumference a=0.30 T=0.10 d=0.20 rmse=11.06 (59.5s)
+circumference a=0.30 T=0.10 d=0.30 rmse=12.71 (61.9s)
+circumference a=0.30 T=0.25 d=0.00 rmse=0.07 (64.3s)
+circumference a=0.30 T=0.25 d=0.06 rmse=6.21 (66.7s)
+circumference a=0.30 T=0.25 d=0.12 rmse=8.45 (69.2s)
+circumference a=0.30 T=0.25 d=0.20 rmse=10.67 (71.5s)
+circumference a=0.30 T=0.25 d=0.30 rmse=12.41 (74.0s)
+circumference a=0.50 T=0.00 d=0.00 rmse=0.07 (76.4s)
+circumference a=0.50 T=0.00 d=0.06 rmse=6.98 (78.8s)
+circumference a=0.50 T=0.00 d=0.12 rmse=9.44 (80.9s)
+circumference a=0.50 T=0.00 d=0.20 rmse=11.61 (83.0s)
+circumference a=0.50 T=0.00 d=0.30 rmse=13.15 (85.3s)
+circumference a=0.50 T=0.10 d=0.00 rmse=0.07 (87.6s)
+circumference a=0.50 T=0.10 d=0.06 rmse=6.01 (90.1s)
+circumference a=0.50 T=0.10 d=0.12 rmse=8.27 (92.7s)
+circumference a=0.50 T=0.10 d=0.20 rmse=10.50 (95.1s)
+circumference a=0.50 T=0.10 d=0.30 rmse=12.27 (97.2s)
+circumference a=0.50 T=0.25 d=0.00 rmse=0.07 (99.7s)
+circumference a=0.50 T=0.25 d=0.06 rmse=5.81 (102.2s)
+circumference a=0.50 T=0.25 d=0.12 rmse=8.07 (104.6s)
+circumference a=0.50 T=0.25 d=0.20 rmse=10.27 (107.0s)
+circumference a=0.50 T=0.25 d=0.30 rmse=12.09 (109.1s)
+physical/transduced diffuse=0.00 done (114.2s)
+physical/transduced diffuse=0.06 done (118.8s)
+physical/transduced diffuse=0.12 done (123.5s)
+physical/transduced diffuse=0.20 done (128.3s)
+physical/transduced diffuse=0.30 done (132.9s)
+clusters: current_sun_only done (133.2s)
+clusters: physical done (133.5s)
+clusters: transduced_source done (133.8s)
+clusters: circumference done (134.1s)
+  twin search current_sun_only: 0/8000
+  twin search current_sun_only: 1000/8000
+  twin search current_sun_only: 2000/8000
+  twin search current_sun_only: 3000/8000
+  twin search current_sun_only: 4000/8000
+  twin search current_sun_only: 5000/8000
+  twin search current_sun_only: 6000/8000
+  twin search current_sun_only: 7000/8000
+twin search current_sun_only done (136.6s)
+  twin search circumference: 0/8000
+  twin search circumference: 1000/8000
+  twin search circumference: 2000/8000
+  twin search circumference: 3000/8000
+  twin search circumference: 4000/8000
+  twin search circumference: 5000/8000
+  twin search circumference: 6000/8000
+  twin search circumference: 7000/8000
+twin search circumference done (139.1s)
+top condition sep=160.0 ratio=2.0 done (140.0s)
+top condition sep=170.0 ratio=1.5 done (140.8s)
+top condition sep=150.0 ratio=2.5 done (141.7s)
+top condition sep=170.0 ratio=1.25 done (142.5s)
+top condition sep=150.0 ratio=3.0 done (143.2s)
+top condition sep=150.0 ratio=2.0 done (143.9s)
+top condition sep=160.0 ratio=2.5 done (144.5s)
+top condition sep=140.0 ratio=3.0 done (145.2s)
+
+=== GRAND ATLAS SUMMARY ===
+{
+  "n_plants": 100000,
+  "runtime_seconds": 145.7,
+  "cluster_ari_vs_sun_only": {
+    "current_sun_only": 1.0,
+    "physical": 0.6789734413943416,
+    "transduced_source": 0.6798753617003792,
+    "circumference": 0.7135958900772763
+  },
+  "twin_median_rmse_deg": {
+    "circumference": 0.011381739985698181,
+    "current_sun_only": 0.03571428571428571
+  },
+  "twin_median_mean_rel_param_diff": {
+    "circumference": 0.033485646348857784,
+    "current_sun_only": 0.03096737959176899
+  }
+}
+
+saved results/figures/vector_atlas_dashboard.png

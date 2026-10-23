@@ -1,0 +1,38 @@
+{
+  "probe1_stall_locking": {
+    "n_stalling_of_48": 42,
+    "stall_elapsed_median_h": 14.25,
+    "stall_elapsed_IQR_h": 5.875,
+    "stall_phase_resultant_R": 0.5578128287194823,
+    "stall_phase_circular_SD_h": 4.127176572756348,
+    "perm_p_phase_concentration": 0.0,
+    "block_median_elapsed_spread_h": 16.0,
+    "perm_p_block_spread_this_small": 1.0
+  },
+  "probe2_phi0_overshoot": {
+    "curves_overshoot_gt3deg": 19,
+    "curves_overshoot_gt5deg": 18,
+    "median_overshoot_deg": 0.847999999999999,
+    "max_overshoot_deg": 18.22866666666667,
+    "corr_phi0_vs_final_angle": 0.8633828555157964,
+    "phi0_fit_range": [
+      23.93172185992531,
+      81.56482084034958
+    ],
+    "fixed_phi0_refits": {
+      "60.0": {
+        "median_rmse_deg": 3.2175764008351155,
+        "max_rmse_deg": 12.926775653026805
+      },
+      "75.0": {
+        "median_rmse_deg": 6.147253885139461,
+        "max_rmse_deg": 14.44586474784068
+      },
+      "90.0": {
+        "median_rmse_deg": 7.790820322128137,
+        "max_rmse_deg": 15.717136562105136
+      }
+    },
+    "free_phi0_median_rmse_deg": 1.8
+  }
+}

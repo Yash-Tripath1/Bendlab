@@ -1,0 +1,793 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BendLab Visual Simulator</title>
+<style>
+  :root{
+    --bg:#eef2ee;
+    --panel:#ffffff;
+    --panel-soft:#f7faf7;
+    --ink:#16231b;
+    --muted:#6d7c72;
+    --faint:#9aaba0;
+    --line:#dce5dd;
+    --green:#177245;
+    --green-2:#2e9e63;
+    --amber:#df9a2e;
+    --theta:#177245;
+    --phi:#df9a2e;
+    --twin:#7d6ca8;
+    --red:#c94f4f;
+    --shadow:0 16px 42px rgba(30,55,40,.10);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  }
+  header{
+    max-width:1480px;
+    margin:0 auto;
+    padding:26px 28px 16px;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:24px;
+  }
+  h1{margin:0;font-size:30px;line-height:1.05;letter-spacing:-.035em;font-weight:780}
+  .subtitle{margin-top:7px;color:var(--muted);font-size:14.5px;line-height:1.45}
+  .model-tag{
+    color:var(--muted);
+    font-size:12px;
+    letter-spacing:.10em;
+    text-transform:uppercase;
+    white-space:nowrap;
+    padding-bottom:3px;
+  }
+  main{
+    max-width:1480px;
+    margin:0 auto;
+    padding:6px 28px 30px;
+    display:grid;
+    grid-template-columns:348px minmax(0,1fr);
+    gap:18px;
+  }
+  .card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:22px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+  .controls{padding:20px 20px 18px}
+  .visual{display:flex;flex-direction:column;background:#fbfdfb}
+  .section-title{
+    font-size:11px;
+    font-weight:760;
+    letter-spacing:.13em;
+    text-transform:uppercase;
+    color:var(--faint);
+    margin:2px 0 12px;
+  }
+  .section-title.spaced{margin-top:22px}
+  label{display:block;font-size:12.5px;color:var(--muted);margin:0 0 7px}
+  select{
+    width:100%;
+    appearance:none;
+    background:var(--panel-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%236d7c72' stroke-width='1.7' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 12px center;
+    color:var(--ink);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:10px 34px 10px 11px;
+    font-size:14px;
+    outline:none;
+  }
+  select:focus,input[type=number]:focus{border-color:#9cc7ab;box-shadow:0 0 0 3px rgba(23,114,69,.10)}
+  .param{padding:13px 0 12px;border-top:1px solid #edf1ed}
+  .param:first-of-type{border-top:0}
+  .param-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px}
+  .param-name{font-size:14px;font-weight:700;color:var(--ink)}
+  .param-unit{font-size:12px;color:var(--faint)}
+  .param-controls{display:grid;grid-template-columns:minmax(0,1fr) 86px;gap:12px;align-items:center}
+  input[type=number]{
+    width:100%;
+    background:var(--panel-soft);
+    color:var(--ink);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:8px 9px;
+    font-size:13.5px;
+    outline:none;
+  }
+  input[type=range]{
+    width:100%;
+    appearance:none;
+    -webkit-appearance:none;
+    height:22px;
+    background:transparent;
+    cursor:pointer;
+  }
+  input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:999px;background:#d9e4da}
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    width:18px;height:18px;border-radius:50%;
+    background:var(--green);
+    border:3px solid #fff;
+    box-shadow:0 1px 6px rgba(20,60,35,.30);
+    margin-top:-7px;
+  }
+  input[type=range]::-moz-range-track{height:4px;border-radius:999px;background:#d9e4da}
+  input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--green);border:3px solid #fff;box-shadow:0 1px 6px rgba(20,60,35,.30)}
+  .toggle{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:13px 0 2px;
+    border-top:1px solid #edf1ed;
+    margin-top:4px;
+  }
+  .toggle-text{font-size:14px;font-weight:650;color:var(--ink)}
+  .switch{position:relative;width:44px;height:24px;flex:0 0 auto}
+  .switch input{opacity:0;width:0;height:0;position:absolute}
+  .track{
+    position:absolute;inset:0;border-radius:999px;background:#d7e1d8;transition:.18s;
+  }
+  .track:before{
+    content:"";position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;top:3px;left:3px;
+    box-shadow:0 1px 5px rgba(0,0,0,.20);transition:.18s;
+  }
+  .switch input:checked + .track{background:var(--green)}
+  .switch input:checked + .track:before{transform:translateX(20px)}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px}
+  button{
+    border:1px solid var(--line);
+    background:#fff;
+    color:var(--ink);
+    border-radius:999px;
+    padding:9px 14px;
+    font-size:13.5px;
+    font-weight:700;
+    cursor:pointer;
+  }
+  button:hover{border-color:#b8c9bc;background:#fbfdfb}
+  button.primary{background:var(--green);border-color:var(--green);color:#fff;min-width:92px}
+  button.primary:hover{background:#126239}
+  .foot-note{margin-top:16px;padding-top:14px;border-top:1px solid #edf1ed;color:var(--faint);font-size:12px;line-height:1.55}
+  .scene-wrap{background:#eaf3ec;line-height:0}
+  #scene{width:100%;height:540px;display:block}
+  .timeline{
+    display:grid;
+    grid-template-columns:auto minmax(0,1fr) 62px;
+    gap:12px;
+    align-items:center;
+    padding:13px 16px;
+    border-top:1px solid var(--line);
+    background:#fff;
+  }
+  .timeline-label{font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--faint);font-weight:750}
+  #clock{font-variant-numeric:tabular-nums;color:var(--muted);font-size:13px;text-align:right}
+  .readout{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    border-top:1px solid var(--line);
+    background:#fff;
+  }
+  .stat{padding:13px 16px 14px;border-right:1px solid #edf1ed;min-width:0}
+  .stat:last-child{border-right:0}
+  .stat span{display:block;font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--faint);font-weight:750;white-space:nowrap}
+  .stat b{display:block;margin-top:5px;font-size:19px;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .stat b.active{color:var(--red)}
+  #chart{width:100%;height:238px;display:block;background:#fff;border-top:1px solid var(--line)}
+  .legend{
+    display:flex;
+    justify-content:flex-end;
+    gap:18px;
+    flex-wrap:wrap;
+    padding:10px 16px 13px;
+    background:#fff;
+    color:var(--muted);
+    font-size:12px;
+  }
+  .legend i{display:inline-block;width:18px;height:3px;border-radius:999px;vertical-align:middle;margin-right:7px}
+  @media(max-width:1020px){
+    header{display:block;padding:22px 18px 12px}
+    .model-tag{margin-top:10px}
+    main{grid-template-columns:1fr;padding:4px 18px 22px}
+    #scene{height:440px}
+    .readout{grid-template-columns:repeat(2,1fr)}
+    .stat{border-bottom:1px solid #edf1ed}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>BendLab Visual Simulator</h1>
+    <div class="subtitle">Interactive phototropic bending, computed with the BendLab model.</div>
+  </div>
+  <div class="model-tag">BendLab · sim.py</div>
+</header>
+
+<main>
+  <section class="card controls">
+    <div class="section-title">Parameters</div>
+
+    <label for="preset">Preset</label>
+    <select id="preset">
+      <option value="uniformCentre">Uniform-box centre</option>
+      <option value="medianFit">Median measured-data fit</option>
+      <option value="zt0_1">Measured fit · ZT0-1</option>
+      <option value="zt9_1">Measured fit · ZT9-1</option>
+      <option value="zt16_7">Measured fit · ZT16-7</option>
+      <option value="twinA">Behavioural twin A</option>
+      <option value="twinB">Behavioural twin B</option>
+      <option value="custom">Custom</option>
+    </select>
+
+    <div id="params"></div>
+
+    <div class="toggle">
+      <div class="toggle-text">Twin comparison</div>
+      <label class="switch" aria-label="Show twin comparison">
+        <input type="checkbox" id="twinToggle">
+        <span class="track"></span>
+      </label>
+    </div>
+
+    <div class="section-title spaced">Light</div>
+    <label for="regime">Regime</label>
+    <select id="regime">
+      <option value="static">Static</option>
+      <option value="flip8">Flip at 8 h</option>
+      <option value="sweep12">Sweep · 12 h</option>
+      <option value="dflip">Pulse, 6 to 14 h</option>
+      <option value="ramp24">Ramp</option>
+    </select>
+
+    <div class="grid-2" style="margin-top:14px">
+      <div>
+        <label for="duration">Duration</label>
+        <select id="duration">
+          <option value="6">6 h</option>
+          <option value="12">12 h</option>
+          <option value="24" selected>24 h</option>
+        </select>
+      </div>
+      <div>
+        <label for="speed">Speed</label>
+        <select id="speed">
+          <option value="0.25">0.25×</option>
+          <option value="0.5">0.5×</option>
+          <option value="1" selected>1×</option>
+          <option value="2">2×</option>
+          <option value="4">4×</option>
+          <option value="8">8×</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="primary" id="playBtn">Pause</button>
+      <button id="restartBtn">Restart</button>
+      <button id="twinBtn">Twin pair</button>
+      <button id="csvBtn">Export CSV</button>
+    </div>
+
+    <div class="foot-note">Integration step: 1 minute. The stem outline is schematic; the tip angle and chart are model outputs.</div>
+  </section>
+
+  <section class="card visual">
+    <div class="scene-wrap"><canvas id="scene"></canvas></div>
+
+    <div class="timeline">
+      <div class="timeline-label">Time</div>
+      <input type="range" id="scrub" min="0" max="1440" step="1" value="0">
+      <div id="clock">0.00 h</div>
+    </div>
+
+    <div class="readout">
+      <div class="stat"><span>Stem angle</span><b id="thetaOut">0.0°</b></div>
+      <div class="stat"><span>Light angle</span><b id="phiOut">0.0°</b></div>
+      <div class="stat"><span>Difference</span><b id="errOut">0.0°</b></div>
+      <div class="stat"><span>Bend rate</span><b id="rateOut">0.00°/h</b></div>
+      <div class="stat"><span>Rate cap</span><b id="capOut">Off</b></div>
+      <div class="stat"><span>Twin RMSE</span><b id="twinOut">n/a</b></div>
+    </div>
+
+    <canvas id="chart"></canvas>
+    <div class="legend">
+      <span><i style="background:var(--theta)"></i>Stem angle</span>
+      <span><i style="background:var(--phi)"></i>Light angle</span>
+      <span><i style="background:var(--twin)"></i>Twin stem angle</span>
+    </div>
+  </section>
+</main>
+
+<script>
+(() => {
+  "use strict";
+
+  const DT = 1 / 60;
+  const $ = id => document.getElementById(id);
+
+  const PARAM_DEFS = [
+    { key: "k",        label: "k",        unit: "response gain · /h", min: 0.05, max: 50,  log: true,  fmt: v => v.toFixed(3) },
+    { key: "tau",      label: "tau",      unit: "sensing lag · h",    min: 0.05, max: 42,  log: true,  fmt: v => v.toFixed(3) },
+    { key: "max_rate", label: "max_rate", unit: "rate cap · °/h",     min: 2,    max: 260, log: true,  fmt: v => v.toFixed(2) },
+    { key: "phi0",     label: "phi0",     unit: "base light · °",     min: -90,  max: 90,  log: false, fmt: v => v.toFixed(1) }
+  ];
+
+  const PRESETS = {
+    uniformCentre: { k: 1.52,     tau: 3.12,     max_rate: 21.0,     phi0: 45.0 },
+    medianFit:     { k: 16.579,   tau: 3.616,    max_rate: 31.145,   phi0: 45.006 },
+    zt0_1:         { k: 23.029769,tau: 6.768190, max_rate: 43.905248,phi0: 41.315990 },
+    zt9_1:         { k: 4.530403, tau: 0.05,     max_rate: 46.570116,phi0: 55.061518 },
+    zt16_7:        { k: 8.572745, tau: 4.368993, max_rate: 179.752662,phi0: 55.165320 },
+    twinA:         { k: 7.9,      tau: 4.8,      max_rate: 251.0,    phi0: 43.0 },
+    twinB:         { k: 9.4,      tau: 6.4,      max_rate: 24.0,     phi0: 40.0 }
+  };
+
+  const state = {
+    params: { ...PRESETS.uniformCentre },
+    compare: { ...PRESETS.twinB },
+    regime: "static",
+    duration: 24,
+    speed: 1,
+    playing: true,
+    t: 0,
+    traj: null,
+    compareTraj: null
+  };
+
+  const controls = {};
+  const paramsEl = $("params");
+
+  for (const def of PARAM_DEFS) {
+    const wrap = document.createElement("div");
+    wrap.className = "param";
+    wrap.innerHTML = `
+      <div class="param-top">
+        <span class="param-name">${def.label}</span>
+        <span class="param-unit">${def.unit}</span>
+      </div>
+      <div class="param-controls">
+        <input type="range" min="0" max="1000" step="1" aria-label="${def.label}">
+        <input type="number" step="any" aria-label="${def.label} value">
+      </div>`;
+    paramsEl.appendChild(wrap);
+    controls[def.key] = {
+      def,
+      slider: wrap.querySelector('input[type="range"]'),
+      number: wrap.querySelector('input[type="number"]')
+    };
+  }
+
+  function sliderToValue(def, x) {
+    const f = x / 1000;
+    return def.log
+      ? Math.exp(Math.log(def.min) + f * (Math.log(def.max) - Math.log(def.min)))
+      : def.min + f * (def.max - def.min);
+  }
+
+  function valueToSlider(def, v) {
+    const clamped = Math.min(def.max, Math.max(def.min, v));
+    const f = def.log
+      ? (Math.log(clamped) - Math.log(def.min)) / (Math.log(def.max) - Math.log(def.min))
+      : (clamped - def.min) / (def.max - def.min);
+    return Math.round(1000 * f);
+  }
+
+  function syncControls() {
+    for (const def of PARAM_DEFS) {
+      const c = controls[def.key];
+      c.slider.value = valueToSlider(def, state.params[def.key]);
+      c.number.value = def.fmt(state.params[def.key]);
+    }
+  }
+
+  for (const def of PARAM_DEFS) {
+    const c = controls[def.key];
+    c.slider.addEventListener("input", () => {
+      state.params[def.key] = sliderToValue(def, Number(c.slider.value));
+      c.number.value = def.fmt(state.params[def.key]);
+      $("preset").value = "custom";
+      recompute();
+    });
+    c.number.addEventListener("change", () => {
+      const raw = Number(c.number.value);
+      state.params[def.key] = Number.isFinite(raw)
+        ? Math.min(def.max, Math.max(def.min, raw))
+        : state.params[def.key];
+      syncControls();
+      recompute();
+    });
+  }
+
+  function lightAngle(t, phi0, regime, duration) {
+    switch (regime) {
+      case "flip8":   return phi0 + (t >= 8 ? 45 : 0);
+      case "sweep12": return phi0 + 45 * (2 * ((t % 12) / 12) - 1);
+      case "dflip":   return phi0 + (t >= 6 && t < 14 ? 45 : 0);
+      case "ramp24":  return phi0 - 30 + 60 * (t / Math.max(duration, 24));
+      default:        return phi0;
+    }
+  }
+
+  function simulate(params) {
+    const n = Math.round(state.duration / DT);
+    const times = new Float64Array(n + 1);
+    const theta = new Float64Array(n + 1);
+    const rate = new Float64Array(n + 1);
+    const phi = new Float64Array(n + 1);
+    let th = 0;
+    let r = 0;
+
+    for (let i = 0; i <= n; i++) {
+      const t = i * DT;
+      times[i] = t;
+      theta[i] = th;
+      rate[i] = r;
+      phi[i] = lightAngle(t, params.phi0, state.regime, state.duration);
+      if (i === n) break;
+
+      const stimulus = params.k * Math.sin((phi[i] - th) * Math.PI / 180);
+      r += (stimulus - r) * (DT / params.tau);
+      r = Math.max(-params.max_rate, Math.min(params.max_rate, r));
+      th += r * DT;
+    }
+    return { times, theta, rate, phi };
+  }
+
+  function rmse(a, b) {
+    let s = 0;
+    const n = Math.min(a.length, b.length);
+    for (let i = 0; i < n; i++) {
+      const d = a[i] - b[i];
+      s += d * d;
+    }
+    return Math.sqrt(s / n);
+  }
+
+  function recompute() {
+    state.traj = simulate(state.params);
+    state.compareTraj = $("twinToggle").checked ? simulate(state.compare) : null;
+    $("scrub").max = Math.round(state.duration / DT);
+    state.t = Math.min(state.t, state.duration);
+    $("scrub").value = Math.round(state.t / DT);
+    draw();
+  }
+
+  function currentIndex() {
+    return Math.max(0, Math.min(state.traj.times.length - 1, Math.round(state.t / DT)));
+  }
+
+  function fitCanvas(canvas) {
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    const w = Math.max(320, Math.round(rect.width));
+    const h = Math.max(180, Math.round(rect.height));
+    if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) {
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+    }
+    const ctx = canvas.getContext("2d");
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { ctx, w, h };
+  }
+
+  function leaf(ctx, x, y, angle, size, side, ghost) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(angle + side * 0.82);
+    ctx.scale(side, 1);
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.bezierCurveTo(size * 0.35, -size * 0.34, size * 0.90, -size * 0.28, size, 0);
+    ctx.bezierCurveTo(size * 0.90, size * 0.28, size * 0.35, size * 0.34, 0, 0);
+    ctx.fillStyle = ghost ? "rgba(125,108,168,.34)" : "rgba(46,139,79,.88)";
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawStem(ctx, baseX, groundY, thetaDeg, len, ghost) {
+    const segments = 24;
+    const step = len / segments;
+    let x = baseX;
+    let y = groundY;
+
+    ctx.save();
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+
+    for (let i = 0; i < segments; i++) {
+      const s1 = (i + 1) / segments;
+      const a1 = thetaDeg * s1 * Math.PI / 180;
+      const nx = x + Math.sin(a1) * step;
+      const ny = y - Math.cos(a1) * step;
+      ctx.strokeStyle = ghost ? "rgba(125,108,168,.48)" : (i % 2 ? "#2f8a4d" : "#278044");
+      ctx.lineWidth = (ghost ? 4.5 : 7.5) * (1 - 0.52 * s1);
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(nx, ny);
+      ctx.stroke();
+
+      if (i === 8) leaf(ctx, x, y, a1, ghost ? 22 : 30, -1, ghost);
+      if (i === 15) leaf(ctx, x, y, a1, ghost ? 20 : 27, 1, ghost);
+      x = nx;
+      y = ny;
+    }
+
+    ctx.beginPath();
+    ctx.arc(x, y, ghost ? 6 : 8, 0, Math.PI * 2);
+    ctx.fillStyle = ghost ? "rgba(125,108,168,.62)" : "#174f2e";
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(x, y, ghost ? 2.5 : 3.2, 0, Math.PI * 2);
+    ctx.fillStyle = ghost ? "rgba(255,255,255,.55)" : "#bfe6c8";
+    ctx.fill();
+    ctx.restore();
+    return { x, y };
+  }
+
+  function drawScene() {
+    const { ctx, w, h } = fitCanvas($("scene"));
+    const idx = currentIndex();
+    const theta = state.traj.theta[idx];
+    const phi = state.traj.phi[idx];
+    const groundY = h * 0.84;
+    const baseX = w * 0.44;
+    const len = h * 0.60;
+
+    const sky = ctx.createLinearGradient(0, 0, 0, groundY);
+    sky.addColorStop(0, "#dcefe4");
+    sky.addColorStop(0.58, "#f2f1de");
+    sky.addColorStop(1, "#e7edda");
+    ctx.fillStyle = sky;
+    ctx.fillRect(0, 0, w, groundY + 1);
+
+    ctx.fillStyle = "#66875c";
+    ctx.fillRect(0, groundY, w, h - groundY);
+    ctx.fillStyle = "#587a50";
+    ctx.fillRect(0, groundY, w, 5);
+
+    const sunDist = h * 0.70;
+    const sunX = baseX + Math.sin(phi * Math.PI / 180) * sunDist;
+    const sunY = groundY - Math.cos(phi * Math.PI / 180) * sunDist;
+
+    const glow = ctx.createRadialGradient(sunX, sunY, 4, sunX, sunY, 72);
+    glow.addColorStop(0, "rgba(239,174,58,.50)");
+    glow.addColorStop(1, "rgba(239,174,58,0)");
+    ctx.fillStyle = glow;
+    ctx.beginPath();
+    ctx.arc(sunX, sunY, 72, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.strokeStyle = "rgba(190,132,35,.38)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(sunX, sunY);
+    ctx.lineTo(baseX, groundY - len * 0.70);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(sunX, sunY, 22, 0, Math.PI * 2);
+    ctx.fillStyle = "#f2b544";
+    ctx.fill();
+
+    ctx.strokeStyle = "rgba(38,64,45,.24)";
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(baseX, groundY);
+    ctx.lineTo(baseX, groundY - len);
+    ctx.stroke();
+
+    ctx.strokeStyle = "rgba(23,114,69,.62)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(baseX, groundY, 64, -Math.PI / 2, -Math.PI / 2 + theta * Math.PI / 180, theta < 0);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.ellipse(baseX, groundY + 7, 58, 13, 0, 0, Math.PI * 2);
+    ctx.fillStyle = "#4c3b28";
+    ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(baseX, groundY + 2, 62, 10, 0, 0, Math.PI * 2);
+    ctx.fillStyle = "#665136";
+    ctx.fill();
+
+    if (state.compareTraj) {
+      drawStem(ctx, baseX + 92, groundY, state.compareTraj.theta[idx], len, true);
+    }
+    drawStem(ctx, baseX, groundY, theta, len, false);
+
+    ctx.fillStyle = "rgba(22,35,27,.78)";
+    ctx.font = "700 13px Inter, system-ui, sans-serif";
+    ctx.fillText(theta.toFixed(1) + "°", baseX + 76, groundY - 68);
+  }
+
+  function drawChart() {
+    const { ctx, w, h } = fitCanvas($("chart"));
+    const pad = { l: 48, r: 24, t: 18, b: 32 };
+    const W = w - pad.l - pad.r;
+    const H = h - pad.t - pad.b;
+    const tr = state.traj;
+
+    let ymin = -100;
+    let ymax = 100;
+    let dataMin = Infinity;
+    let dataMax = -Infinity;
+    for (const v of tr.theta) { dataMin = Math.min(dataMin, v); dataMax = Math.max(dataMax, v); }
+    for (const v of tr.phi) { dataMin = Math.min(dataMin, v); dataMax = Math.max(dataMax, v); }
+    if (state.compareTraj) {
+      for (const v of state.compareTraj.theta) { dataMin = Math.min(dataMin, v); dataMax = Math.max(dataMax, v); }
+    }
+    ymin = Math.min(ymin, Math.floor(dataMin / 20) * 20);
+    ymax = Math.max(ymax, Math.ceil(dataMax / 20) * 20);
+
+    const x = t => pad.l + (t / state.duration) * W;
+    const y = v => pad.t + (ymax - v) / (ymax - ymin) * H;
+
+    ctx.clearRect(0, 0, w, h);
+    ctx.font = "11px Inter, system-ui, sans-serif";
+    ctx.lineWidth = 1;
+
+    for (let v = Math.ceil(ymin / 30) * 30; v <= ymax; v += 30) {
+      ctx.strokeStyle = "#edf1ed";
+      ctx.beginPath();
+      ctx.moveTo(pad.l, y(v));
+      ctx.lineTo(w - pad.r, y(v));
+      ctx.stroke();
+      ctx.fillStyle = "#9aaba0";
+      ctx.fillText(v + "°", 10, y(v) + 4);
+    }
+
+    const step = state.duration <= 6 ? 1 : state.duration <= 12 ? 2 : 4;
+    ctx.fillStyle = "#9aaba0";
+    for (let t = 0; t <= state.duration; t += step) {
+      ctx.fillText(t + "h", x(t) - 8, h - 10);
+    }
+
+    function line(arr, color, width, alpha) {
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.strokeStyle = color;
+      ctx.lineWidth = width;
+      ctx.lineJoin = "round";
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      for (let i = 0; i < arr.length; i++) {
+        const px = x(tr.times[i]);
+        const py = y(arr[i]);
+        if (i === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      }
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    line(tr.phi, "#df9a2e", 2, 0.95);
+    if (state.compareTraj) line(state.compareTraj.theta, "#7d6ca8", 2.2, 0.78);
+    line(tr.theta, "#177245", 2.6, 1);
+
+    const idx = currentIndex();
+    ctx.strokeStyle = "#c7d3c9";
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(x(tr.times[idx]), pad.t);
+    ctx.lineTo(x(tr.times[idx]), pad.t + H);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(x(tr.times[idx]), y(tr.theta[idx]), 4, 0, Math.PI * 2);
+    ctx.fillStyle = "#177245";
+    ctx.fill();
+  }
+
+  function draw() {
+    if (!state.traj) return;
+    drawScene();
+    drawChart();
+
+    const idx = currentIndex();
+    const theta = state.traj.theta[idx];
+    const phi = state.traj.phi[idx];
+    const r = state.traj.rate[idx];
+
+    $("thetaOut").textContent = theta.toFixed(1) + "°";
+    $("phiOut").textContent = phi.toFixed(1) + "°";
+    $("errOut").textContent = (phi - theta).toFixed(1) + "°";
+    $("rateOut").textContent = r.toFixed(2) + "°/h";
+
+    const capped = Math.abs(Math.abs(r) - state.params.max_rate) < 1e-9;
+    $("capOut").textContent = capped ? "Active" : "Off";
+    $("capOut").className = capped ? "active" : "";
+    $("twinOut").textContent = state.compareTraj
+      ? rmse(state.traj.theta, state.compareTraj.theta).toFixed(3) + "°"
+      : "n/a";
+    $("clock").textContent = state.t.toFixed(2) + " h";
+    $("scrub").value = idx;
+  }
+
+  let last = performance.now();
+  function tick(now) {
+    const elapsed = (now - last) / 1000;
+    last = now;
+    if (state.playing) {
+      state.t += elapsed * state.speed;
+      if (state.t >= state.duration) {
+        state.t = state.duration;
+        state.playing = false;
+        $("playBtn").textContent = "Play";
+      }
+      draw();
+    }
+    requestAnimationFrame(tick);
+  }
+
+  $("preset").addEventListener("change", e => {
+    const key = e.target.value;
+    if (PRESETS[key]) {
+      state.params = { ...PRESETS[key] };
+      syncControls();
+      recompute();
+    }
+  });
+  $("regime").addEventListener("change", e => { state.regime = e.target.value; recompute(); });
+  $("duration").addEventListener("change", e => { state.duration = Number(e.target.value); state.t = 0; recompute(); });
+  $("speed").addEventListener("change", e => { state.speed = Number(e.target.value); });
+  $("twinToggle").addEventListener("change", recompute);
+
+  $("playBtn").addEventListener("click", () => {
+    if (state.t >= state.duration) state.t = 0;
+    state.playing = !state.playing;
+    $("playBtn").textContent = state.playing ? "Pause" : "Play";
+    draw();
+  });
+  $("restartBtn").addEventListener("click", () => {
+    state.t = 0;
+    state.playing = true;
+    $("playBtn").textContent = "Pause";
+    draw();
+  });
+  $("twinBtn").addEventListener("click", () => {
+    state.params = { ...PRESETS.twinA };
+    state.compare = { ...PRESETS.twinB };
+    $("preset").value = "twinA";
+    $("twinToggle").checked = true;
+    syncControls();
+    recompute();
+  });
+  $("scrub").addEventListener("input", e => {
+    state.t = Number(e.target.value) * DT;
+    draw();
+  });
+  $("csvBtn").addEventListener("click", () => {
+    const tr = state.traj;
+    let csv = "time_h,theta_deg,phi_deg,bend_rate_deg_per_h\n";
+    for (let i = 0; i < tr.times.length; i++) {
+      csv += tr.times[i].toFixed(4) + "," + tr.theta[i].toFixed(6) + "," +
+             tr.phi[i].toFixed(6) + "," + tr.rate[i].toFixed(6) + "\n";
+    }
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
+    a.download = "bendlab_visual_trajectory.csv";
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  });
+
+  window.addEventListener("resize", draw);
+
+  syncControls();
+  recompute();
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
