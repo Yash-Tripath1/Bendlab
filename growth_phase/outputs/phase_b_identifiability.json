@@ -1,0 +1,66 @@
+{
+  "N213": {
+    "confusion": {
+      "M0": {
+        "M0": 5,
+        "M1a": 4,
+        "M1c": 4,
+        "M1d": 3
+      },
+      "M1a": {
+        "M0": 0,
+        "M1a": 16,
+        "M1c": 0,
+        "M1d": 0
+      },
+      "M1c": {
+        "M0": 0,
+        "M1a": 0,
+        "M1c": 16,
+        "M1d": 0
+      },
+      "M1d": {
+        "M0": 0,
+        "M1a": 0,
+        "M1c": 0,
+        "M1d": 16
+      }
+    },
+    "median_RMSE_M0_over_oracle": 1.0628156307690215
+  },
+  "N2000": {
+    "confusion": {
+      "M0": {
+        "M0": 2,
+        "M1a": 1,
+        "M1c": 0,
+        "M1d": 0
+      },
+      "M1a": {
+        "M0": 0,
+        "M1a": 3,
+        "M1c": 0,
+        "M1d": 0
+      },
+      "M1c": {
+        "M0": 0,
+        "M1a": 0,
+        "M1c": 3,
+        "M1d": 0
+      },
+      "M1d": {
+        "M0": 0,
+        "M1a": 0,
+        "M1c": 0,
+        "M1d": 3
+      }
+    },
+    "median_RMSE_M0_over_oracle": 1.1344082513984903
+  },
+  "M2_fingerprint": {
+    "corr_thetaFinal_vs_elongation_M2": 0.6496774228619723,
+    "corr_thetaFinal_vs_elongation_M1a": 0.09878850815951039,
+    "CV_bend_per_elongation_M2": 0.5057390132358969,
+    "CV_bend_per_elongation_M1a": 0.5134377218017544
+  }
+}
