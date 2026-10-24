@@ -1,0 +1,39 @@
+{
+  "status": "POST-AUDIT SENSITIVITY, not pre-registered; primary Phase C comparison remains M0 vs M1a vs M1d",
+  "why_M1c_was_not_primary": "pre-registration included M1c only if a latency signal appeared; latency coefficient per log L0 -0.75 h, 95% CI [-2.02, 0.38], i.e. not detected",
+  "M1c_parameterisation": "tau = tau0 + c*(L0 - 14 mm), c in h/mm",
+  "folds_rebuilt_from": "phase_c_historical.py cv() seed 42",
+  "M0_replication_check_deg": {
+    "refit_median_rmse": 10.251886543931672,
+    "primary_median_rmse": 10.251886543931672,
+    "abs_diff": 0.0
+  },
+  "cv_median_rmse_deg": {
+    "M0": 10.251886543931672,
+    "M1c": 10.29464673243989
+  },
+  "M1c_improvement_pct_vs_M0": -0.417095803050308,
+  "M1c_c_by_fold_h_per_mm": [
+    -0.04999999999996151,
+    -0.021762166154861682,
+    -0.03256217887543251,
+    -0.04999999999999997,
+    -0.023571507961180318
+  ],
+  "M1c_c_signs_by_fold": [
+    -1,
+    -1,
+    -1,
+    -1,
+    -1
+  ],
+  "M1c_sign_stable": true,
+  "adoption_rule_descriptive": {
+    "improvement_ge_5pct": false,
+    "supported": false
+  },
+  "not_fitted_anywhere_in_Phase_C": {
+    "M1b_geometry": "no fitted candidate; no diameter or growth-zone geometry in this archive",
+    "M2_growth_generated": "simulation fingerprint only by design; archive has start/finish lengths only"
+  }
+}

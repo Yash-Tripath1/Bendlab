@@ -1,0 +1,450 @@
+{
+  "design": {
+    "N_per_dataset": 213,
+    "seeds": "master 20261024",
+    "adoption_rule": "median held-out RMSE improvement >= 5% over M0 AND L0-parameter sign stable across 5 folds (Phase C rule)",
+    "note": "M1c candidate parameterised by lag slope c (h/mm); generator uses v, c = 1/v."
+  },
+  "scenarios": {
+    "M0:none": {
+      "n_datasets": 24,
+      "winner_counts": {
+        "M0": 5,
+        "M1a": 6,
+        "M1c": 8,
+        "M1d": 5
+      },
+      "any_M1_supported": {
+        "count": 0,
+        "of": 24,
+        "wilson95": [
+          0.0,
+          0.13797620655132792
+        ]
+      },
+      "supported_M1a": {
+        "count": 0,
+        "of": 24,
+        "wilson95": [
+          0.0,
+          0.13797620655132792
+        ]
+      },
+      "median_improvement_pct_M1a": -0.2628863535664693,
+      "supported_M1c": {
+        "count": 0,
+        "of": 24,
+        "wilson95": [
+          0.0,
+          0.13797620655132792
+        ]
+      },
+      "median_improvement_pct_M1c": 0.016408038332735405,
+      "supported_M1d": {
+        "count": 0,
+        "of": 24,
+        "wilson95": [
+          0.0,
+          0.13797620655132792
+        ]
+      },
+      "median_improvement_pct_M1d": -0.48887506113569823
+    },
+    "M1a:alpha=0.2": {
+      "n_datasets": 12,
+      "winner_counts": {
+        "M0": 1,
+        "M1a": 8,
+        "M1c": 0,
+        "M1d": 3
+      },
+      "any_M1_supported": {
+        "count": 2,
+        "of": 12,
+        "wilson95": [
+          0.04696514175692082,
+          0.4480308646118111
+        ]
+      },
+      "supported_M1a": {
+        "count": 2,
+        "of": 12,
+        "wilson95": [
+          0.04696514175692082,
+          0.4480308646118111
+        ]
+      },
+      "median_improvement_pct_M1a": 2.3552816308069593,
+      "supported_M1c": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "median_improvement_pct_M1c": -0.08977466275462999,
+      "supported_M1d": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "median_improvement_pct_M1d": 1.61172330521062
+    },
+    "M1a:alpha=0.4": {
+      "n_datasets": 12,
+      "winner_counts": {
+        "M0": 0,
+        "M1a": 11,
+        "M1c": 0,
+        "M1d": 1
+      },
+      "any_M1_supported": {
+        "count": 10,
+        "of": 12,
+        "wilson95": [
+          0.5519691353881888,
+          0.9530348582430792
+        ]
+      },
+      "supported_M1a": {
+        "count": 10,
+        "of": 12,
+        "wilson95": [
+          0.5519691353881888,
+          0.9530348582430792
+        ]
+      },
+      "median_improvement_pct_M1a": 9.4919867571429,
+      "supported_M1c": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "median_improvement_pct_M1c": -0.07119943146993216,
+      "supported_M1d": {
+        "count": 7,
+        "of": 12,
+        "wilson95": [
+          0.31951131084242423,
+          0.8067396875653928
+        ]
+      },
+      "median_improvement_pct_M1d": 7.2345091998025755
+    },
+    "M1a:alpha=0.8": {
+      "n_datasets": 12,
+      "winner_counts": {
+        "M0": 0,
+        "M1a": 12,
+        "M1c": 0,
+        "M1d": 0
+      },
+      "any_M1_supported": {
+        "count": 12,
+        "of": 12,
+        "wilson95": [
+          0.7575059904469021,
+          1.0
+        ]
+      },
+      "supported_M1a": {
+        "count": 12,
+        "of": 12,
+        "wilson95": [
+          0.7575059904469021,
+          1.0
+        ]
+      },
+      "median_improvement_pct_M1a": 27.54547987652542,
+      "supported_M1c": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "median_improvement_pct_M1c": -0.23974015804922694,
+      "supported_M1d": {
+        "count": 12,
+        "of": 12,
+        "wilson95": [
+          0.7575059904469021,
+          1.0
+        ]
+      },
+      "median_improvement_pct_M1d": 18.025090302042123
+    },
+    "M1c:v=20 (c=0.05)": {
+      "n_datasets": 12,
+      "winner_counts": {
+        "M0": 3,
+        "M1a": 2,
+        "M1c": 4,
+        "M1d": 3
+      },
+      "any_M1_supported": {
+        "count": 1,
+        "of": 12,
+        "wilson95": [
+          0.014865094239669363,
+          0.35387991372124555
+        ]
+      },
+      "supported_M1a": {
+        "count": 1,
+        "of": 12,
+        "wilson95": [
+          0.014865094239669363,
+          0.35387991372124555
+        ]
+      },
+      "median_improvement_pct_M1a": -0.5462058885031467,
+      "supported_M1c": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "median_improvement_pct_M1c": 0.16880181545145742,
+      "supported_M1d": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "median_improvement_pct_M1d": -0.4351535887271181
+    },
+    "M1c:v=40 (c=0.025)": {
+      "n_datasets": 12,
+      "winner_counts": {
+        "M0": 6,
+        "M1a": 3,
+        "M1c": 2,
+        "M1d": 1
+      },
+      "any_M1_supported": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "supported_M1a": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "median_improvement_pct_M1a": -0.07827858662101833,
+      "supported_M1c": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "median_improvement_pct_M1c": -0.10500051108293643,
+      "supported_M1d": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "median_improvement_pct_M1d": -0.5585869734406258
+    },
+    "M1c:v=8 (c=0.125)": {
+      "n_datasets": 12,
+      "winner_counts": {
+        "M0": 0,
+        "M1a": 1,
+        "M1c": 10,
+        "M1d": 1
+      },
+      "any_M1_supported": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "supported_M1a": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "median_improvement_pct_M1a": 0.011479817232641298,
+      "supported_M1c": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "median_improvement_pct_M1c": 1.8809756095759687,
+      "supported_M1d": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "median_improvement_pct_M1d": 0.033976781716102286
+    },
+    "M1d:delta=0.3": {
+      "n_datasets": 12,
+      "winner_counts": {
+        "M0": 1,
+        "M1a": 1,
+        "M1c": 1,
+        "M1d": 9
+      },
+      "any_M1_supported": {
+        "count": 3,
+        "of": 12,
+        "wilson95": [
+          0.08894166769488562,
+          0.5323053370816633
+        ]
+      },
+      "supported_M1a": {
+        "count": 2,
+        "of": 12,
+        "wilson95": [
+          0.04696514175692082,
+          0.4480308646118111
+        ]
+      },
+      "median_improvement_pct_M1a": 1.4637598754585728,
+      "supported_M1c": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "median_improvement_pct_M1c": 0.25052461949015464,
+      "supported_M1d": {
+        "count": 3,
+        "of": 12,
+        "wilson95": [
+          0.08894166769488562,
+          0.5323053370816633
+        ]
+      },
+      "median_improvement_pct_M1d": 2.4361925359207706
+    },
+    "M1d:delta=0.6": {
+      "n_datasets": 12,
+      "winner_counts": {
+        "M0": 0,
+        "M1a": 2,
+        "M1c": 0,
+        "M1d": 10
+      },
+      "any_M1_supported": {
+        "count": 11,
+        "of": 12,
+        "wilson95": [
+          0.6461200862787544,
+          0.9851349057603305
+        ]
+      },
+      "supported_M1a": {
+        "count": 9,
+        "of": 12,
+        "wilson95": [
+          0.4676946629183366,
+          0.9110583323051143
+        ]
+      },
+      "median_improvement_pct_M1a": 6.871235715751061,
+      "supported_M1c": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "median_improvement_pct_M1c": 1.110312462935667,
+      "supported_M1d": {
+        "count": 11,
+        "of": 12,
+        "wilson95": [
+          0.6461200862787544,
+          0.9851349057603305
+        ]
+      },
+      "median_improvement_pct_M1d": 9.558240155650392
+    },
+    "M1d:delta=1.0": {
+      "n_datasets": 12,
+      "winner_counts": {
+        "M0": 0,
+        "M1a": 0,
+        "M1c": 0,
+        "M1d": 12
+      },
+      "any_M1_supported": {
+        "count": 12,
+        "of": 12,
+        "wilson95": [
+          0.7575059904469021,
+          1.0
+        ]
+      },
+      "supported_M1a": {
+        "count": 12,
+        "of": 12,
+        "wilson95": [
+          0.7575059904469021,
+          1.0
+        ]
+      },
+      "median_improvement_pct_M1a": 14.306267688846935,
+      "supported_M1c": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "median_improvement_pct_M1c": 1.1922668602786395,
+      "supported_M1d": {
+        "count": 12,
+        "of": 12,
+        "wilson95": [
+          0.7575059904469021,
+          1.0
+        ]
+      },
+      "median_improvement_pct_M1d": 20.175367598373775
+    }
+  }
+}
