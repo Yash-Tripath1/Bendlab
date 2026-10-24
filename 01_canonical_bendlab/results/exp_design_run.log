@@ -1,0 +1,35 @@
+weighted population n=4000 from 44 clean fits
+simulated sep=160 ratio=2.00 (0.4s)
+simulated sep=170 ratio=1.50 (0.7s)
+simulated sep=150 ratio=2.50 (1.0s)
+simulated sep=150 ratio=3.00 (1.3s)
+simulated sep=140 ratio=3.00 (1.6s)
+simulated sep=120 ratio=2.00 (2.0s)
+simulated sep=90 ratio=2.00 (2.2s)
+simulated sep=60 ratio=1.00 (2.5s)
+power analysis sep=160 ratio=2.00 done (3.9s)
+power analysis sep=170 ratio=1.50 done (5.1s)
+power analysis sep=150 ratio=2.50 done (6.3s)
+power analysis sep=150 ratio=3.00 done (7.5s)
+power analysis sep=140 ratio=3.00 done (8.9s)
+power analysis sep=120 ratio=2.00 done (10.4s)
+power analysis sep=90 ratio=2.00 done (11.6s)
+power analysis sep=60 ratio=1.00 done (12.7s)
+
+=== EXP DESIGN SUMMARY ===
+{
+  "n_population": 4000,
+  "repetitions_per_cell": 2000,
+  "runtime_seconds": 12.8,
+  "control_power_at_alpha_should_be_near_0.05": {
+    "physical vs transduced_source": 0.049,
+    "physical vs circumference": 0.044,
+    "transduced_source vs circumference": 0.051
+  },
+  "best_condition_160deg_ratio2_min_n_sigma2": {
+    "physical vs circumference": 15.0,
+    "physical vs transduced_source": 5.0,
+    "transduced_source vs circumference": 10.0
+  }
+}
+saved results/figures/exp_design_dashboard.png

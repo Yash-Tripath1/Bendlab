@@ -1,0 +1,37 @@
+{
+  "seed": 1,
+  "c_seed": 2,
+  "zeta_seed": 3,
+  "n_plants": 10000,
+  "n_seg": 5,
+  "t_end": 24.0,
+  "record_dt": 0.5,
+  "c_bounds": [
+    0.0,
+    1.0
+  ],
+  "zeta_bounds": [
+    0.0,
+    1.0
+  ],
+  "max_joint_curvature": 19.733484908620504,
+  "criterion": ">=10 pp retention reduction for >=2 of the 4 original params",
+  "improved_params": [],
+  "supported": false,
+  "retention_tip_pct": {
+    "k": 24.3329508241969,
+    "tau": 40.49700512662141,
+    "max_rate": 50.073309598033966,
+    "phi0": 22.55939647729955,
+    "c": 51.6581529664641,
+    "zeta": 44.18341354926685
+  },
+  "retention_shape_pct": {
+    "k": 29.140180579617528,
+    "tau": 48.34491402760048,
+    "max_rate": 50.12421163265683,
+    "phi0": 32.53729266289221,
+    "c": 37.3345393051914,
+    "zeta": 41.46325560332831
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "alpha": 0.3,
+  "transmission": 0.1,
+  "validation_max_abs_diff_deg_vs_sim_py": 0.0,
+  "max_abs_circumference_distortion_deg": 17.20166347969235,
+  "max_abs_transduced_distortion_deg": 30.450731917058242,
+  "population_n": 20000,
+  "runtime_seconds": 4.4,
+  "final_diff_vs_sun_only_physical": {
+    "median_deg": -9.068762305333673,
+    "p95_abs_deg": 38.15048435088487,
+    "max_abs_deg": 60.662766943572876,
+    "median_trajectory_rmse_deg": 7.508826316249542
+  },
+  "final_diff_vs_sun_only_transduced_source": {
+    "median_deg": -16.35000669673507,
+    "p95_abs_deg": 51.81574222236518,
+    "max_abs_deg": 83.55803895187334,
+    "median_trajectory_rmse_deg": 12.045620277297044
+  },
+  "final_diff_vs_sun_only_circumference": {
+    "median_deg": -10.998595275739108,
+    "p95_abs_deg": 43.04814104197203,
+    "max_abs_deg": 68.57970457738853,
+    "median_trajectory_rmse_deg": 8.855757421858332
+  },
+  "scenarios": [
+    {
+      "scenario": "two_source_90_ratio5",
+      "model": "physical",
+      "effective_direction": 33.69006752597978,
+      "effective_gain": 0.8498365855987976,
+      "final_angle": 33.71854038249618,
+      "half_rise_time": 5.683333333333334
+    },
+    {
+      "scenario": "two_source_90_ratio5",
+      "model": "transduced_source",
+      "effective_direction": 13.324008976255309,
+      "effective_gain": 0.7266669191590712,
+      "final_angle": 13.64808675842872,
+      "half_rise_time": 6.033333333333333
+    },
+    {
+      "scenario": "two_source_90_ratio5",
+      "model": "circumference",
+      "effective_direction": 26.415012704945084,
+      "effective_gain": 0.8811323915788116,
+      "final_angle": 26.249300684915685,
+      "half_rise_time": 5.533333333333333
+    },
+    {
+      "scenario": "opposing_plus_weak",
+      "model": "physical",
+      "effective_direction": 5.512216186853498,
+      "effective_gain": 0.2095055385312239,
+      "final_angle": 4.337851628474312,
+      "half_rise_time": 10.816666666666666
+    },
+    {
+      "scenario": "opposing_plus_weak",
+      "model": "transduced_source",
+      "effective_direction": 14.802573028526506,
+      "effective_gain": 0.33145879800999706,
+      "final_angle": 14.27934467414149,
+      "half_rise_time": 9.25
+    },
+    {
+      "scenario": "opposing_plus_weak",
+      "model": "circumference",
+      "effective_direction": 2.678689474215988,
+      "effective_gain": 0.3261255161162101,
+      "final_angle": 2.573471850743615,
+      "half_rise_time": 9.266666666666666
+    },
+    {
+      "scenario": "moving_sun_diffuse",
+      "model": "physical",
+      "effective_direction": NaN,
+      "effective_gain": NaN,
+      "final_angle": 16.336187111142547,
+      "half_rise_time": 13.799999999999999
+    },
+    {
+      "scenario": "moving_sun_diffuse",
+      "model": "transduced_source",
+      "effective_direction": NaN,
+      "effective_gain": NaN,
+      "final_angle": 8.519959136899724,
+      "half_rise_time": 14.016666666666666
+    },
+    {
+      "scenario": "moving_sun_diffuse",
+      "model": "circumference",
+      "effective_direction": NaN,
+      "effective_gain": NaN,
+      "final_angle": 13.975655708068365,
+      "half_rise_time": 13.75
+    },
+    {
+      "scenario": "moving_sun_diffuse",
+      "model": "current_sun_only",
+      "effective_direction": NaN,
+      "effective_gain": NaN,
+      "final_angle": 39.17589092782428,
+      "half_rise_time": 13.866666666666667
+    }
+  ]
+}

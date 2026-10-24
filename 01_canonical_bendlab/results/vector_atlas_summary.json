@@ -1,0 +1,18 @@
+{
+  "n_plants": 100000,
+  "runtime_seconds": 145.7,
+  "cluster_ari_vs_sun_only": {
+    "current_sun_only": 1.0,
+    "physical": 0.6789734413943416,
+    "transduced_source": 0.6798753617003792,
+    "circumference": 0.7135958900772763
+  },
+  "twin_median_rmse_deg": {
+    "circumference": 0.011381739985698181,
+    "current_sun_only": 0.03571428571428571
+  },
+  "twin_median_mean_rel_param_diff": {
+    "circumference": 0.033485646348857784,
+    "current_sun_only": 0.03096737959176899
+  }
+}
