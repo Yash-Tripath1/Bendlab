@@ -84,6 +84,13 @@ result.
 | `phase_a.py` | Leave-one-block-out cross-validation, per-fit parameter uncertainty, and the Fig1B external check |
 | `probe_claude.py` | Stall-locking (circular statistics with permutation tests), overshoot census, and fixed-light-angle refits |
 | `big_sweep.py`, `mega_sweep.py` | Uniform-population degeneracy sweeps at 100,000 and 400,000 plants |
+| `sim_multiseg.py` | Shape extension: multi-segment stem simulator with elastic coupling and a sensitivity gradient (zeta); reduces exactly to `sim.py` at zeta = 0 |
+| `features_shape.py` | Shape-feature definitions for multi-segment trajectories, specified independently of results |
+| `check_multiseg.py` | Regression checks for the shape-extension simulator: exact reduction, uniform invariance, batch/single agreement, determinism, cap contract, zeta behaviour |
+| `shape_degeneracy.py` | H-SHAPE v1: tip-only vs shape-feature clustering comparison (falsified as specified; empty shape channel diagnosed) |
+| `shape_degeneracy_v2.py` | H-SHAPE-v2: corrected comparison with the sensitivity gradient (pre-registered; NOT SUPPORTED, shape identifies only the shape-making parameters) |
+| `shape_probe_exploratory.py` | Exploratory probe: nearest-neighbour recovery, twin refinement, flexible decoding (labelled non-confirmatory) |
+| `shape_identification_v3.py` | Pre-registered twin-refinement study on a fresh population (SUPPORTED for k and phi0) |
 | `bendlab_visual_simulator.html` | Standalone browser simulator (same integrator; stem outline schematic) |
 | `train_inverse_model.py`, `train_inverse_model_v2.py`, `train_inverse_model_v3.py` | Training of the neural inverse model (curve to parameters); v2 uses 100,000 plants and noise augmentation, v3 is a single any-hour network trained with random observation cutoffs (4 to 24 h) |
 | `bendlab_model_demo.html` | Trained inverse model running in the browser (weights embedded), with validation statistics and a simulator self-check |
@@ -101,6 +108,8 @@ result.
 | `docs/CURRENT_STATUS.md` | Canonical one-page summary of established results, withdrawals, and open questions |
 | `docs/DATA_SOURCES.md` | Data provenance and candidate external datasets |
 | `docs/DATA_CONTRACT.md` | Dataset structure, units, sampling and parsing rules |
+| `docs/SHAPE_EXTENSION.md` | Shape-extension design: multi-segment model, shape features, and the pre-registered H-SHAPE specification |
+| `docs/SHAPE_EXTENSION_RESULTS.md` | Shape-extension results: v1 falsification with structural diagnosis, v2 pre-registration and outcome |
 | `data/real/` | Measured dataset; see attribution below |
 | `results/` | Numerical outputs required to reproduce the reported results |
 
