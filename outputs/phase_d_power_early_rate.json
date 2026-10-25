@@ -1,0 +1,65 @@
+{
+  "pilot_fit_from_archive": {
+    "beta_0_at_L0_14mm_I_2.25_theta0_0": 3.44749894420316,
+    "beta_L_pilot": 2.117505000621455,
+    "beta_I": 0.20071450827258508,
+    "beta_theta_per_deg": -0.13860070016406892,
+    "residual_SD_deg_per_h": 3.8478558301174925,
+    "n_archive": 213
+  },
+  "designs": [
+    "A_archive_joint",
+    "B_balanced_intensity",
+    "C_wider_L0_range"
+  ],
+  "N_grid": [
+    50,
+    75,
+    100,
+    150,
+    200,
+    300,
+    450,
+    650,
+    900
+  ],
+  "reps_per_cell": 2000,
+  "required_N_interpolated": {
+    "A_archive_joint|beta_L=1.06": {
+      "N_for_80pct_power": 752.8761061946904,
+      "N_for_90pct_power": null
+    },
+    "A_archive_joint|beta_L=1.59": {
+      "N_for_80pct_power": 340.6690140845071,
+      "N_for_90pct_power": 446.3028169014085
+    },
+    "A_archive_joint|beta_L=2.12": {
+      "N_for_80pct_power": 193.72197309417044,
+      "N_for_90pct_power": 265.6488549618321
+    },
+    "B_balanced_intensity|beta_L=1.06": {
+      "N_for_80pct_power": 744.8275862068967,
+      "N_for_90pct_power": null
+    },
+    "B_balanced_intensity|beta_L=1.59": {
+      "N_for_80pct_power": 346.68874172185434,
+      "N_for_90pct_power": 446.02649006622516
+    },
+    "B_balanced_intensity|beta_L=2.12": {
+      "N_for_80pct_power": 194.39024390243904,
+      "N_for_90pct_power": 265.07352941176475
+    },
+    "C_wider_L0_range|beta_L=1.06": {
+      "N_for_80pct_power": 410.6557377049181,
+      "N_for_90pct_power": 568.811881188119
+    },
+    "C_wider_L0_range|beta_L=1.59": {
+      "N_for_80pct_power": 183.201581027668,
+      "N_for_90pct_power": 255.28846153846155
+    },
+    "C_wider_L0_range|beta_L=2.12": {
+      "N_for_80pct_power": 109.81308411214955,
+      "N_for_90pct_power": 140.96573208722742
+    }
+  }
+}

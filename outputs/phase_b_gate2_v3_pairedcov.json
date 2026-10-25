@@ -1,0 +1,450 @@
+{
+  "design": {
+    "differs_from_v2_only_in": "(L0, intensity, initial angle) resampled jointly from the 213 paired archive rows",
+    "N_per_dataset": 213,
+    "seeds": "master 20261025",
+    "adoption_rule": "median held-out RMSE improvement >= 5% over M0 AND L0-parameter sign stable across 5 folds (Phase C rule)"
+  },
+  "scenarios": {
+    "M0:none": {
+      "n_datasets": 24,
+      "winner_counts": {
+        "M0": 7,
+        "M1a": 9,
+        "M1c": 6,
+        "M1d": 2
+      },
+      "any_M1_supported": {
+        "count": 0,
+        "of": 24,
+        "wilson95": [
+          0.0,
+          0.13797620655132792
+        ]
+      },
+      "supported_M1a": {
+        "count": 0,
+        "of": 24,
+        "wilson95": [
+          0.0,
+          0.13797620655132792
+        ]
+      },
+      "median_improvement_pct_M1a": -0.2442851488688513,
+      "supported_M1c": {
+        "count": 0,
+        "of": 24,
+        "wilson95": [
+          0.0,
+          0.13797620655132792
+        ]
+      },
+      "median_improvement_pct_M1c": -0.05321950060513943,
+      "supported_M1d": {
+        "count": 0,
+        "of": 24,
+        "wilson95": [
+          0.0,
+          0.13797620655132792
+        ]
+      },
+      "median_improvement_pct_M1d": -0.5875860830578155
+    },
+    "M1a:alpha=0.2": {
+      "n_datasets": 12,
+      "winner_counts": {
+        "M0": 4,
+        "M1a": 5,
+        "M1c": 0,
+        "M1d": 3
+      },
+      "any_M1_supported": {
+        "count": 5,
+        "of": 12,
+        "wilson95": [
+          0.1932603124346072,
+          0.6804886891575758
+        ]
+      },
+      "supported_M1a": {
+        "count": 5,
+        "of": 12,
+        "wilson95": [
+          0.1932603124346072,
+          0.6804886891575758
+        ]
+      },
+      "median_improvement_pct_M1a": 2.7603320352339855,
+      "supported_M1c": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "median_improvement_pct_M1c": -0.05833898142354996,
+      "supported_M1d": {
+        "count": 2,
+        "of": 12,
+        "wilson95": [
+          0.04696514175692082,
+          0.4480308646118111
+        ]
+      },
+      "median_improvement_pct_M1d": 1.375192026491628
+    },
+    "M1a:alpha=0.4": {
+      "n_datasets": 12,
+      "winner_counts": {
+        "M0": 0,
+        "M1a": 12,
+        "M1c": 0,
+        "M1d": 0
+      },
+      "any_M1_supported": {
+        "count": 11,
+        "of": 12,
+        "wilson95": [
+          0.6461200862787544,
+          0.9851349057603305
+        ]
+      },
+      "supported_M1a": {
+        "count": 11,
+        "of": 12,
+        "wilson95": [
+          0.6461200862787544,
+          0.9851349057603305
+        ]
+      },
+      "median_improvement_pct_M1a": 12.416438525293428,
+      "supported_M1c": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "median_improvement_pct_M1c": -0.02962757943171849,
+      "supported_M1d": {
+        "count": 10,
+        "of": 12,
+        "wilson95": [
+          0.5519691353881888,
+          0.9530348582430792
+        ]
+      },
+      "median_improvement_pct_M1d": 10.077305342041145
+    },
+    "M1a:alpha=0.8": {
+      "n_datasets": 12,
+      "winner_counts": {
+        "M0": 0,
+        "M1a": 12,
+        "M1c": 0,
+        "M1d": 0
+      },
+      "any_M1_supported": {
+        "count": 12,
+        "of": 12,
+        "wilson95": [
+          0.7575059904469021,
+          1.0
+        ]
+      },
+      "supported_M1a": {
+        "count": 12,
+        "of": 12,
+        "wilson95": [
+          0.7575059904469021,
+          1.0
+        ]
+      },
+      "median_improvement_pct_M1a": 29.432031469022938,
+      "supported_M1c": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "median_improvement_pct_M1c": -0.49825149994514994,
+      "supported_M1d": {
+        "count": 11,
+        "of": 12,
+        "wilson95": [
+          0.6461200862787544,
+          0.9851349057603305
+        ]
+      },
+      "median_improvement_pct_M1d": 19.175621683098502
+    },
+    "M1c:v=20 (c=0.05)": {
+      "n_datasets": 12,
+      "winner_counts": {
+        "M0": 1,
+        "M1a": 5,
+        "M1c": 5,
+        "M1d": 1
+      },
+      "any_M1_supported": {
+        "count": 1,
+        "of": 12,
+        "wilson95": [
+          0.014865094239669363,
+          0.35387991372124555
+        ]
+      },
+      "supported_M1a": {
+        "count": 1,
+        "of": 12,
+        "wilson95": [
+          0.014865094239669363,
+          0.35387991372124555
+        ]
+      },
+      "median_improvement_pct_M1a": -0.2237585745198657,
+      "supported_M1c": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "median_improvement_pct_M1c": 0.12323004746751057,
+      "supported_M1d": {
+        "count": 1,
+        "of": 12,
+        "wilson95": [
+          0.014865094239669363,
+          0.35387991372124555
+        ]
+      },
+      "median_improvement_pct_M1d": -0.09223268434671203
+    },
+    "M1c:v=40 (c=0.025)": {
+      "n_datasets": 12,
+      "winner_counts": {
+        "M0": 2,
+        "M1a": 3,
+        "M1c": 6,
+        "M1d": 1
+      },
+      "any_M1_supported": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "supported_M1a": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "median_improvement_pct_M1a": -0.003013040084725055,
+      "supported_M1c": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "median_improvement_pct_M1c": 0.1117086857450594,
+      "supported_M1d": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "median_improvement_pct_M1d": -0.02998092047739672
+    },
+    "M1c:v=8 (c=0.125)": {
+      "n_datasets": 12,
+      "winner_counts": {
+        "M0": 2,
+        "M1a": 0,
+        "M1c": 9,
+        "M1d": 1
+      },
+      "any_M1_supported": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "supported_M1a": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "median_improvement_pct_M1a": -0.5017749968716954,
+      "supported_M1c": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "median_improvement_pct_M1c": 1.2417097409089646,
+      "supported_M1d": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "median_improvement_pct_M1d": -0.6683261970422525
+    },
+    "M1d:delta=0.3": {
+      "n_datasets": 12,
+      "winner_counts": {
+        "M0": 1,
+        "M1a": 3,
+        "M1c": 0,
+        "M1d": 8
+      },
+      "any_M1_supported": {
+        "count": 2,
+        "of": 12,
+        "wilson95": [
+          0.04696514175692082,
+          0.4480308646118111
+        ]
+      },
+      "supported_M1a": {
+        "count": 2,
+        "of": 12,
+        "wilson95": [
+          0.04696514175692082,
+          0.4480308646118111
+        ]
+      },
+      "median_improvement_pct_M1a": 1.2236828540623663,
+      "supported_M1c": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "median_improvement_pct_M1c": 0.652314110521321,
+      "supported_M1d": {
+        "count": 2,
+        "of": 12,
+        "wilson95": [
+          0.04696514175692082,
+          0.4480308646118111
+        ]
+      },
+      "median_improvement_pct_M1d": 2.8815813129384
+    },
+    "M1d:delta=0.6": {
+      "n_datasets": 12,
+      "winner_counts": {
+        "M0": 0,
+        "M1a": 2,
+        "M1c": 0,
+        "M1d": 10
+      },
+      "any_M1_supported": {
+        "count": 10,
+        "of": 12,
+        "wilson95": [
+          0.5519691353881888,
+          0.9530348582430792
+        ]
+      },
+      "supported_M1a": {
+        "count": 8,
+        "of": 12,
+        "wilson95": [
+          0.3906220869404939,
+          0.86187990987514
+        ]
+      },
+      "median_improvement_pct_M1a": 5.385223987019113,
+      "supported_M1c": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "median_improvement_pct_M1c": 0.4252156844000591,
+      "supported_M1d": {
+        "count": 10,
+        "of": 12,
+        "wilson95": [
+          0.5519691353881888,
+          0.9530348582430792
+        ]
+      },
+      "median_improvement_pct_M1d": 8.041585413784743
+    },
+    "M1d:delta=1.0": {
+      "n_datasets": 12,
+      "winner_counts": {
+        "M0": 0,
+        "M1a": 0,
+        "M1c": 0,
+        "M1d": 12
+      },
+      "any_M1_supported": {
+        "count": 12,
+        "of": 12,
+        "wilson95": [
+          0.7575059904469021,
+          1.0
+        ]
+      },
+      "supported_M1a": {
+        "count": 12,
+        "of": 12,
+        "wilson95": [
+          0.7575059904469021,
+          1.0
+        ]
+      },
+      "median_improvement_pct_M1a": 16.45248232416335,
+      "supported_M1c": {
+        "count": 0,
+        "of": 12,
+        "wilson95": [
+          0.0,
+          0.2424940095530979
+        ]
+      },
+      "median_improvement_pct_M1c": 0.5830714115473201,
+      "supported_M1d": {
+        "count": 12,
+        "of": 12,
+        "wilson95": [
+          0.7575059904469021,
+          1.0
+        ]
+      },
+      "median_improvement_pct_M1d": 24.79855300464056
+    }
+  }
+}

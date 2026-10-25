@@ -1,0 +1,3 @@
+# Keep packaged bytes stable across checkouts so SHA256SUMS.txt verifies:
+# no end-of-line conversion for anything in this folder.
+* -text
