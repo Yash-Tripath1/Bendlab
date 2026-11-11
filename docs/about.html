@@ -32,7 +32,7 @@
 </style>
 </head>
 <body>
-<nav class="site-nav" style="max-width:1180px"><span class="brand">BendLab</span><a class="active" href="about.html">About</a><a href="index.html">Simulator</a><a href="model.html">Trained model</a><a href="fitter.html">Curve fitter</a><span class="spacer"></span><a href="https://github.com/Yash-Tripath1/Bendlab">GitHub</a></nav>
+<nav class="site-nav" aria-label="BendLab navigation" style="max-width:1180px"><span class="brand">BendLab</span><a class="active" aria-current="page" href="about.html">About</a><a href="index.html">Simulator</a><a href="model.html">Trained model</a><a href="fitter.html">Curve fitter</a><span class="spacer"></span><a href="https://github.com/Yash-Tripath1/Bendlab" target="_blank" rel="noopener noreferrer">GitHub</a></nav>
 <header>
   <h1>About BendLab</h1>
   <p>BendLab asks a simple question with a measurable answer: when a sunflower seedling bends toward light, which of its internal settings does the bending curve actually reveal, and which stay hidden?</p>
@@ -47,10 +47,10 @@
     <h2>Key results</h2>
     <ul>
       <li><b>Degeneracy is real:</b> different parameter combinations produce nearly identical bending curves.</li>
-      <li><b>One dial is blind:</b> when the bend-rate cap never binds, max_rate cannot be recovered. Curve fits flag it in 47 of 48 measured plants; a 400,000-plant sweep and a trained neural network (about 44% error, versus 1 to 4% for the other dials) agree.</li>
-      <li><b>Fitting is not predicting:</b> the model fits published curves well in-sample (median 1.80 degrees) but predicts held-out groups weakly (11.75 degrees).</li>
-      <li><b>A candidate fix for the worst failures:</b> a shared circadian-clock term, fitted without the failing ZT9 group, improves all six held-out ZT9 plants (median 2.42 to 1.44 degrees). Promising, not confirmed.</li>
-      <li><b>Try it above:</b> the Simulator shows the model forward, the Trained model reads curves at any observation hour, and the Curve fitter fits with its uncertainty warnings attached.</li>
+      <li><b>One dial is blind:</b> when the bend-rate cap never binds, <code>max_rate</code> cannot be recovered. Curve fits flag it in 47 of 48 measured plants; a 400,000-plant sweep and a trained neural network (about 44% error, versus 1 to 4% for the other dials) agree.</li>
+      <li><b>Fitting is not predicting:</b> the model fits published curves well in-sample (median 1.80 degrees on PLOS Biology S13 Fig1C) but predicts held-out stimulus-onset groups weakly (11.75 degrees).</li>
+      <li><b>External benchmark (Phase B0, n = 268):</b> on independent unilateral-light trajectories across 10 intensities (Kempinski et al. 2026), fixing <code>phi = 90°</code> overshoots (14.41° held-out median RMSE vs 9.73° group-mean baseline) because <code>phi0</code> in the minimal model acts as an empirical equilibrium angle (measured plateaus 18–37°; per-plant <code>phi_free</code> median 28.8°) rather than physical lamp geometry; the <code>W2</code> effective-angle diagnostic reaches 9.97°.</li>
+      <li><b>Shape &amp; growth extensions:</b> observing full multi-segment stem curvature reduces <code>k</code> twin-lookup error by 33–49% (46.8% on a leakage-safe split, while <code>max_rate</code> stays unidentifiable); starting hypocotyl length <code>L0</code> (n = 213) is associated with faster 0–2 h bending (+2.12 °/h per log unit, 95% CI [0.66, 3.62]) without improving held-out ODE trajectory RMSE over M0 (10.25°, all variants within 1.5%).</li>
     </ul>
   </div>
 
@@ -58,28 +58,31 @@
     <h2>What is measured, what is simulated</h2>
     <table>
       <tr><th>Measured from real plants</th><th>Simulated only</th></tr>
-      <tr><td>48 published sunflower trajectories (Brooks et al. 2023) and their per-plant fits</td><td>Populations of up to 400,000 synthetic plants used for degeneracy and design analyses</td></tr>
-      <tr><td>Per-fit parameter uncertainties and block cross-validation on those fits</td><td>The neural inverse model, trained and validated entirely on simulator output</td></tr>
-      <tr><td>Three external check curves (Fig1B of the same study)</td><td>All protocol rankings, stimulus-model comparisons, and sample-size estimates</td></tr>
+      <tr><td>89 published sunflower trajectories across 5 workbook sheets in Brooks et al. 2023 (48 in Fig1C; 3 external Fig1B check curves)</td><td>Populations of up to 400,000 synthetic plants used for degeneracy, multi-segment shape, and experimental-design analyses</td></tr>
+      <tr><td>268 unilateral phototropism trajectories across 0.7–5.8 W/m² (Kempinski et al. 2026; 213 paired with starting length <code>L0</code>)</td><td>The neural inverse model, trained and validated entirely on synthetic simulator output</td></tr>
+      <tr><td>Leakage-safe plant-held-out, block-held-out (LOBO), and intensity-held-out (LOIO) cross-validation</td><td>All protocol rankings, vector stimulus-model comparisons, and sample-size estimates</td></tr>
     </table>
   </div>
 
   <div class="card">
     <h2>Limitations, in plain sight</h2>
     <ul>
-      <li>The neural model has never seen a real plant. Fitted sunflower parameters often lie outside its training ranges, so do not apply it to measured curves.</li>
-      <li>One dataset, one species, one light quality underlies the population analyses.</li>
-      <li>Several earlier conclusions were corrected or withdrawn (a fitter time-base error, two hypothesis verdicts, one connectivity claim, one set of sample sizes). The corrections are documented in the repository, not buried.</li>
-      <li>Nothing here is a validated experimental protocol. The two-source design estimate (about 96% correct model selection at 20 seedlings per dataset) comes from a stated simulation procedure and awaits a laboratory.</li>
+      <li>The neural model has never seen a real plant. Fitted sunflower parameters often lie outside its training ranges, so do not apply it to measured curves without checking the self-consistency banner.</li>
+      <li>The canonical four-parameter model treats <code>phi0</code> as an effective equilibrium angle under static light; physical lamp geometry requires explicit straightening (<code>gamma</code>) or circadian modulation (<code>sim_clock_gamma.py</code>).</li>
+      <li>Several earlier conclusions were corrected or withdrawn after audit (the 13 Oct fitter time-base error, the H3 and H8 verdicts, the H6 connectivity claim, and Workstream B feature indexing). Every correction is documented in the repository.</li>
+      <li>Nothing here is a validated wet-lab protocol. Sample-size and protocol-discrimination estimates come from stated simulation procedures and await laboratory testing.</li>
     </ul>
   </div>
 
   <div class="card">
     <h2>Where to read more</h2>
     <ul>
-      <li><a href="https://github.com/Yash-Tripath1/Bendlab/blob/main/docs/CURRENT_STATUS.md">Current status (canonical summary)</a></li>
-      <li><a href="https://github.com/Yash-Tripath1/Bendlab/blob/main/PROBLEM_STATEMENT.md">Problem statement and model definition</a></li>
-      <li><a href="https://github.com/Yash-Tripath1/Bendlab/blob/main/docs/AUDIT_FOLLOWUP_RESULTS.md">External-audit follow-up results</a></li>
+      <li><a href="https://github.com/Yash-Tripath1/Bendlab/blob/main/docs/CURRENT_STATUS.md">Current status (canonical summary across all phases)</a></li>
+      <li><a href="https://github.com/Yash-Tripath1/Bendlab/blob/main/PROBLEM_STATEMENT.md">Problem statement and model contract</a></li>
+      <li><a href="https://github.com/Yash-Tripath1/Bendlab/blob/main/02_workstream_A_external_benchmark/PHASE_B0_REPORT.md">Phase B0 external benchmark report (Kempinski et al. n = 268)</a></li>
+      <li><a href="https://github.com/Yash-Tripath1/Bendlab/blob/main/03_workstream_B_shape_extension_audit/SHAPE_EXTENSION_AUDIT.md">Multi-segment stem shape extension audit</a></li>
+      <li><a href="https://github.com/Yash-Tripath1/Bendlab/blob/main/growth_phase/PHASE_BC_RESULTS.md">Growth-aware phototropism results (Phases A–C)</a></li>
+      <li><a href="https://github.com/Yash-Tripath1/Bendlab/blob/main/docs/AUDIT_FOLLOWUP_RESULTS.md">Experiment series 1 external-audit follow-up</a></li>
       <li><a href="https://github.com/Yash-Tripath1/Bendlab">Full repository on GitHub</a></li>
     </ul>
   </div>

@@ -161,7 +161,8 @@ check("3c median across-plant spread = 8.58", abs(np.median(sp) - 8.58) < 0.01,
 
 # ------------------------------------------------------- 4. cap inert, ZT0-1
 g = df[df["plant"] == "ZT0-1"].sort_values("t")
-t, y = g["t"].to_numpy(float), g["angle"].to_numpy(float)
+t_raw, y = g["t"].to_numpy(float), g["angle"].to_numpy(float)
+t = t_raw - t_raw[0]
 fr = fits[fits["plant"] == "ZT0-1"].iloc[0]
 r_cap = float(np.sqrt(np.mean((run_model(fr.k, fr.tau, fr.max_rate, fr.phi0, t) - y) ** 2)))
 r_nocap = float(np.sqrt(np.mean((run_model(fr.k, fr.tau, 1e9, fr.phi0, t) - y) ** 2)))
@@ -251,8 +252,8 @@ else:
     print("     [7] source parameter vectors' curves within %.2f deg; parameter separation "
           "%.2f of range" % (float(np.abs(thp[:, a] - thp[:, b]).max()),
                              float(np.abs((pa - pb) / full).max())))
-    print("        A:", dict(zip(PARAM_NAMES, pa.round(2))))
-    print("        B:", dict(zip(PARAM_NAMES, pb.round(2))))
+    print("        A:", {k: round(float(v), 2) for k, v in zip(PARAM_NAMES, pa)})
+    print("        B:", {k: round(float(v), 2) for k, v in zip(PARAM_NAMES, pb)})
     print("        unadjusted midpoint (phi0 also averaged): maximum "
           "deviation %.2f deg from the source trajectories" % gap_midpoint)
     print("     [7] Descriptive result: the midpoint of the most widely "
@@ -362,5 +363,8 @@ print("     [11] Each update advances two state variables using six "
       "arithmetic operations. The low computational cost follows directly "
       "from the dimensionality and step count of the model.")
 
+import sys
 print("\n%s" % ("ALL CHECKS PASSED" if not FAILS
                 else "FAILURES: " + ", ".join(FAILS)))
+if FAILS:
+    sys.exit(1)

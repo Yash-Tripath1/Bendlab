@@ -11,10 +11,13 @@ stronger the straightening stimulus. gamma = 0 (default) reproduces sim.py
 exactly; the regression check in check_model_v2.py verifies this to
 machine precision.
 
-Theta is in degrees and gamma * theta is in degrees/hour, so gamma carries
-the same units as k. The dimensionless bending number of Bastien et al. is
-B = k * L / gamma for a stem of length L; this model has no length scale,
-so only the ratio k / gamma is meaningful here.
+Theta is in degrees and gamma * theta is in degrees/hour, so gamma has
+units of per hour (whereas k multiplies dimensionless sin(phi - theta) and
+therefore has units of degrees/hour; in the small-angle regime k * pi/180
+and gamma share units of per hour). The dimensionless bending number of
+Bastien et al. is B = k * L / gamma for a stem of length L when angles are
+in radians; this model has no length scale, so only the ratio (k * pi/180)
+/ gamma is dimensionless here.
 
 API mirrors sim.py: simulate() for one plant, batch_simulate() for a
 population stepped in lockstep (light_fn(t, phi0) convention as in sim.py).

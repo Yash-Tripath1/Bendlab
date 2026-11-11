@@ -1,5 +1,7 @@
 # BendLab project overview: experiment series and validation
 
+> **Status note, 16 October 2026.** Following the external audit (`docs/AUDIT_RESPONSE_2026-10-16.md` and `docs/AUDIT_FOLLOWUP_RESULTS.md`), H3 is **supported** under the literal `PROBLEM_STATEMENT.md` criterion (>5x median neighbour feature distance: 20/8,064 edges), the H6 global connectivity claim is **withdrawn** (when `phi0` is held fixed during recombination, same-cluster retention drops near the cross-cluster control), H7's matched-budget spread shrinks to 0.021, and H8's fixed policy was corrected (neither adaptive policy beat random selection in v1). Sections 4 and 5 and `results/figures/explainer2_dashboard.png` reflect these post-audit updates; see `docs/CURRENT_STATUS.md` for the canonical summary across all phases.
+
 This document summarises the completed simulation experiments, the audit
 of those experiments, and two analysis errors that materially affected
 earlier conclusions. The corresponding six-panel summary figure is
@@ -58,33 +60,38 @@ advantage for the implemented adaptive policies at that budget. A more
 demanding version has been specified in advance in
 `docs/ADAPTIVE_IDENTIFICATION.md`.
 
-## 4. Crossover connectivity analysis
+## 4. Crossover connectivity analysis (withdrawn after audit)
 
-H6 examines whether the set of parameter combinations producing similar
-behaviour is connected. Pairs of behaviourally equivalent simulated
-plants were recombined parameter by parameter, with mutation, and the
-resulting parameter vectors were assigned to behavioural clusters.
+H6 examined whether the set of parameter combinations producing similar
+behaviour is connected. In the initial analysis, pairs of behaviourally
+equivalent simulated plants were recombined parameter by parameter, with
+mutation, and 57.3 per cent of recombinants remained in the source
+cluster compared with 29.5 per cent for cross-cluster controls.
 
-For 300 same-cluster source pairs, 57.3 per cent of recombinants
-remained in the source cluster, compared with 29.5 per cent for
-cross-cluster controls when scored against the first source cluster.
-This supports a connected degenerate region with incomplete retention,
-rather than a set of isolated parameter combinations. The term
-"crossover" here denotes recombination of numerical parameter vectors;
-it does not simulate biological inheritance.
+Subsequent external audit (`docs/AUDIT_FOLLOWUP_RESULTS.md`, Section 6)
+showed that averaging `phi0` across source pairs confounded plant-trait
+recombination with light-angle averaging: when `phi0` is held fixed at
+the first parent's light angle, same-cluster retention is 60.7 per cent
+against a 47.0 per cent cross-cluster control scored against the first
+parent's cluster (and 62.4 per cent scored against either parent's
+cluster). Midpoints of closely matched curve-equivalent pairs (`max |Δθ|
+< 3 deg`) retain local proximity (24/40 within 3 deg), so local
+near-equivalence holds while global cluster connectivity is **withdrawn**.
+The term "crossover" here denotes recombination of numerical parameter
+vectors; it does not simulate biological inheritance.
 
-## 5. Hypothesis status
+## 5. Hypothesis status (post-audit canonical)
 
 | Hypothesis | Current status |
 |---|---|
-| H1: behaviour does not uniquely identify parameters | Supported |
-| H2: a light-direction change improves parameter recovery | Not supported under the cluster-retention metric |
-| H3: behaviour contains discontinuities in parameter space | Falsified as specified |
-| H4: behavioural clusters do not persist across light regimes | Supported |
-| H5: the model reproduces measured sunflower trajectories | Supported, with the ZT9 limitation |
-| H6: the degenerate parameter set is connected | Supported, with incomplete recombinant retention |
-| H7: protocols can be ranked by identifiability gain | Not supported under the declared threshold |
-| H8: adaptive protocol selection improves identification | Not assessable in the saturated v1 design; v2 specified |
+| H1: behaviour does not uniquely identify parameters | Supported as written (within-cluster ranges >= 20% of full range) |
+| H2: a light-direction change improves parameter recovery | Not supported as written (only `k` narrows; `tau`, `max_rate`, `phi0` widen) |
+| H3: behaviour contains discontinuities in parameter space | Supported as written (20/8,064 adjacent grid edges exceed 5x median feature distance; half-rise surface itself has no >2 h jump) |
+| H4: behavioural clusters do not persist across light regimes | Supported (ARI = 0.442 < 0.50 on the empirically weighted population) |
+| H5: the model reproduces measured sunflower trajectories | Supported in-sample (median RMSE 1.80 deg vs 8.58 deg spread; ZT9 limitation documented; held-out LOBO RMSE 11.75 deg) |
+| H6: the degenerate parameter set is connected | Withdrawn (`phi0`-fixed recombinant retention 60.7% vs 47.0% cross-cluster control; 62.4% vs either parent) |
+| H7: protocols can be ranked by identifiability gain | Not supported (raw spread 0.091 < 0.10; matched 6 h budget spread 0.021) |
+| H8: adaptive protocol selection improves identification | Not supported in v1 (adaptive <= random under corrected policies; v2 specified) |
 
 ## 6. Independent audit and analysis errors
 

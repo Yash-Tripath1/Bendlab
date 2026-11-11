@@ -462,13 +462,17 @@ def main():
             "median_trajectory_rmse_deg": float(
                 popdf[f"rmse_vs_sun_only_{model}"].median()),
         }
-    scen_records = scen.to_dict(orient="records")
+    scen_records = [
+        {k: (None if isinstance(v, float) and not np.isfinite(v) else v)
+         for k, v in rec.items()}
+        for rec in scen.to_dict(orient="records")
+    ]
     summary["scenarios"] = scen_records
     with open(OUT_SUMMARY, "w", encoding="utf-8") as fh:
-        json.dump(summary, fh, indent=2)
+        json.dump(summary, fh, indent=2, allow_nan=False)
 
     print("\n=== VECTOR STIMULUS SUMMARY ===")
-    print(json.dumps(summary, indent=2))
+    print(json.dumps(summary, indent=2, allow_nan=False))
     print("\nsaved %s" % OUT_FIG)
 
 

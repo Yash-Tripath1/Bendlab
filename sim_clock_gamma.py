@@ -50,8 +50,13 @@ def _check(tau, dt):
 
 
 def _k_eff(k0, a, phase, zt):
-    return np.maximum(k0 * (1.0 + a * np.cos(2.0 * np.pi * (zt - phase) / 24.0)),
-                      K_EFF_FLOOR)
+    if np.ndim(a) == 0:
+        if a == 0.0:
+            return k0
+        return max(float(k0 * (1.0 + a * np.cos(2.0 * np.pi * (zt - phase) / 24.0))),
+                   K_EFF_FLOOR)
+    mod = k0 * (1.0 + a * np.cos(2.0 * np.pi * (zt - phase) / 24.0))
+    return np.where(a == 0.0, k0, np.maximum(mod, K_EFF_FLOOR))
 
 
 def simulate(k0: float, tau: float, max_rate: float, phi_fn, t_end: float,

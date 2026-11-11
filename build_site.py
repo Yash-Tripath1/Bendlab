@@ -2,6 +2,7 @@
 """Build the GitHub Pages site in docs/ from the standalone pages.
 
 Adds a shared tab bar (About / Simulator / Trained model / Curve fitter) to:
+  bendlab_about.html            -> docs/about.html
   bendlab_visual_simulator.html -> docs/index.html
   bendlab_model_demo.html       -> docs/model.html
   bendlab_curve_fitter.html     -> docs/fitter.html
@@ -28,17 +29,17 @@ PAGES = [
 
 
 def nav(active: str, width: str) -> str:
-    def cls(key: str) -> str:
-        return ' class="active"' if key == active else ""
+    def attrs(key: str) -> str:
+        return ' class="active" aria-current="page"' if key == active else ""
     return (
-        f'<nav class="site-nav" style="max-width:{width}">'
+        f'<nav class="site-nav" aria-label="BendLab navigation" style="max-width:{width}">'
         '<span class="brand">BendLab</span>'
-        f'<a{cls("about")} href="about.html">About</a>'
-        f'<a{cls("simulator")} href="index.html">Simulator</a>'
-        f'<a{cls("model")} href="model.html">Trained model</a>'
-        f'<a{cls("fitter")} href="fitter.html">Curve fitter</a>'
+        f'<a{attrs("about")} href="about.html">About</a>'
+        f'<a{attrs("simulator")} href="index.html">Simulator</a>'
+        f'<a{attrs("model")} href="model.html">Trained model</a>'
+        f'<a{attrs("fitter")} href="fitter.html">Curve fitter</a>'
         '<span class="spacer"></span>'
-        '<a href="https://github.com/Yash-Tripath1/Bendlab">GitHub</a>'
+        '<a href="https://github.com/Yash-Tripath1/Bendlab" target="_blank" rel="noopener noreferrer">GitHub</a>'
         "</nav>"
     )
 

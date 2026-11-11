@@ -76,32 +76,32 @@
     {
       "scenario": "moving_sun_diffuse",
       "model": "physical",
-      "effective_direction": NaN,
-      "effective_gain": NaN,
+      "effective_direction": null,
+      "effective_gain": null,
       "final_angle": 16.336187111142547,
       "half_rise_time": 13.799999999999999
     },
     {
       "scenario": "moving_sun_diffuse",
       "model": "transduced_source",
-      "effective_direction": NaN,
-      "effective_gain": NaN,
+      "effective_direction": null,
+      "effective_gain": null,
       "final_angle": 8.519959136899724,
       "half_rise_time": 14.016666666666666
     },
     {
       "scenario": "moving_sun_diffuse",
       "model": "circumference",
-      "effective_direction": NaN,
-      "effective_gain": NaN,
+      "effective_direction": null,
+      "effective_gain": null,
       "final_angle": 13.975655708068365,
       "half_rise_time": 13.75
     },
     {
       "scenario": "moving_sun_diffuse",
       "model": "current_sun_only",
-      "effective_direction": NaN,
-      "effective_gain": NaN,
+      "effective_direction": null,
+      "effective_gain": null,
       "final_angle": 39.17589092782428,
       "half_rise_time": 13.866666666666667
     }

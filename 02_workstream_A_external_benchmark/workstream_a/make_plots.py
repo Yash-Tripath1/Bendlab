@@ -16,6 +16,7 @@ sys.path.insert(0, HERE)
 from phase_b0_kempinski_benchmark import (  # noqa: E402
     DATA, OUT, fit_wrapper, load_plants, predict_wrapper)
 
+os.makedirs(OUT, exist_ok=True)
 df, plants = load_plants(DATA)
 idx = list(range(len(plants)))
 

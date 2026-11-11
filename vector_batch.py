@@ -277,12 +277,7 @@ def main():
 
     pop_stab, _ = load_weighted_population(N_STAB)
     _, base_series = moving_series()
-    _, base_traj = population_metrics(pop_stab, base_series)
-    # population_metrics returns metrics first; recompute trajectories directly
-    trajectories = {}
-    for model, (phi_s, g) in base_series.items():
-        _, th = simulate_population(pop_stab, phi_s, g)
-        trajectories[model] = th
+    _, trajectories = population_metrics(pop_stab, base_series)
     stab = stability(pop_stab, trajectories)
     stab["runtime_seconds"] = round(time.time() - t0, 1)
     with open(OUT_STAB, "w", encoding="utf-8") as fh:

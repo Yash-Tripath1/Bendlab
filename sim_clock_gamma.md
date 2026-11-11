@@ -1,6 +1,6 @@
 # sim_clock_gamma.py — 6-Dial Clock + Proprioception Simulator
 
-**File:** `sim_clock_gamma.py` (78 lines) | **Based on:** `sim.py` + Bastien 2012 + Atamian 2016 | **Date:** 15 Oct 2026
+**File:** `sim_clock_gamma.py` | **Based on:** `sim.py` + Bastien 2012 + Atamian 2016 | **Date:** 15 Oct 2026
 
 ## Model
 
@@ -15,7 +15,7 @@ dtheta/dt = r_clipped
 **Params (6 dials + ZT_start):**
 | Param | Units | Meaning | Default | Example (ZT9-1) |
 |---|---|---|---|---|
-| `k0` | /h | Base light sensitivity | 4.7 | 4.74 |
+| `k0` | deg/h | Base light sensitivity | 4.7 | 4.74 |
 | `tau` | h | Lag | 0.10 | 0.10 (lifted 0.05->0.10) |
 | `max_rate` | deg/h | Speed limit | 75.3 | 75.3 |
 | `phi0` | deg | Light direction | 56.4 | 56.4 |
@@ -67,4 +67,4 @@ ZT9-1 52.6% | ZT9-2 62.9% | ZT9-3 70.3% | ZT9-4 48.2% | ZT9-5 30% | ZT9-6 13.6% 
 - Backward compatible: set `gamma=0,a=0` and you get old `sim.py` exactly
 
 ## File Location
-`/home/user/sim_clock_gamma.py` — copy to `sim_clock_gamma.py` in repo, or replace `sim.py` to make it default.
+`sim_clock_gamma.py` in the repository root (reference model remains `sim.py`; see `docs/MODEL_V2_CANDIDATES.md`).

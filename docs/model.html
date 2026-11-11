@@ -66,7 +66,7 @@
 </style>
 </head>
 <body>
-<nav class="site-nav" style="max-width:1180px"><span class="brand">BendLab</span><a href="about.html">About</a><a href="index.html">Simulator</a><a class="active" href="model.html">Trained model</a><a href="fitter.html">Curve fitter</a><span class="spacer"></span><a href="https://github.com/Yash-Tripath1/Bendlab">GitHub</a></nav>
+<nav class="site-nav" aria-label="BendLab navigation" style="max-width:1180px"><span class="brand">BendLab</span><a href="about.html">About</a><a href="index.html">Simulator</a><a class="active" aria-current="page" href="model.html">Trained model</a><a href="fitter.html">Curve fitter</a><span class="spacer"></span><a href="https://github.com/Yash-Tripath1/Bendlab" target="_blank" rel="noopener noreferrer">GitHub</a></nav>
 <header>
   <h1>BendLab: Trained Inverse Model <span style="color:var(--muted);font-weight:500">(research prototype, not peer reviewed)</span></h1>
   <p>One neural network ensemble, trained on 100,000 simulated BendLab seedlings with curves truncated at random hours, predicts the hidden parameters from a bending curve observed for any length of time. Paste a curve, then drag the observation window to see what can be known by each hour.</p>
@@ -234,23 +234,43 @@ if (typeof document !== "undefined"){
     $("count").textContent = n ? n + " readings" : "";
   }
   const GEO = { L:44, R:12, T:12, B:32 };
+  function fitCanvas(cv){
+    const rect = cv.getBoundingClientRect();
+    const dpr = (typeof window !== "undefined" && window.devicePixelRatio) || 1;
+    const W = rect.width > 0 ? Math.round(rect.width) : 640;
+    const H = rect.height > 0 ? Math.round(rect.height) : 300;
+    if (cv.width !== Math.round(W*dpr) || cv.height !== Math.round(H*dpr)){
+      cv.width = Math.round(W*dpr);
+      cv.height = Math.round(H*dpr);
+    }
+    const ctx = cv.getContext("2d");
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { ctx, W, H };
+  }
   function drawChart(obs, dense, cutoffH, hoverMin){
-    const cv = $("chart"), ctx = cv.getContext("2d");
-    const W = cv.width, H = cv.height, L=GEO.L, R=GEO.R, T=GEO.T, B=GEO.B;
+    const cv = $("chart");
+    const { ctx, W, H } = fitCanvas(cv);
+    const L=GEO.L, R=GEO.R, T=GEO.T, B=GEO.B;
     ctx.clearRect(0,0,W,H);
-    let ymax = 0;
-    for (const v of obs) ymax = Math.max(ymax, v);
-    for (let i=0;i<dense.length;i+=10) ymax = Math.max(ymax, dense[i]);
-    ymax = (ymax*1.12) || 1;
-    chartState = { obs, dense, cutoffH, ymax };
+    let rawMin = 0, rawMax = 0;
+    for (const v of obs){ rawMin = Math.min(rawMin, v); rawMax = Math.max(rawMax, v); }
+    for (let i=0;i<dense.length;i+=10){ rawMin = Math.min(rawMin, dense[i]); rawMax = Math.max(rawMax, dense[i]); }
+    const ymin = rawMin < -0.25 ? rawMin * 1.12 : 0;
+    const ymax = Math.max((rawMax * 1.12) || 1, ymin + 1);
+    const span = ymax - ymin;
+    chartState = { obs, dense, cutoffH, ymin, ymax };
     const X = t => L + (W-L-R)*(t/24);
-    const Y = v => T + (H-T-B)*(1 - v/ymax);
+    const Y = v => T + (H-T-B)*(1 - (v - ymin)/span);
     ctx.strokeStyle = "#e3eae3"; ctx.lineWidth = 1; ctx.fillStyle = "#6d7c72";
-    ctx.font = "11px system-ui"; ctx.textAlign = "center";
+    ctx.font = "11px Inter, system-ui, sans-serif"; ctx.textAlign = "center";
     for (let g=0; g<=4; g++){
-      const v = ymax*g/4, y = Y(v);
+      const v = ymin + span*g/4, y = Y(v);
       ctx.beginPath(); ctx.moveTo(L,y); ctx.lineTo(W-R,y); ctx.stroke();
       ctx.textAlign = "right"; ctx.fillText(v.toFixed(0), L-6, y+4); ctx.textAlign = "center";
+    }
+    if (ymin < 0 && ymax > 0){
+      ctx.strokeStyle = "#b9cdc0"; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(L, Y(0)); ctx.lineTo(W-R, Y(0)); ctx.stroke();
     }
     for (let t=0; t<=24; t+=4){
       const x = X(t);
@@ -280,7 +300,7 @@ if (typeof document !== "undefined"){
       ctx.fillStyle = "#0f5a35";
       ctx.beginPath(); ctx.arc(X(t), Y(v), 4.5, 0, 7); ctx.fill();
     }
-    ctx.textAlign = "left"; ctx.font = "12px system-ui";
+    ctx.textAlign = "left"; ctx.font = "12px Inter, system-ui, sans-serif";
     ctx.strokeStyle = "#177245"; ctx.beginPath(); ctx.moveTo(W-216, 20); ctx.lineTo(W-186, 20); ctx.stroke();
     ctx.fillStyle = "#16231b"; ctx.fillText("Predicted full day", W-180, 24);
     ctx.beginPath(); ctx.arc(W-201, 36, 3.2, 0, 7); ctx.fillStyle = "#16231b"; ctx.fill();
@@ -289,8 +309,9 @@ if (typeof document !== "undefined"){
   $("chart").addEventListener("mousemove", e=>{
     if (!chartState) return;
     const cv = $("chart"), rect = cv.getBoundingClientRect();
-    const px = (e.clientX-rect.left) * (cv.width/rect.width);
-    const plotW = cv.width - GEO.L - GEO.R;
+    const cssW = rect.width || 640;
+    const px = e.clientX - rect.left;
+    const plotW = cssW - GEO.L - GEO.R;
     let t = (px - GEO.L)/plotW * 24;
     t = Math.max(0, Math.min(24, t));
     const minute = Math.round(t*60);
@@ -302,6 +323,11 @@ if (typeof document !== "undefined"){
     if (chartState) drawChart(chartState.obs, chartState.dense, chartState.cutoffH, null);
     $("chartTip").textContent = "Move the pointer over the chart to read the exact fitted curve value at any time.";
   });
+  if (typeof window !== "undefined"){
+    window.addEventListener("resize", ()=>{
+      if (chartState) drawChart(chartState.obs, chartState.dense, chartState.cutoffH, null);
+    });
+  }
 
   function run(){
     const all = parseSeries($("input").value);
@@ -329,6 +355,7 @@ if (typeof document !== "undefined"){
     let se = 0; for (let i=0;i<obs.length;i++){ const d = fitted[i]-obs[i]; se += d*d; }
     const rmse = Math.sqrt(se/obs.length);
     const banner = $("checkBanner");
+    banner.style.display = "";
     if (rmse > 2){
       banner.className = "banner bad";
       banner.textContent = "Self-check failed: re-simulating the predicted parameters gives RMSE " + fmt(rmse) + " deg against your observed readings. This input may sit outside the training distribution, or the BendLab model may not describe it.";
@@ -336,7 +363,7 @@ if (typeof document !== "undefined"){
       banner.className = "banner warn";
       banner.textContent = "Self-check is imperfect: re-simulated curve RMSE " + fmt(rmse) + " deg on the observed window. Predictions are plausible but should be treated cautiously, especially from short windows.";
     } else {
-      banner.className = "banner"; banner.style.display = "none"; banner.textContent = "";
+      banner.className = "banner"; banner.textContent = "";
     }
     drawChart(obs, simulateDense(pred.mean), usedHours, null);
     $("rmseLine").textContent = "Self-check RMSE on observed window: " + fmt(rmse) + " deg. Predicted final angle at 24 h: " + fmt(fitted[12],1) + " deg. Predicted k=" + fmt(k) + ", tau=" + fmt(tau) + ", max_rate=" + fmt(mr) + ", phi0=" + fmt(phi) + ".";

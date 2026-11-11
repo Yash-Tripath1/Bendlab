@@ -152,8 +152,6 @@ def run_h3() -> dict:
     pop = pop_frame(np.column_stack([K.ravel(), T.ravel(),
                                      np.full(K.size, H3_CAP),
                                      np.full(K.size, H3_PHI0)]))
-    t, th = run_protocol(pop, "static6")  # static light; duration irrelevant,
-    # rerun at full length so half-rise is measurable
     t, th = batch_simulate(pop["k"], pop["tau"], pop["max_rate"], pop["phi0"],
                            light_static, T_END, record_dt=RECORD_DT)
     hr = half_rise_batch(t, th).reshape(H3_N, H3_N)
@@ -415,9 +413,12 @@ def make_figure(h3, h46, h7, h8, clean):
     a = ax[0, 0]
     im = a.pcolormesh(h3["ks"], h3["taus"], h3["half_rise"].T,
                       shading="auto", cmap="viridis")
-    a.set_title("H3: half-rise time over (k, tau)\nno discontinuity edges detected (%.1f%%)"
-                % (100 * h3["edge_frac"]))
-    a.set_xlabel("k (per hour)")
+    cliff_txt = ("no discontinuity edges detected (0.0%)"
+                 if h3["cliff_edges"] == 0
+                 else "%d discontinuity edges (%.2f%%)"
+                 % (h3["cliff_edges"], 100 * h3["edge_frac"]))
+    a.set_title("H3: half-rise time over (k, tau)\n%s" % cliff_txt)
+    a.set_xlabel("k (deg/h)")
     a.set_ylabel("tau (hours)")
     fig.colorbar(im, ax=a, label="hours")
 

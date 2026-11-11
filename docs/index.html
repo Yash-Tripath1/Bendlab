@@ -214,7 +214,7 @@
 </style>
 </head>
 <body>
-<nav class="site-nav" style="max-width:1480px"><span class="brand">BendLab</span><a href="about.html">About</a><a class="active" href="index.html">Simulator</a><a href="model.html">Trained model</a><a href="fitter.html">Curve fitter</a><span class="spacer"></span><a href="https://github.com/Yash-Tripath1/Bendlab">GitHub</a></nav>
+<nav class="site-nav" aria-label="BendLab navigation" style="max-width:1480px"><span class="brand">BendLab</span><a href="about.html">About</a><a class="active" aria-current="page" href="index.html">Simulator</a><a href="model.html">Trained model</a><a href="fitter.html">Curve fitter</a><span class="spacer"></span><a href="https://github.com/Yash-Tripath1/Bendlab" target="_blank" rel="noopener noreferrer">GitHub</a></nav>
 <header>
   <div>
     <h1>BendLab Visual Simulator</h1>
@@ -326,7 +326,7 @@
   const $ = id => document.getElementById(id);
 
   const PARAM_DEFS = [
-    { key: "k",        label: "k",        unit: "response gain · /h", min: 0.05, max: 50,  log: true,  fmt: v => v.toFixed(3) },
+    { key: "k",        label: "k",        unit: "response gain · °/h", min: 0.05, max: 50,  log: true,  fmt: v => v.toFixed(3) },
     { key: "tau",      label: "tau",      unit: "sensing lag · h",    min: 0.05, max: 42,  log: true,  fmt: v => v.toFixed(3) },
     { key: "max_rate", label: "max_rate", unit: "rate cap · °/h",     min: 2,    max: 260, log: true,  fmt: v => v.toFixed(2) },
     { key: "phi0",     label: "phi0",     unit: "base light · °",     min: -90,  max: 90,  log: false, fmt: v => v.toFixed(1) }

@@ -61,12 +61,16 @@ PROTOCOLS = {
 
 # ---- Import measured trajectories and fitted parameter sets -----------------
 raw = load_long()
-plants = sorted(raw["plant"].unique())
+traj_groups = list(raw.groupby(["sheet", "plant"], sort=False))
+n_trajectories = len(traj_groups)
+fig1c_raw = raw[raw["sheet"] == "Fig1C"]
 fits = pd.read_csv(FITS).set_index("plant")
 clean = fits[fits["at_bound"] == "[]"]
-print("imported %d measured plants; %d with fits suitable for prediction"
-      % (len(plants), len(clean)))
-print("blocks:", raw.groupby("block")["plant"].nunique().to_dict())
+print("imported %d measured trajectories across %d sheets (%d in Fig1C); "
+      "%d with fits suitable for prediction"
+      % (n_trajectories, raw["sheet"].nunique(),
+         fig1c_raw["plant"].nunique(), len(clean)))
+print("Fig1C blocks:", fig1c_raw.groupby("block")["plant"].nunique().to_dict())
 
 MORNING = {"ZT0": "tab:green", "ZT3": "seagreen", "ZT6": "limegreen",
            "ZT9": "darkolivegreen"}
@@ -96,33 +100,40 @@ print("wrote %s (%d rows)" % (OUT_CSV, len(frame)))
 
 # ---- dashboard --------------------------------------------------------------
 fig, ax = plt.subplots(2, 3, figsize=(16, 9))
-fig.suptitle("Measured sunflower trajectories (n=%d) and fitted parameter sets "
-             "used for prediction (n=%d)" % (len(plants), len(clean)),
+fig.suptitle("Measured sunflower trajectories across S13 sheets (n=%d) and "
+             "fitted parameter sets used for prediction (n=%d)"
+             % (n_trajectories, len(clean)),
              fontsize=13, weight="bold")
 
-# Panel 1: measured trajectories
-for plant in plants:
-    g = raw[raw["plant"] == plant].sort_values("t")
-    b = plant.split("-")[0]
-    ax[0, 0].plot(g["t"], g["angle"], lw=1.1, alpha=0.8, color=color_of(b))
+# Panel 1: measured trajectories (grouped by (sheet, plant) so shared labels
+# across Fig1B and Fig2B are never concatenated)
+for (sheet, plant), g in traj_groups:
+    g = g.sort_values("t")
+    color = color_of(plant.split("-")[0]) if sheet == "Fig1C" else "gray"
+    ax[0, 0].plot(g["t"], g["angle"], lw=1.1, alpha=0.8, color=color)
 ax[0, 0].set_title("1. Measured trajectories in all workbook sheets\n(Fig1C stimulus-start groups coloured; other sheets grey)", fontsize=11)
 ax[0, 0].set_xlabel("hours")
 ax[0, 0].set_ylabel("stem angle (deg)")
 
 # Panel 2: measured trajectory and corresponding fitted parameter set
-g = raw[raw["plant"] == "ZT0-1"].sort_values("t")
+g = fig1c_raw[fig1c_raw["plant"] == "ZT0-1"].sort_values("t")
 fr = fits.loc["ZT0-1"]
-yc = run_model(fr.k, fr.tau, fr.max_rate, fr.phi0, g["t"].to_numpy(float))
-ax[1, 1].plot(g["t"], g["angle"], "o", ms=4, color="tab:green",
+t_el = g["t"].to_numpy(float) - float(g["t"].iloc[0])
+yc = run_model(fr.k, fr.tau, fr.max_rate, fr.phi0, t_el)
+ax[0, 1].plot(t_el, g["angle"], "o", ms=4, color="tab:green",
               label="measured")
-ax[1, 1].plot(g["t"], yc, "k", lw=2, label="model fit")
-ax[1, 1].set_title("2. Measured trajectory and model fit for plant ZT0-1\n(RMSE %.1f deg)" % fr.rmse, fontsize=11)
-ax[1, 1].set_xlabel("hours")
-ax[1, 1].legend(fontsize=8)
+ax[0, 1].plot(t_el, yc, "k", lw=2, label="model fit")
+ax[0, 1].set_title("2. Measured trajectory and model fit for plant ZT0-1\n(RMSE %.1f deg)" % fr.rmse, fontsize=11)
+ax[0, 1].set_xlabel("elapsed time (h)")
+ax[0, 1].set_ylabel("stem angle (deg)")
+ax[0, 1].legend(fontsize=8)
 
 # Panels 3-5: predictions under alternative light protocols
-for (r, ccol), name in zip([(0, 1), (0, 2), (1, 0)],
-                           ["flip4_8", "sweep12", "dflip16"]):
+for panel_no, (r, ccol), name in zip(
+    [3, 4, 5],
+    [(0, 2), (1, 0), (1, 1)],
+    ["flip4_8", "sweep12", "dflip16"],
+):
     t, th = curves_by_proto[name]
     for j, plant in enumerate(clean.index):
         ax[r, ccol].plot(t, th[:, j], lw=0.9, alpha=0.55,
@@ -130,8 +141,8 @@ for (r, ccol), name in zip([(0, 1), (0, 2), (1, 0)],
     med = np.median(th, axis=1)
     ax[r, ccol].plot(t, med, "k--", lw=2, label="median")
     ax[r, ccol].set_title(
-        "Predicted trajectories under %s\n(n=%d fitted parameter sets)"
-        % (name, len(clean)), fontsize=11)
+        "%d. Predicted trajectories under %s\n(n=%d fitted parameter sets)"
+        % (panel_no, name, len(clean)), fontsize=11)
     ax[r, ccol].set_xlabel("hours")
     ax[r, ccol].set_ylabel("stem angle (deg)")
     ax[r, ccol].legend(fontsize=8)

@@ -93,7 +93,7 @@ definitions in Brooks et al. (2023).
 
 Three handling rules follow from the Fig1C time-base error: (1) for
 absolute-angle sheets, the angle convention must be established before
-fitting, because the model variable $	heta$ represents deviation from
+fitting, because the model variable $\theta$ represents deviation from
 an initially vertical orientation and is not necessarily commensurate
 with the published absolute angle; (2) the stimulus onset and time-zero
 definition for every new sheet must be recorded here before analysis;
