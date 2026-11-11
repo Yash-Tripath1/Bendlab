@@ -127,6 +127,10 @@ def twin_refinement(feat: pd.DataFrame, shape_col_buggy: str,
     refined = cand[np.arange(len(query_idx)), d_shape.argmin(axis=1)]
     res = {}
     for n in ALL_PARAMS:
+        if rng_full[n] == 0.0:
+            res[n] = {"tip_nn_pct": float("nan"), "refined_pct": float("nan"),
+                      "reduction_pct": float("nan")}
+            continue
         e_twin = 100 * np.median(np.abs(P[n][first] - P[n][query_idx])) / rng_full[n]
         e_ref = 100 * np.median(np.abs(P[n][refined] - P[n][query_idx])) / rng_full[n]
         res[n] = {"tip_nn_pct": float(e_twin), "refined_pct": float(e_ref),
@@ -172,8 +176,13 @@ def main():
             "mean": float(feat["s_shape_corrected"].mean()),
             "std": float(feat["s_shape_corrected"].std()),
             "max": float(feat["s_shape_corrected"].max())},
-        "corr_buggy_vs_corrected": float(np.corrcoef(
-            feat["s_shape_sign_changes"], feat["s_shape_corrected"])[0, 1]),
+        "corr_buggy_vs_corrected": (
+            float("nan")
+            if feat["s_shape_sign_changes"].std() == 0.0
+            or feat["s_shape_corrected"].std() == 0.0
+            else float(np.corrcoef(
+                feat["s_shape_sign_changes"], feat["s_shape_corrected"])[0, 1])
+        ),
         "frac_plants_corrected_zero": float(
             (feat["s_shape_corrected"] == 0).mean()),
         "frac_plants_buggy_zero": float(
@@ -220,9 +229,10 @@ def main():
             return [_clean(v) for v in o]
         return o
 
+    cleaned = _clean(results)
     with open(OUT, "w") as fh:
-        json.dump(_clean(results), fh, indent=2)
-    print(json.dumps(results, indent=2))
+        json.dump(cleaned, fh, indent=2, allow_nan=False)
+    print(json.dumps(cleaned, indent=2, allow_nan=False))
     print("saved", OUT)
 
 

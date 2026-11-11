@@ -159,7 +159,7 @@ def part2_uncertainty(fits):
             if np.linalg.norm(res.jac[:, j]) < 1e-9:
                 se[j] = np.inf
         at_bound = [fit_real.NAMES[j] for j in range(4)
-                    if res.x[j] <= fit_real.LO[j] * 1.01
+                    if res.x[j] <= (fit_real.LO[j] * 1.01 if fit_real.LO[j] > 0 else 1e-6)
                     or res.x[j] >= fit_real.HI[j] * 0.99]
         row = {"plant": label, "rmse": float(np.sqrt(np.mean(res.fun ** 2))),
                "at_bound": str(at_bound)}
@@ -279,7 +279,7 @@ def main():
     ax = axes[1, 0]
     data = [unc[f"{p}_rel_se"][np.isfinite(unc[f"{p}_rel_se"])].values
             for p in PARAM_NAMES]
-    ax.boxplot(data, labels=list(PARAM_NAMES), showfliers=False)
+    ax.boxplot(data, tick_labels=list(PARAM_NAMES), showfliers=False)
     ax.axhline(0.5, color="red", ls="--", lw=1)
     ax.text(3, 0.44, "max_rate identified\nin only 1 of 48 fits\n(cap never binds in 47)",
             ha="center", fontsize=8, color="tab:red")

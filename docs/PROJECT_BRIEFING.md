@@ -5,7 +5,7 @@
 
 **For:** Anadi Tripathi and Umaid
 **Date:** 15 October 2026
-**Status:** Active independent computational research project. Repository: https://github.com/Yash-Tripathi/Bendlab
+**Status:** Active independent computational research project. Repository: https://github.com/Yash-Tripath1/Bendlab
 
 This document explains, in plain language, everything BendLab is, everything we have done, what we found, what we got wrong and corrected, and what should happen next. It assumes no prior context.
 

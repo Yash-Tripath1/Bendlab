@@ -6,40 +6,41 @@
 <title>BendLab: Phototropism Curve Fitter</title>
 <style>
   :root{
-    --bg:#f6f7f4; --card:#ffffff; --ink:#1e293b; --muted:#64748b;
-    --line:#e2e8f0; --teal:#0f766e; --teal-dark:#115e59; --teal-soft:#ecfdf5;
+    --bg:#eef2ee; --card:#ffffff; --ink:#16231b; --muted:#5b6b61;
+    --line:#dce5dd; --teal:#177245; --teal-dark:#0f5a35; --teal-soft:#eef7f1;
     --amber-bg:#fffbeb; --amber-line:#f59e0b; --amber-ink:#92400e;
     --red-bg:#fef2f2; --red-line:#ef4444; --red-ink:#991b1b;
   }
   *{box-sizing:border-box}
-  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+  body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink)}
   header{padding:22px 28px 6px;max-width:1180px;margin:0 auto}
-  h1{font-size:21px;margin:0 0 4px;font-weight:650}
+  h1{font-size:22px;margin:0 0 4px;font-weight:700;letter-spacing:-0.01em}
   header p{margin:0;color:var(--muted);font-size:13.5px}
   main{max-width:1180px;margin:0 auto;padding:16px 28px 30px;display:grid;grid-template-columns:340px 1fr;gap:16px}
   @media (max-width:880px){main{grid-template-columns:1fr}}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
   .card h2{font-size:14px;margin:0 0 10px;font-weight:650}
-  textarea{width:100%;height:118px;border:1px solid var(--line);border-radius:8px;padding:10px;
+  textarea{width:100%;height:118px;border:1px solid var(--line);border-radius:10px;padding:10px;
     font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;line-height:1.55;resize:vertical;color:var(--ink)}
+  textarea:focus{outline:2px solid rgba(23,114,69,0.22);border-color:var(--teal)}
   .hint{color:var(--muted);font-size:12px;line-height:1.5;margin:8px 0 12px}
-  button{cursor:pointer;border:none;border-radius:8px;font-size:13.5px;font-weight:600}
+  button{cursor:pointer;border:none;border-radius:10px;font-size:13.5px;font-weight:600;transition:background .12s,border-color .12s}
   .primary{background:var(--teal);color:#fff;width:100%;padding:11px}
   .primary:hover{background:var(--teal-dark)}
   .primary:disabled{background:#94a3b8;cursor:wait}
-  .sample{border:1px solid var(--line);border-radius:8px;padding:9px 11px;margin-top:8px;width:100%;
+  .sample{border:1px solid var(--line);border-radius:10px;padding:9px 11px;margin-top:8px;width:100%;
     background:#fff;text-align:left;font-weight:500;color:var(--ink)}
-  .sample:hover{border-color:var(--teal)}
+  .sample:hover{border-color:var(--teal);background:#f9fcf9}
   .sample small{display:block;color:var(--muted);font-family:ui-monospace,Menlo,monospace;font-size:11px;margin-top:2px;font-weight:400}
   .truth{display:none;margin-top:6px;font-size:12px;color:var(--teal-dark);font-family:ui-monospace,Menlo,monospace}
   .params{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
   @media (max-width:880px){.params{grid-template-columns:repeat(2,1fr)}}
-  .param{background:var(--teal-soft);border:1px solid #a7f3d0;border-radius:8px;padding:10px 12px}
+  .param{background:var(--teal-soft);border:1px solid #bfe0cb;border-radius:10px;padding:10px 12px}
   .param .lab{font-size:11.5px;color:var(--muted)}
   .param .val{font-size:22px;font-weight:650;margin:2px 0}
   .param .unit{font-size:11.5px;color:var(--muted)}
-  .param.grey{background:#f8fafc;border-color:var(--line)}
-  .banner{border-radius:8px;padding:10px 12px;font-size:13px;line-height:1.5;margin-top:12px;display:none}
+  .param.grey{background:#f5f7f5;border-color:var(--line)}
+  .banner{border-radius:10px;padding:10px 12px;font-size:13px;line-height:1.5;margin-top:12px;display:none}
   .banner.warn{background:var(--amber-bg);border:1px solid var(--amber-line);color:var(--amber-ink);display:block}
   .banner.bad{background:var(--red-bg);border:1px solid var(--red-line);color:var(--red-ink);display:block}
   table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:8px}
@@ -318,23 +319,45 @@ if (typeof document !== "undefined"){
 
   const GEO = { L:44, R:12, T:12, B:32 };
   let chartState = null;
+  function fitCanvas(cv){
+    const rect = cv.getBoundingClientRect();
+    const dpr = (typeof window !== "undefined" && window.devicePixelRatio) || 1;
+    const W = rect.width > 0 ? Math.round(rect.width) : 640;
+    const H = rect.height > 0 ? Math.round(rect.height) : 300;
+    if (cv.width !== Math.round(W*dpr) || cv.height !== Math.round(H*dpr)){
+      cv.width = Math.round(W*dpr);
+      cv.height = Math.round(H*dpr);
+    }
+    const ctx = cv.getContext("2d");
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { ctx, W, H };
+  }
   function drawChart(obs, dense, hoverMin){
-    const cv = $("chart"), ctx = cv.getContext("2d");
-    const W = cv.width, H = cv.height, L=GEO.L, R=GEO.R, T=GEO.T, B=GEO.B;
+    const cv = $("chart");
+    const { ctx, W, H } = fitCanvas(cv);
+    const L=GEO.L, R=GEO.R, T=GEO.T, B=GEO.B;
     ctx.clearRect(0,0,W,H);
-    let ymax = 0;
-    for (const v of obs) ymax = Math.max(ymax, v);
-    for (let i=0;i<dense.length;i+=10) ymax = Math.max(ymax, dense[i]);
-    ymax = (ymax*1.12) || 1;
-    chartState = { obs, dense, ymax };
+    let rawMin = 0, rawMax = 0;
+    for (const v of obs){ rawMin = Math.min(rawMin, v); rawMax = Math.max(rawMax, v); }
+    for (let i=0;i<dense.length;i+=10){ rawMin = Math.min(rawMin, dense[i]); rawMax = Math.max(rawMax, dense[i]); }
+    const ymin = rawMin < -0.25 ? rawMin * 1.12 : 0;
+    const ymax = Math.max((rawMax * 1.12) || 1, ymin + 1);
+    const span = ymax - ymin;
+    chartState = { obs, dense, ymin, ymax };
     const X = t => L + (W-L-R)*(t/24);
-    const Y = v => T + (H-T-B)*(1 - v/ymax);
-    ctx.strokeStyle = "#e8edf2"; ctx.lineWidth = 1; ctx.fillStyle = "#64748b";
-    ctx.font = "11px system-ui"; ctx.textAlign = "center";
+    const Y = v => T + (H-T-B)*(1 - (v - ymin)/span);
+    ctx.strokeStyle = "#e3eae3"; ctx.lineWidth = 1; ctx.fillStyle = "#5b6b61";
+    ctx.font = "11px Inter, system-ui, sans-serif"; ctx.textAlign = "center";
     for (let g=0; g<=4; g++){
-      const v = ymax*g/4, y = Y(v);
+      const v = ymin + span*g/4, y = Y(v);
       ctx.beginPath(); ctx.moveTo(L,y); ctx.lineTo(W-R,y); ctx.stroke();
       ctx.textAlign = "right"; ctx.fillText(v.toFixed(0), L-6, y+4); ctx.textAlign = "center";
+    }
+    if (ymin < 0 && ymax > 0){
+      ctx.save();
+      ctx.strokeStyle = "#9fb8a8"; ctx.setLineDash([4, 3]);
+      ctx.beginPath(); ctx.moveTo(L, Y(0)); ctx.lineTo(W-R, Y(0)); ctx.stroke();
+      ctx.restore();
     }
     for (let t=0; t<=24; t+=4){
       const x = X(t);
@@ -351,7 +374,7 @@ if (typeof document !== "undefined"){
     }
     ctx.stroke();
     // observed points
-    ctx.fillStyle = "#1e293b";
+    ctx.fillStyle = "#16231b";
     obs.forEach((v,i)=>{ ctx.beginPath(); ctx.arc(X(i*2), Y(v), 3.2, 0, 7); ctx.fill(); });
     if (hoverMin !== undefined && hoverMin !== null){
       const t = hoverMin/60, v = dense[hoverMin];
@@ -361,17 +384,18 @@ if (typeof document !== "undefined"){
       ctx.beginPath(); ctx.arc(X(t), Y(v), 4.5, 0, 7); ctx.fill();
     }
     // legend (solid)
-    ctx.textAlign = "left"; ctx.font = "12px system-ui";
+    ctx.textAlign = "left"; ctx.font = "12px Inter, system-ui, sans-serif";
     ctx.strokeStyle = "#177245"; ctx.beginPath(); ctx.moveTo(W-168, 20); ctx.lineTo(W-138, 20); ctx.stroke();
-    ctx.fillStyle = "#1e293b"; ctx.fillText("Fitted", W-132, 24);
-    ctx.beginPath(); ctx.arc(W-153, 36, 3.2, 0, 7); ctx.fillStyle = "#1e293b"; ctx.fill();
+    ctx.fillStyle = "#16231b"; ctx.fillText("Fitted", W-132, 24);
+    ctx.beginPath(); ctx.arc(W-153, 36, 3.2, 0, 7); ctx.fillStyle = "#16231b"; ctx.fill();
     ctx.fillText("Observed", W-132, 40);
   }
   $("chart").addEventListener("mousemove", e=>{
     if (!chartState) return;
     const cv = $("chart"), rect = cv.getBoundingClientRect();
-    const px = (e.clientX-rect.left) * (cv.width/rect.width);
-    const plotW = cv.width - GEO.L - GEO.R;
+    const cssW = rect.width || 640;
+    const px = e.clientX - rect.left;
+    const plotW = cssW - GEO.L - GEO.R;
     let t = (px - GEO.L)/plotW * 24;
     t = Math.max(0, Math.min(24, t));
     const minute = Math.round(t*60);
@@ -382,6 +406,11 @@ if (typeof document !== "undefined"){
     if (chartState) drawChart(chartState.obs, chartState.dense, null);
     $("chartTip").textContent = "Move the pointer over the chart to read the exact fitted curve value at any time.";
   });
+  if (typeof window !== "undefined"){
+    window.addEventListener("resize", ()=>{
+      if (chartState) drawChart(chartState.obs, chartState.dense, null);
+    });
+  }
 
   function runFit(){
     const obs = parseSeries($("input").value);
@@ -418,6 +447,7 @@ if (typeof document !== "undefined"){
         ? `max_rate binds for about ${(diag.clipFrac*100).toFixed(0)}% of the trajectory, so it is informed by the data.`
         : `max_rate is often not identifiable from a bending curve: when the rate limit never binds, many values fit equally well. Here the fitted bend rate never reaches the cap; treat max_rate as a lower bound only (≥ ${fmt(diag.peakDemand)} deg/h).`;
       const banner = $("uniqueBanner");
+      banner.style.display = "";
       if (res.rmse > 2){
         banner.className = "banner bad";
         banner.textContent = "Poor fit: the BendLab model does not reproduce this curve well (RMSE " + fmt(res.rmse) + "°). The parameters should not be interpreted biologically.";
@@ -430,7 +460,7 @@ if (typeof document !== "undefined"){
         banner.className = "banner warn";
         banner.textContent = "Caution: " + atBound.join(", ") + " reached a fitting bound, so the estimate is constrained by the search range rather than the data.";
       } else {
-        banner.className = "banner"; banner.style.display = "none"; banner.textContent = "";
+        banner.className = "banner"; banner.textContent = "";
       }
       if (res.alternatives.length > 1){
         let rows = res.alternatives.slice(0,4).map((s,i)=>{
@@ -453,7 +483,11 @@ if (typeof document !== "undefined"){
     if (!lastResult) return;
     const { res } = lastResult;
     const [k, tau, mr, phi] = res.best.params;
-    const txt = `k=${fmt(k)} deg/h, tau=${fmt(tau)} h, max_rate=${fmt(mr)} deg/h, phi0=${fmt(phi)} deg (BendLab fit, RMSE ${fmt(res.rmse)} deg)`;
+    const diag = maxRateInfo(res.best.params);
+    const mrStr = diag.binds
+      ? `max_rate=${fmt(mr)} deg/h`
+      : `max_rate>=${fmt(diag.peakDemand)} deg/h (unidentifiable)`;
+    const txt = `k=${fmt(k)} deg/h, tau=${fmt(tau)} h, ${mrStr}, phi0=${fmt(phi)} deg (BendLab fit, RMSE ${fmt(res.rmse)} deg)`;
     if (navigator.clipboard) navigator.clipboard.writeText(txt);
     $("status").textContent = "Copied: " + txt;
   });

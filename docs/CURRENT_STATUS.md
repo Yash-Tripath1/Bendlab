@@ -1,9 +1,10 @@
 # BendLab: current status (canonical)
 
 This is the single canonical summary of what BendLab has established,
-what it has withdrawn, and what remains open, as of 16 October 2026.
-Where older documents differ, this file and the dated amendments in
-them take precedence.
+what it has withdrawn, and what remains open across Experiment Series 1,
+Phase B0, and the Growth-Aware Phototropism study (Phases A–C). Where
+older documents differ, this file and the dated amendments in them take
+precedence.
 
 ## The question
 
@@ -48,16 +49,52 @@ present, evidence for a particular biological mechanism.
   2:1 two-source geometry select the correct stimulus mechanism in
   about 96% of simulated datasets (control geometry: chance). This is a
   simulation-based estimate, not a laboratory guarantee.
+- **External benchmark on 268 unilateral trajectories (Phase B0
+  Workstream A, Kempinski et al. 2026, 0.7–5.8 W/m²):** fixing
+  `phi0 = 90` degrees to physical horizontal lamp geometry fails to beat
+  simple empirical baselines (W1 plant-held-out median RMSE 14.41
+  degrees vs 9.73 degrees intensity-group mean trajectory and 13.78
+  degrees global mean; LOIO interpolation 14.51 degrees). Because real
+  stems reach a gravitropic/proprioceptive equilibrium near ~52 degrees
+  rather than 90 degrees, `phi0` in the canonical scalar model acts as
+  an effective equilibrium angle: fitting a shared `phi_eq` (W3) lowers
+  plant-held-out median RMSE to 9.65 degrees (LOIO interpolation 9.81
+  degrees vs 9.95 degrees global-mean LOIO baseline).
+- **Multi-segment stem shape narrows `k` degeneracy but leaves
+  `max_rate` blind (Phase B0 Workstream B):** the 5-segment coupled
+  chain (`04_shape_extension_branch/sim_multiseg.py`) reduces to
+  `sim.py` exactly at `zeta = 0`. Under leakage-safe reference/query
+  splits, refining tip-matched twins using stem curvature reduces `k`
+  error by 33% (`phi0` varying) to 49% (`phi0` fixed), while `max_rate`
+  error changes by < 1%.
+- **Growth-aware phototropism audit (`growth_phase/`, n = 213 paired
+  seedlings with starting length `L0`):** `L0` is positively associated
+  with early 0–2 h bending rate (+2.12 deg/h per log-length unit,
+  permutation p = 0.0022; Spearman r = +0.205, p = 0.0027), whereas
+  censoring-aware stratified Cox latency analysis shows no statistically
+  significant onset-hazard effect (HR = 1.42, p = 0.068). Length-coupled
+  ODE variants (M1a `k(L0)`, M1d `tau(L0)`, M1c `phi_eq(L0)`) do not
+  improve held-out trajectory RMSE over length-blind M0 (10.25 degrees;
+  ΔRMSE within ±0.03 degrees).
 
 ## Withdrawn or corrected, on the record
 
 - All pre-13-October fit values (clock-offset error in the fitter).
 - The original H4 interpretation, the H3 "falsified" verdict, the H6
   connectivity claim, and the Welch-based vector sample sizes.
+- The initial Workstream B `s_shape_sign_changes` axis-indexing claim
+  (audited and corrected in
+  `03_workstream_B_shape_extension_audit/SHAPE_EXTENSION_AUDIT.md`) and
+  the naive uncensored latency correlation in `growth_phase` (superseded
+  by censoring-aware stratified Cox analysis).
 
 ## Open
 
 - Wet-lab validation of any stimulus or protocol claim.
+- Mechanistic straightening/equilibrium formulation (`sim_gamma.py` /
+  `sim_clock_gamma.py`) benchmarked directly on the multi-intensity
+  external dataset so `phi_light = 90` degrees remains physical lamp
+  geometry while `gamma` sets the equilibrium angle.
 - Model v2 head-to-head: circadian clock versus biphasic memory kernel
   on held-out data (specified, not run).
 - H8 v2 harder adaptive design (specified, not run).
@@ -67,4 +104,6 @@ present, evidence for a particular biological mechanism.
 
 Key sources: `docs/RESULTS_ROUND0.md`, `docs/RESULTS_ROUND1.md`,
 `docs/AUDIT_FOLLOWUP_RESULTS.md`, `docs/MODEL_V2_CANDIDATES.md`,
-`results/phaseA_summary.json`.
+`02_workstream_A_external_benchmark/PHASE_B0_REPORT.md`,
+`03_workstream_B_shape_extension_audit/SHAPE_EXTENSION_AUDIT.md`,
+`growth_phase/PHASE_BC_RESULTS.md`, `results/phaseA_summary.json`.

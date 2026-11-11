@@ -28,7 +28,8 @@ from data_real import curves, load_long
 from sim import static_light
 
 CASES = [(10.0, 2.0, 30.0, 50.0), (25.0, 0.5, 8.0, 35.0), (5.0, 6.0, 100.0, 70.0),
-         (40.77, 4.37, 7.39, 45.3)]  # last: ZT3-8, the cap-binding fit
+         (40.77, 4.37, 7.39, 45.3),  # ZT3-8, the cap-binding fit
+         (1e-3, 1.0, 30.0, 45.0)]    # fit_real.LO[0], below K_EFF_FLOOR=0.01
 
 
 def main():

@@ -22,7 +22,7 @@ plant-held-out folds are stratified by intensity; leave-one-intensity-
 group-out (LOIO) fits never see the held group. Endpoints (0.7, 5.8
 W/m^2) are extrapolation and are reported separately.
 
-Run:  python phase_b0_kempinski_benchmark.py [path_to_uni_trajectories.csv]
+Run:  python phase_b0_kempinski_benchmark.py [--data PATH] [--fit-subsample N]
 Outputs land in ./outputs/ next to this script.
 """
 
@@ -53,10 +53,9 @@ _ap.add_argument("--data", type=Path, default=PKG_ROOT / "05_data_external"
 _ap.add_argument("--fit-subsample", type=int, default=4,
                  help="fit on every Nth observation (default 4, about "
                       "16-minute spacing; 1 = every observation)")
-_ARGS = _ap.parse_args()
+_ARGS, _ = _ap.parse_known_args() if __name__ != "__main__" else (_ap.parse_args(), [])
 DATA = _ARGS.data
 OUT = HERE / "outputs"
-OUT.mkdir(parents=True, exist_ok=True)
 SEED = 42
 PHI_LIGHT = 90.0          # horizontal side light, degrees from vertical
 FIT_DT = 1.0 / 60.0       # model contract step (1 min)
@@ -287,6 +286,7 @@ def stratified_folds(plants, n_folds=5, seed=SEED):
 
 # ------------------------------------------------------------------ main ----
 def main():
+    OUT.mkdir(parents=True, exist_ok=True)
     df, plants = load_plants(DATA)
     report = {"data_audit": audit(df, plants)}
     idx_by_id = {p["id"]: i for i, p in enumerate(plants)}

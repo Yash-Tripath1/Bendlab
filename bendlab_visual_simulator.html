@@ -317,7 +317,7 @@
   const $ = id => document.getElementById(id);
 
   const PARAM_DEFS = [
-    { key: "k",        label: "k",        unit: "response gain · /h", min: 0.05, max: 50,  log: true,  fmt: v => v.toFixed(3) },
+    { key: "k",        label: "k",        unit: "response gain · °/h", min: 0.05, max: 50,  log: true,  fmt: v => v.toFixed(3) },
     { key: "tau",      label: "tau",      unit: "sensing lag · h",    min: 0.05, max: 42,  log: true,  fmt: v => v.toFixed(3) },
     { key: "max_rate", label: "max_rate", unit: "rate cap · °/h",     min: 2,    max: 260, log: true,  fmt: v => v.toFixed(2) },
     { key: "phi0",     label: "phi0",     unit: "base light · °",     min: -90,  max: 90,  log: false, fmt: v => v.toFixed(1) }

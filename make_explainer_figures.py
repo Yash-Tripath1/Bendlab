@@ -57,11 +57,11 @@ ax[0, 0].legend(fontsize=7.5, loc="lower right")
 df = load_long(sheet="Fig1C")
 g = df[df["plant"] == "ZT0-1"].sort_values("t")
 fr = fits[fits["plant"] == "ZT0-1"].iloc[0]
-yc = run_model(fr.k, fr.tau, fr.max_rate, fr.phi0,
-               g["t"].to_numpy(float))
-ax[0, 1].plot(g["t"], g["angle"], "o", ms=4, color="tab:green",
+t_el = g["t"].to_numpy(float) - float(g["t"].iloc[0])
+yc = run_model(fr.k, fr.tau, fr.max_rate, fr.phi0, t_el)
+ax[0, 1].plot(t_el, g["angle"], "o", ms=4, color="tab:green",
               label="Measured sunflower trajectory (PLOS S13)")
-ax[0, 1].plot(g["t"], yc, lw=2, color="black",
+ax[0, 1].plot(t_el, yc, lw=2, color="black",
               label="Model fit (RMSE %.1f deg)" % fr.rmse)
 ax[0, 1].set_title("2. Model fit to measured trajectory ZT0-1", fontsize=11)
 ax[0, 1].set_xlabel("elapsed time (h)")
@@ -98,32 +98,35 @@ ax[1, 0].scatter(rows[:, 0], rows[:, 1], s=28, color="tab:purple", alpha=0.8)
 ax[1, 0].axhline(3.0, color="red", ls="--", label="trajectory-equivalence threshold (3 deg)")
 ax[1, 0].set_xlabel("difference in source response gain\n(fraction of the full range)")
 ax[1, 0].set_ylabel("maximum deviation of recombinant trajectory (deg)")
-ax[1, 0].set_title("4. Crossover connectivity: recombinant trajectories\nremain close to the source trajectories", fontsize=11)
+ax[1, 0].set_title("4. Recombinant midpoints in curve-equivalent pairs\n(local retention; connectivity claim withdrawn)", fontsize=11)
 ax[1, 0].legend(fontsize=8)
 
-# ---- Panel 5: hypothesis status summary.
+# ---- Panel 5: hypothesis status summary (post-16-October canonical verdicts).
 ax[1, 1].axis("off")
 lines = [
-    ("H1  Behaviour does not identify parameters", "SUPPORTED (weaker in the weighted population)",
-     "tab:green"),
-    ("H2  A light-direction change improves recovery", "NOT SUPPORTED (cluster-retention metric)", "tab:red"),
-    ("H3  Discontinuities occur in parameter space", "FALSIFIED (response surface is smooth)", "tab:red"),
-    ("H4  Moving light changes cluster membership", "SUPPORTED (clusters do not persist)",
-     "tab:green"),
-    ("H5  Model reproduces measured trajectories", "SUPPORTED (all six stimulus start times)",
-     "tab:green"),
-    ("H6  The degenerate parameter set is connected", "SUPPORTED (with incomplete retention)", "tab:green"),
-    ("H7  Protocols differ materially in recovery error", "NOT SUPPORTED (observed gap 0.091 < 0.10)",
-     "tab:orange"),
-    ("H8  Adaptive selection outperforms baselines", "NOT ASSESSABLE (v1 design saturated)",
-     "tab:orange"),
+    ("H1  Behaviour does not identify parameters",
+     "SUPPORTED as written (within-cluster ranges >= 20%)", "tab:green"),
+    ("H2  A light-direction change improves recovery",
+     "NOT SUPPORTED as written (only k narrows; others widen)", "tab:red"),
+    ("H3  Discontinuities occur in parameter space",
+     "SUPPORTED as written (20/8,064 edges > 5x median)", "tab:green"),
+    ("H4  Moving light changes cluster membership",
+     "SUPPORTED (clusters do not persist; ARI 0.442)", "tab:green"),
+    ("H5  Model reproduces measured trajectories",
+     "SUPPORTED in-sample (48 curves, median RMSE 1.80 deg)", "tab:green"),
+    ("H6  The degenerate parameter set is connected",
+     "WITHDRAWN (phi0-fixed retention near cross-cluster control)", "tab:red"),
+    ("H7  Protocols differ materially in recovery error",
+     "NOT SUPPORTED (matched 6 h budget gap is 0.021)", "tab:orange"),
+    ("H8  Adaptive selection outperforms baselines",
+     "NOT SUPPORTED in v1 (adaptive <= random; v2 specified)", "tab:orange"),
 ]
-ax[1, 1].text(0.02, 0.98, "HYPOTHESIS STATUS", fontsize=12, weight="bold",
-              va="top")
+ax[1, 1].text(0.02, 0.98, "HYPOTHESIS STATUS (POST-AUDIT)", fontsize=11.5,
+              weight="bold", va="top")
 for i, (q, v, c) in enumerate(lines):
-    ax[1, 1].text(0.02, 0.88 - i * 0.115, q, fontsize=9.5, va="top")
-    ax[1, 1].text(0.05, 0.835 - i * 0.115, v, fontsize=8.5, va="top", color=c)
-ax[1, 1].set_title("5. Hypothesis status summary", fontsize=11)
+    ax[1, 1].text(0.02, 0.88 - i * 0.115, q, fontsize=9.2, va="top")
+    ax[1, 1].text(0.05, 0.835 - i * 0.115, v, fontsize=8.3, va="top", color=c)
+ax[1, 1].set_title("5. Hypothesis status summary (post-audit canonical)", fontsize=11)
 
 # ---- Panel 6: validation against the closed-form damped-pendulum solution.
 k, tau, A = 200.0, 1.0, 10.0

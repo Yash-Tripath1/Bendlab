@@ -23,7 +23,7 @@ import numpy as np
 # empirically supported region, so the uniform population includes behaviour
 # outside the range represented by the measured plants.
 PARAMS = (
-    ("k", 0.05, 3.00),    # per hour, response gain
+    ("k", 0.05, 3.00),    # degrees per hour, response gain
     ("tau", 0.25, 6.00),  # hours, sensing lag
     ("max_rate", 2.0, 40.0),  # degrees per hour, saturation cap
     ("phi0", 5.0, 85.0),  # degrees, light angle under static regime

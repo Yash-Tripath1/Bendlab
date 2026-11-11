@@ -105,7 +105,8 @@ def fit_plant(t: np.ndarray, y: np.ndarray) -> dict:
     out.update(rmse=rmse, n_pts=len(t), t_start=t_start,
                duration=float(t_elapsed[-1]),
                at_bound=str([NAMES[i] for i in range(4)
-                             if res.x[i] <= LO[i] * 1.01 or res.x[i] >= HI[i] * 0.99]))
+                             if res.x[i] <= (LO[i] * 1.01 if LO[i] > 0 else 1e-6)
+                             or res.x[i] >= HI[i] * 0.99]))
     return out
 
 

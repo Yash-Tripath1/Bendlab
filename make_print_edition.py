@@ -15,15 +15,19 @@ import datetime
 import numpy as np  # noqa: F401  (kept for parity with repo scripts)
 from fpdf import FPDF
 
-DATE = "2026-10-14"
+DATE = datetime.date.today().isoformat()
 DOCS = [
     ("README.md", "Repository overview"),
+    ("docs/CURRENT_STATUS.md", "Canonical status summary"),
     ("PROBLEM_STATEMENT.md", "Problem statement"),
     ("docs/EXPLAINER.md", "Project overview"),
     ("docs/EXPLAINER_PART2.md", "Project overview: experiment series and validation"),
     ("docs/RESULTS_ROUND0.md", "Results I: model fitting and parameter degeneracy"),
     ("docs/RESULTS_ROUND1.md", "Results II: experiment series 1 and independent audit"),
     ("docs/RESULTS_ROUND2_ZT9.md", "Results III: ZT9 diagnostic analysis"),
+    ("docs/MODEL_V2_CANDIDATES.md", "Model v2 candidate formulations"),
+    ("docs/AUDIT_RESPONSE_2026-10-16.md", "External audit response (16 October 2026)"),
+    ("docs/AUDIT_FOLLOWUP_RESULTS.md", "External audit follow-up results"),
     ("docs/ADAPTIVE_IDENTIFICATION.md", "Adaptive identification experiment: design specification"),
     ("docs/DATA_SOURCES.md", "Data sources"),
     ("docs/DATA_CONTRACT.md", "Data contract"),
@@ -34,9 +38,14 @@ EXTRA_FIGS = [("results/figures/real_seedlings_dashboard.png",
                "Appendix B: ZT9 diagnostic analysis")]
 
 SAFE = {0x2014: "-", 0x2013: "-", 0x2026: "...", 0x2192: "->",
-        0x2212: "-", 0x2265: ">=", 0x2264: "<=", 0x2248: "~",
-        0x00D7: "x", 0x2019: "'", 0x2018: "'", 0x201C: '"', 0x201D: '"',
-        0x207B: "-", 0x00B9: "1", 0x00B2: "2", 0x00B3: "3", 0x2074: "4"}
+        0x2190: "<-", 0x2194: "<->", 0x2212: "-", 0x2265: ">=",
+        0x2264: "<=", 0x2248: "~", 0x2260: "!=", 0x00D7: "x",
+        0x2019: "'", 0x2018: "'", 0x201C: '"', 0x201D: '"',
+        0x207B: "-", 0x00B9: "1", 0x00B2: "2", 0x00B3: "3", 0x2074: "4",
+        0x2080: "0", 0x2081: "1", 0x2082: "2",
+        0x0394: "Delta ", 0x03B8: "theta", 0x03C4: "tau",
+        0x03C6: "phi", 0x03D5: "phi", 0x03B3: "gamma",
+        0x03B6: "zeta", 0x03C3: "sigma", 0x03C0: "pi", 0x03B1: "alpha"}
 
 
 def safe(s):
@@ -47,14 +56,15 @@ def safe(s):
                        (r"\dot{r}", "d(r)/dt"),
                        (r"\operatorname{clip}", "clip"),
                        (r"\theta", "theta"), (r"\tau", "tau"),
-                       (r"\phi", "phi"), (r"\varepsilon", "epsilon"),
-                       (r"\sin", "sin"), (r"\times", "x"),
+                       (r"\phi", "phi"), (r"\gamma", "gamma"),
+                       (r"\zeta", "zeta"), (r"\varepsilon", "epsilon"),
+                       (r"\sin", "sin"), (r"\cos", "cos"), (r"\times", "x"),
                        (r"_{\max}", "_max"), (r"^\circ", " deg"),
                        (r"\mathrm{h}", "h"), (r"\left", ""),
                        (r"\right", ""), (r"\qquad", " "), (r"\,", " "),
                        (r"\!", "")):
         s = s.replace(tex, plain)
-    return s.translate(SAFE)
+    return s.translate(SAFE).encode("latin-1", "replace").decode("latin-1")
 
 
 class Print(FPDF):
