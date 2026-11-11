@@ -155,7 +155,7 @@ def test_s13_checksum_and_sheet_separation():
 def test_growth_phase_sha256_manifest():
     manifest = ROOT / "growth_phase" / "SHA256SUMS.txt"
     lines = [ln.strip() for ln in manifest.read_text().splitlines() if ln.strip()]
-    assert len(lines) >= 35
+    assert len(lines) == 47
     for ln in lines:
         expected, rel = ln.split(None, 1)
         target = ROOT / "growth_phase" / rel.strip()
@@ -195,6 +195,10 @@ def test_site_build_sync_and_ui_guards():
         assert 'banner.style.display = "none"' not in src_html, (
             f"{src} sets inline display:none on banner, permanently hiding subsequent warnings"
         )
+        if key in ("fitter", "model"):
+            assert "setLineDash" not in src_html, (
+                f"{src} violates the solid-lines chart convention (setLineDash found)"
+            )
 
     sim_html = (ROOT / "bendlab_visual_simulator.html").read_text(encoding="utf-8")
     assert "response gain · °/h" in sim_html

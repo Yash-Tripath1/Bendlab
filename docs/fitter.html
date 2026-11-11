@@ -363,10 +363,8 @@ if (typeof document !== "undefined"){
       ctx.textAlign = "right"; ctx.fillText(v.toFixed(0), L-6, y+4); ctx.textAlign = "center";
     }
     if (ymin < 0 && ymax > 0){
-      ctx.save();
-      ctx.strokeStyle = "#9fb8a8"; ctx.setLineDash([4, 3]);
+      ctx.strokeStyle = "#b9cdc0"; ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(L, Y(0)); ctx.lineTo(W-R, Y(0)); ctx.stroke();
-      ctx.restore();
     }
     for (let t=0; t<=24; t+=4){
       const x = X(t);

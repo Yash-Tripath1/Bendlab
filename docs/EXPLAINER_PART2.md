@@ -71,13 +71,14 @@ cluster compared with 29.5 per cent for cross-cluster controls.
 Subsequent external audit (`docs/AUDIT_FOLLOWUP_RESULTS.md`, Section 6)
 showed that averaging `phi0` across source pairs confounded plant-trait
 recombination with light-angle averaging: when `phi0` is held fixed at
-the first parent's light angle, same-cluster retention drops to 41.3 per
-cent against a 36.1 per cent cross-cluster control (5.2 percentage-point
-excess). Midpoints of closely matched curve-equivalent pairs (`max |Δθ|
-< 3 deg`) retain local proximity (24/40 within 3 deg), so local near-equivalence
-holds while global cluster connectivity is **withdrawn**. The term
-"crossover" here denotes recombination of numerical parameter vectors;
-it does not simulate biological inheritance.
+the first parent's light angle, same-cluster retention is 60.7 per cent
+against a 47.0 per cent cross-cluster control scored against the first
+parent's cluster (and 62.4 per cent scored against either parent's
+cluster). Midpoints of closely matched curve-equivalent pairs (`max |Δθ|
+< 3 deg`) retain local proximity (24/40 within 3 deg), so local
+near-equivalence holds while global cluster connectivity is **withdrawn**.
+The term "crossover" here denotes recombination of numerical parameter
+vectors; it does not simulate biological inheritance.
 
 ## 5. Hypothesis status (post-audit canonical)
 
@@ -88,7 +89,7 @@ it does not simulate biological inheritance.
 | H3: behaviour contains discontinuities in parameter space | Supported as written (20/8,064 adjacent grid edges exceed 5x median feature distance; half-rise surface itself has no >2 h jump) |
 | H4: behavioural clusters do not persist across light regimes | Supported (ARI = 0.442 < 0.50 on the empirically weighted population) |
 | H5: the model reproduces measured sunflower trajectories | Supported in-sample (median RMSE 1.80 deg vs 8.58 deg spread; ZT9 limitation documented; held-out LOBO RMSE 11.75 deg) |
-| H6: the degenerate parameter set is connected | Withdrawn (`phi0`-fixed recombinant retention 41.3% vs 36.1% cross-cluster control) |
+| H6: the degenerate parameter set is connected | Withdrawn (`phi0`-fixed recombinant retention 60.7% vs 47.0% cross-cluster control; 62.4% vs either parent) |
 | H7: protocols can be ranked by identifiability gain | Not supported (raw spread 0.091 < 0.10; matched 6 h budget spread 0.021) |
 | H8: adaptive protocol selection improves identification | Not supported in v1 (adaptive <= random under corrected policies; v2 specified) |
 

@@ -51,42 +51,48 @@ present, evidence for a particular biological mechanism.
   simulation-based estimate, not a laboratory guarantee.
 - **External benchmark on 268 unilateral trajectories (Phase B0
   Workstream A, Kempinski et al. 2026, 0.7–5.8 W/m²):** fixing
-  `phi0 = 90` degrees to physical horizontal lamp geometry fails to beat
-  simple empirical baselines (W1 plant-held-out median RMSE 14.41
-  degrees vs 9.73 degrees intensity-group mean trajectory and 13.78
-  degrees global mean; LOIO interpolation 14.51 degrees). Because real
-  stems reach a gravitropic/proprioceptive equilibrium near ~52 degrees
-  rather than 90 degrees, `phi0` in the canonical scalar model acts as
-  an effective equilibrium angle: fitting a shared `phi_eq` (W3) lowers
-  plant-held-out median RMSE to 9.65 degrees (LOIO interpolation 9.81
-  degrees vs 9.95 degrees global-mean LOIO baseline).
+  `phi = 90` degrees to physical horizontal lamp geometry with an
+  intensity-gain wrapper (`W1`, `k(I) = a * I^b`) fails to beat simple
+  empirical baselines (plant-held-out median RMSE 14.41 degrees vs 9.73
+  degrees intensity-group mean curve `B1` and 10.92 degrees saturating
+  exponential `B2`; LOIO median RMSE 10.4–16.5 degrees across
+  intensities). Because measured stems settle into late-window plateaus
+  around 18–37 degrees (per-plant `phi_free` median 28.8 degrees) rather
+  than 90 degrees, `phi0` in the canonical scalar model functions as an
+  empirical equilibrium angle: allowing an intensity-dependent effective
+  angle (`W2` diagnostic, `phi_eff(I)`) lowers plant-held-out median
+  RMSE to 9.97 degrees.
 - **Multi-segment stem shape narrows `k` degeneracy but leaves
   `max_rate` blind (Phase B0 Workstream B):** the 5-segment coupled
   chain (`04_shape_extension_branch/sim_multiseg.py`) reduces to
-  `sim.py` exactly at `zeta = 0`. Under leakage-safe reference/query
-  splits, refining tip-matched twins using stem curvature reduces `k`
-  error by 33% (`phi0` varying) to 49% (`phi0` fixed), while `max_rate`
-  error changes by < 1%.
+  `sim.py` exactly at `zeta = 0`. Refining tip-matched twins using stem
+  curvature cuts `k` error by 46.8% under a leakage-safe reference/query
+  split (`phi0` varying; 49.2% in-population) and by 33.4–36.7% when
+  `phi0` is fixed at 60 or 90 degrees, while `max_rate` error changes by
+  at most ~1.1%.
 - **Growth-aware phototropism audit (`growth_phase/`, n = 213 paired
   seedlings with starting length `L0`):** `L0` is positively associated
-  with early 0–2 h bending rate (+2.12 deg/h per log-length unit,
-  permutation p = 0.0022; Spearman r = +0.205, p = 0.0027), whereas
-  censoring-aware stratified Cox latency analysis shows no statistically
-  significant onset-hazard effect (HR = 1.42, p = 0.068). Length-coupled
-  ODE variants (M1a `k(L0)`, M1d `tau(L0)`, M1c `phi_eq(L0)`) do not
-  improve held-out trajectory RMSE over length-blind M0 (10.25 degrees;
-  ΔRMSE within ±0.03 degrees).
+  with early 0–2 h bending rate (+2.12 deg/h per log-length unit, 95% CI
+  [0.66, 3.62], controlling log intensity and initial angle), whereas
+  censoring-aware Cox latency analysis on the 190 at-risk plants shows
+  no statistically significant onset-hazard effect (HR = 1.42 per log
+  unit, 95% CI [0.97, 2.06], p = 0.068). Length-coupled ODE variants
+  (M1a gain `k(L0)`, M1c transport lag `tau(L0)`, M1d opposing
+  `gamma(L0)`) do not improve held-out trajectory RMSE over length-blind
+  M0 (10.25 degrees; all within 1.5 per cent: M1a 10.41, M1d 10.35, M1c
+  10.29 degrees).
 
 ## Withdrawn or corrected, on the record
 
 - All pre-13-October fit values (clock-offset error in the fitter).
 - The original H4 interpretation, the H3 "falsified" verdict, the H6
   connectivity claim, and the Welch-based vector sample sizes.
-- The initial Workstream B `s_shape_sign_changes` axis-indexing claim
-  (audited and corrected in
+- The `s_shape_sign_changes` axis-indexing bug in Workstream B (which
+  sliced time rather than joints, though both definitions are
+  identically zero under static light; audited in
   `03_workstream_B_shape_extension_audit/SHAPE_EXTENSION_AUDIT.md`) and
-  the naive uncensored latency correlation in `growth_phase` (superseded
-  by censoring-aware stratified Cox analysis).
+  the original uncensored Phase C latency regression in `growth_phase`
+  (superseded by censoring-aware Cox analysis).
 
 ## Open
 

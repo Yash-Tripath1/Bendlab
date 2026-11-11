@@ -38,17 +38,21 @@ summary.
   held-out ZT9 curves (median RMSE 2.42 to 1.44 degrees).
 - On an independent external dataset of 268 unilateral phototropism
   trajectories across 10 light intensities (0.7–5.8 W/m², Kempinski et
-  al. 2026), fixing `phi0 = 90` degrees to physical lamp geometry
+  al. 2026), fixing `phi = 90` degrees to physical lamp geometry (`W1`)
   overshoots (14.41 degrees held-out median RMSE vs 9.73 degrees
-  group-mean baseline) because `phi0` in the minimal scalar model acts
-  as an effective equilibrium angle (~52 degrees); fitting a shared
-  equilibrium angle lowers held-out median RMSE to 9.65 degrees.
+  group-mean baseline `B1`) because `phi0` in the minimal scalar model
+  functions as an empirical equilibrium angle (measured plateaus 18–37
+  degrees; per-plant `phi_free` median 28.8 degrees); allowing an
+  intensity-dependent effective angle (`W2` diagnostic) lowers held-out
+  median RMSE to 9.97 degrees.
 - Observing full multi-segment stem curvature (`sim_multiseg.py`)
-  reduces `k` twin-lookup error by 33–49 per cent under leakage-safe
-  splits while leaving `max_rate` unidentifiable; pairing starting
-  hypocotyl length `L0` across 213 seedlings reveals a +2.12 deg/h per
-  log-length early-rate association (p = 0.0022) without improving
-  held-out ODE trajectory RMSE over length-blind M0 (10.25 degrees).
+  reduces `k` twin-lookup error by 46.8 per cent on a leakage-safe
+  reference/query split (33.4–36.7 per cent with `phi0` fixed) while
+  leaving `max_rate` unidentifiable; pairing starting hypocotyl length
+  `L0` across 213 seedlings shows a +2.12 deg/h per log-length
+  early-rate association (95% CI [0.66, 3.62]) without improving
+  held-out ODE trajectory RMSE over length-blind M0 (10.25 degrees; all
+  tested variants within 1.5 per cent).
 - Behavioural clusters are protocol-dependent (adjusted Rand index
   0.442 < 0.50 between static and moving light), and adaptive protocol
   selection did not outperform random selection under the corrected v1
@@ -114,7 +118,7 @@ result.
 | `03_workstream_B_shape_extension_audit/` | Phase B0 Workstream B: audit and corrected twin-refinement evaluation of the multi-segment stem-shape extension (`SHAPE_EXTENSION_AUDIT.md`) |
 | `04_shape_extension_branch/` | Preserved 5-segment elastic-coupling extension (`sim_multiseg.py`, `check_multiseg.py`) |
 | `05_data_external/` | Packaged external unilateral-phototropism trajectory dataset (`uni_trajectories.csv`, Kempinski et al. 2026) |
-| `growth_phase/` | Growth-aware phototropism Phases A–C: hypocotyl-length (`L0`) pairing, censoring-aware Cox latency analysis, and length-coupled ODE gates (`PHASE_BC_RESULTS.md`, `SHA256SUMS.txt`) |
+| `growth_phase/` | Growth-aware phototropism Phases A–C: hypocotyl-length (`L0`) pairing, censoring-aware Cox latency reanalysis, and length-coupled ODE gates (`PHASE_BC_RESULTS.md`, `SHA256SUMS.txt`) |
 | `tests/` | Unified `pytest` regression suite covering the model contract, v2/multiseg reductions, data integrity, JSON validity, site build sync, and JS–Python simulator parity |
 | `docs/EXPLAINER.md` | Project overview |
 | `docs/EXPLAINER_PART2.md` | Overview of the simulation experiments, validation and corrections |

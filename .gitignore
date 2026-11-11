@@ -6,3 +6,12 @@ __pycache__/
 .pytest_cache/
 .ruff_cache/
 .mypy_cache/
+
+# Large per-plant generated tables omitted from Git tracking
+results/vector_stimulus_population.csv
+results/vector_atlas_twins.csv
+results/big_sweep_features.csv.gz
+results/big_sweep_static_features.csv
+results/big_sweep_static_trajectories.npz
+results/mega_sweep_nearest_neighbour.csv
+results/mega_sweep_twins.csv
