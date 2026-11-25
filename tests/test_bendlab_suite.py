@@ -201,7 +201,7 @@ def test_site_build_sync_and_ui_guards():
             )
 
     sim_html = (ROOT / "bendlab_visual_simulator.html").read_text(encoding="utf-8")
-    assert "response gain Â· Â°/h" in sim_html
+    assert "response gain · °/h" in sim_html
 
 
 @pytest.mark.skipif(shutil.which("node") is None, reason="node not installed")
