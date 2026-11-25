@@ -88,7 +88,11 @@ The all-data W3 fit used the same subsampling and integration protocol as the he
 | `gamma(1 W/m²) = exp(c0)` | 0.649 | [0.563, 0.747] | inverse hours |
 | `c1` | -0.484 | [-0.572, -0.396] | exponent of intensity in gamma(I) |
 
-The `c1` interval excludes zero. Its negative sign corresponds to decreasing restoring coefficient as intensity rises. The fitted model-implied fixed point therefore increases with intensity, from 16.25 degrees at 0.7 W/m² to 37.41 degrees at 5.8 W/m². The intermediate values and implied `gamma(I)` are recorded in `phase_e_w3_summary.json`. This is a model property, not a measured biological equilibrium.
+The `c1` interval excludes zero. The negative `c1` means the fitted restoring coefficient decreases as intensity increases, which raises the model-implied fixed point from 16.25 degrees at 0.7 W/m² to 37.41 degrees at 5.8 W/m². These are model-implied values, not a measured biological equilibrium.
+
+The measured late-window angle in the same archive also rises with intensity. The supporting analysis script reproduces the previously measured partial Spearman rho of +0.498, with a two-sided t-approximation p value of 1.44e-14 on 213 length-paired plants, controlling for `theta(0)`, interval-average elongation, and starting length. This is contextual evidence from the archive, not a new result from the W3 fit. Using the specified 16-21 hour angle mean, the exact group medians in all 268 plants range from 18.56 degrees at 0.7 W/m² to 33.60 degrees at 5.8 W/m², with non-monotonic interior groups. These endpoints differ from the earlier approximate summary of about 22 to 30 degrees; the computed values and procedure are reported in `PHASE_E_SUPPORTING_ANALYSIS.md` and `phase_e_supporting_associations.json`.
+
+The directional part of the preregistered proposal was therefore supported in sign, while the predictive criterion was not met. A correctly signed trend without predictive gain is the finding.
 
 ## Leave-one-intensity-group-out results
 

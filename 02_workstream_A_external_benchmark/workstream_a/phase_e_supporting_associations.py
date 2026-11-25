@@ -13,7 +13,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from scipy.stats import rankdata
+from scipy.stats import rankdata, t as student_t
 
 HERE = Path(__file__).resolve().parent
 PKG_ROOT = HERE.parents[1]
@@ -96,6 +96,22 @@ def partial_spearman(data, predictor, outcome, controls):
     return float(np.corrcoef(resid_x, resid_y)[0, 1])
 
 
+def partial_spearman_with_p(data, predictor, outcome, controls):
+    """Return partial Spearman rho and its residual-correlation t approximation."""
+    rho = partial_spearman(data, predictor, outcome, controls)
+    degrees_freedom = len(data) - len(controls) - 2
+    statistic = rho * np.sqrt(degrees_freedom / (1.0 - rho ** 2))
+    p_value = 2.0 * student_t.sf(abs(statistic), df=degrees_freedom)
+    return {
+        "estimate": rho,
+        "p_value_two_sided_t_approximation": float(p_value),
+        "t_statistic": float(statistic),
+        "degrees_freedom": int(degrees_freedom),
+        "controls": controls,
+        "method": "partial Spearman via ranked-variable OLS residualization; t approximation",
+    }
+
+
 def bootstrap_partial_spearman(data, predictor, outcome, controls, rng):
     estimate = partial_spearman(data, predictor, outcome, controls)
     draws = np.empty(N_BOOT, dtype=float)
@@ -139,6 +155,17 @@ def main():
             rng,
         ),
     }
+    intensity_trend = partial_spearman_with_p(
+        paired,
+        "log_intensity",
+        outcome,
+        ["theta0_deg", "elongation_rate_mm_h", "log_L0"],
+    )
+    plateau_by_intensity = (
+        outcomes.groupby("intensity_w_m2", sort=True)["plateau_16_21_deg"]
+        .agg(n_plants="size", median_plateau_deg="median")
+        .reset_index()
+    )
     runtime = time.perf_counter() - started
     result = {
         "analysis": "Phase E supporting partial-Spearman associations",
@@ -157,6 +184,19 @@ def main():
         "seed": SEED,
         "runtime_seconds": float(runtime),
         "results": results,
+        "previously_measured_intensity_trend": {
+            **intensity_trend,
+            "status": (
+                "recomputed from the archive as a consistency check; not a new "
+                "result from the W3 model fit"
+            ),
+        },
+        "plateau_median_by_intensity_all_plants": [
+            {"intensity_w_m2": float(row["intensity_w_m2"]),
+             "n_plants": int(row["n_plants"]),
+             "median_plateau_deg": float(row["median_plateau_deg"])}
+            for row in plateau_by_intensity.to_dict("records")
+        ],
         "limitations": [
             "length_est_data provides one net elongation over the full measurement interval, not a time-resolved growth rate",
             "the paired analysis is limited to plants with a length record",
