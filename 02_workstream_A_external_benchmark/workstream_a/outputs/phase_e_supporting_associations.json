@@ -1,0 +1,121 @@
+{
+  "analysis": "Phase E supporting partial-Spearman associations",
+  "trajectory_file": "growth_phase/data/00_Data/uni_trajectories.csv",
+  "length_file": "growth_phase/data/07_Supplementary/length_est_data.csv",
+  "trajectory_plants": 268,
+  "trajectory_rows": 88504,
+  "length_rows_raw": 246,
+  "length_unique_ids": 245,
+  "matched_plants": 213,
+  "exact_duplicate_length_ids_removed": [
+    "11_11_L_5"
+  ],
+  "intensity_conversion_verified": true,
+  "outcome_definition": "mean theta from 16 through 21 hours inclusive, degrees",
+  "elongation_definition": "(length_finish - length_start) / length dt, mm per hour",
+  "starting_length_definition": "length_start, mm",
+  "seed": 7,
+  "runtime_seconds": 2.5027978959999473,
+  "results": {
+    "elongation_rate_vs_plateau": {
+      "estimate": 0.6025934547569243,
+      "ci95_percentile": [
+        0.5209530541596189,
+        0.6721033374009475
+      ],
+      "bootstrap_replicates": 1000,
+      "bootstrap_valid_replicates": 1000,
+      "controls": [
+        "theta0_deg",
+        "log_intensity",
+        "log_L0"
+      ],
+      "method": "partial Spearman via ranked-variable OLS residualization"
+    },
+    "starting_length_vs_plateau": {
+      "estimate": -0.002394031815718751,
+      "ci95_percentile": [
+        -0.1362343398288498,
+        0.12530179301866248
+      ],
+      "bootstrap_replicates": 1000,
+      "bootstrap_valid_replicates": 1000,
+      "controls": [
+        "theta0_deg",
+        "log_intensity",
+        "elongation_rate_mm_h"
+      ],
+      "method": "partial Spearman via ranked-variable OLS residualization"
+    }
+  },
+  "previously_measured_intensity_trend": {
+    "estimate": 0.4981229009712185,
+    "p_value_two_sided_t_approximation": 1.438977535650211e-14,
+    "t_statistic": 8.285062047204988,
+    "degrees_freedom": 208,
+    "controls": [
+      "theta0_deg",
+      "elongation_rate_mm_h",
+      "log_L0"
+    ],
+    "method": "partial Spearman via ranked-variable OLS residualization; t approximation",
+    "status": "recomputed from the archive as a consistency check; not a new result from the W3 model fit"
+  },
+  "plateau_median_by_intensity_all_plants": [
+    {
+      "intensity_w_m2": 0.7,
+      "n_plants": 29,
+      "median_plateau_deg": 18.557894736842105
+    },
+    {
+      "intensity_w_m2": 1.1,
+      "n_plants": 32,
+      "median_plateau_deg": 22.405263157894733
+    },
+    {
+      "intensity_w_m2": 1.4,
+      "n_plants": 28,
+      "median_plateau_deg": 23.84671052631579
+    },
+    {
+      "intensity_w_m2": 1.9,
+      "n_plants": 33,
+      "median_plateau_deg": 24.22236842105263
+    },
+    {
+      "intensity_w_m2": 2.25,
+      "n_plants": 15,
+      "median_plateau_deg": 22.844736842105263
+    },
+    {
+      "intensity_w_m2": 3.0,
+      "n_plants": 33,
+      "median_plateau_deg": 27.722368421052632
+    },
+    {
+      "intensity_w_m2": 3.2,
+      "n_plants": 22,
+      "median_plateau_deg": 28.057236842105265
+    },
+    {
+      "intensity_w_m2": 3.85,
+      "n_plants": 20,
+      "median_plateau_deg": 24.773026315789473
+    },
+    {
+      "intensity_w_m2": 4.4,
+      "n_plants": 25,
+      "median_plateau_deg": 34.544736842105266
+    },
+    {
+      "intensity_w_m2": 5.8,
+      "n_plants": 31,
+      "median_plateau_deg": 33.603947368421046
+    }
+  ],
+  "limitations": [
+    "length_est_data provides one net elongation over the full measurement interval, not a time-resolved growth rate",
+    "the paired analysis is limited to plants with a length record",
+    "associations are conditional and do not establish causation or mechanism"
+  ]
+}

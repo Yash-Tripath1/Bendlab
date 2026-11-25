@@ -155,7 +155,7 @@ def test_s13_checksum_and_sheet_separation():
 def test_growth_phase_sha256_manifest():
     manifest = ROOT / "growth_phase" / "SHA256SUMS.txt"
     lines = [ln.strip() for ln in manifest.read_text().splitlines() if ln.strip()]
-    assert len(lines) == 57
+    assert len(lines) == 58
     for ln in lines:
         expected, rel = ln.split(None, 1)
         target = ROOT / "growth_phase" / rel.strip()
@@ -201,7 +201,7 @@ def test_site_build_sync_and_ui_guards():
             )
 
     sim_html = (ROOT / "bendlab_visual_simulator.html").read_text(encoding="utf-8")
-    assert "response gain Â· Â°/h" in sim_html
+    assert "response gain · °/h" in sim_html
 
 
 @pytest.mark.skipif(shutil.which("node") is None, reason="node not installed")
