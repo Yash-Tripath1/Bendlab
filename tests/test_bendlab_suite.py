@@ -155,7 +155,7 @@ def test_s13_checksum_and_sheet_separation():
 def test_growth_phase_sha256_manifest():
     manifest = ROOT / "growth_phase" / "SHA256SUMS.txt"
     lines = [ln.strip() for ln in manifest.read_text().splitlines() if ln.strip()]
-    assert len(lines) == 57
+    assert len(lines) == 58
     for ln in lines:
         expected, rel = ln.split(None, 1)
         target = ROOT / "growth_phase" / rel.strip()
