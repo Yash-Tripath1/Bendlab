@@ -58,7 +58,22 @@ Per-intensity-group median held-out RMSE, in degrees:
 
 ### Decision against the fixed criterion
 
-W3's primary median RMSE was 9.9968 degrees, above the fixed 9.73-degree threshold and 0.27 degrees above it. The criterion was not met. This is a negative predictive result under the preregistered rule. No parameters or threshold were retuned after evaluation. Although W3 improves substantially over W1, it does not beat B1 and is slightly worse than W2 in the primary comparison.
+W3's primary median RMSE was 9.9968 degrees, above the fixed 9.73-degree threshold and 0.27 degrees above it. The criterion was not met. This is a negative result under the preregistered absolute threshold. It is not evidence that W3 has higher held-out error than B1. No parameters or threshold were retuned after evaluation.
+
+### Magnitude of the gap to the baseline
+
+The threshold verdict stands unchanged: W3 is above 9.73 degrees, so the preregistered primary result is negative.
+
+The paired analysis of the 268 held-out plants does not distinguish the W3 minus B1 difference from zero. Positive differences indicate higher RMSE for the first model.
+
+| Paired difference | Median (degrees) | Mean (degrees) | First model worse | Wilcoxon statistic | Two-sided p | Bootstrap 95% interval for median difference (degrees) |
+|---|---:|---:|---:|---:|---:|---:|
+| W3 minus B1 | +0.0509 | -0.0419 | 141/268 (52.6%) | 17893 | 0.9185 | [-0.1954, +0.2798] |
+| W2 minus B1 | -0.1766 | -0.1563 | 127/268 (47.4%) | 16211 | 0.1537 | [-0.4688, +0.1402] |
+
+Differences and two-sided Wilcoxon signed-rank tests were calculated from a plant-by-model pivot of `phase_e_w3_heldout_per_plant.csv`. Each percentile interval uses 2,000 plant-level resamples of the paired differences with NumPy `default_rng` seed 0. The W3 minus B1 interval computed by this committed procedure, [-0.1954, +0.2798], differs from the review's approximate interval of [-0.171, +0.265]; the values above are the recomputed results. The paired test is not a formal TOST equivalence test with a prespecified margin.
+
+Accordingly, the paired held-out errors are described as reaching parity with the nonparametric B1 group-mean baseline, rather than as showing W3 to be beaten by B1. W3 nevertheless substantially improves on W1, the earlier candidate that placed intensity in response gain: the paired median change W3 minus W1 is -4.5256 degrees, and W3 has lower RMSE for 216/268 plants (80.6%). Parity with a mean curve is not evidence of a mechanism.
 
 ## Global W3 parameters
 

@@ -1402,5 +1402,75 @@
     ]
   },
   "runtime_seconds": 224.184528425,
-  "runtime_minutes": 3.7364088070833334
+  "runtime_minutes": 3.7364088070833334,
+  "paired_equivalence": {
+    "source_csv": "02_workstream_A_external_benchmark/workstream_a/outputs/phase_e_w3_heldout_per_plant.csv",
+    "n_plants": 268,
+    "paired_rmse_differences": {
+      "W3_minus_B1": {
+        "left_model": "W3_gammaI_phiLight90",
+        "right_model": "B1_group_mean_curve",
+        "difference_definition": "W3_gammaI_phiLight90 rmse_deg minus B1_group_mean_curve rmse_deg",
+        "n_plants": 268,
+        "median_difference_deg": 0.050865698852832875,
+        "mean_difference_deg": -0.041875488132392044,
+        "left_model_worse_n": 141,
+        "left_model_worse_percent": 52.61194029850746,
+        "left_model_improves_n": 127,
+        "left_model_improves_percent": 47.38805970149254,
+        "wilcoxon_statistic": 17893.0,
+        "wilcoxon_p_two_sided": 0.918473174065584,
+        "bootstrap_median_difference_ci95_deg": [
+          -0.1954204236316217,
+          0.2798346338861507
+        ],
+        "bootstrap_resamples": 2000,
+        "bootstrap_seed": 0,
+        "wilcoxon_method": "two-sided signed-rank, zero_method=wilcox, method=auto"
+      },
+      "W2_minus_B1": {
+        "left_model": "W2_bendlab_kI_phiI_diagnostic",
+        "right_model": "B1_group_mean_curve",
+        "difference_definition": "W2_bendlab_kI_phiI_diagnostic rmse_deg minus B1_group_mean_curve rmse_deg",
+        "n_plants": 268,
+        "median_difference_deg": -0.1766108318385089,
+        "mean_difference_deg": -0.15626646073236933,
+        "left_model_worse_n": 127,
+        "left_model_worse_percent": 47.38805970149254,
+        "left_model_improves_n": 141,
+        "left_model_improves_percent": 52.61194029850746,
+        "wilcoxon_statistic": 16211.0,
+        "wilcoxon_p_two_sided": 0.1536659374940982,
+        "bootstrap_median_difference_ci95_deg": [
+          -0.46878728829077665,
+          0.14015015075246495
+        ],
+        "bootstrap_resamples": 2000,
+        "bootstrap_seed": 0,
+        "wilcoxon_method": "two-sided signed-rank, zero_method=wilcox, method=auto"
+      },
+      "W3_minus_W1": {
+        "left_model": "W3_gammaI_phiLight90",
+        "right_model": "W1_bendlab_kI_phi90",
+        "difference_definition": "W3_gammaI_phiLight90 rmse_deg minus W1_bendlab_kI_phi90 rmse_deg",
+        "n_plants": 268,
+        "median_difference_deg": -4.525576113830246,
+        "mean_difference_deg": -4.2586960584293365,
+        "left_model_worse_n": 52,
+        "left_model_worse_percent": 19.402985074626866,
+        "left_model_improves_n": 216,
+        "left_model_improves_percent": 80.59701492537313,
+        "wilcoxon_statistic": 4465.0,
+        "wilcoxon_p_two_sided": 1.3316279637843445e-26,
+        "bootstrap_median_difference_ci95_deg": [
+          -5.342683804378455,
+          -3.9037228539639455
+        ],
+        "bootstrap_resamples": 2000,
+        "bootstrap_seed": 0,
+        "wilcoxon_method": "two-sided signed-rank, zero_method=wilcox, method=auto"
+      }
+    },
+    "interpretation": "Positive differences indicate higher RMSE for the left model. Improvement percentages count negative paired differences."
+  }
 }
