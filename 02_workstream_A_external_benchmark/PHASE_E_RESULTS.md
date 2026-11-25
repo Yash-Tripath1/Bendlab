@@ -83,7 +83,7 @@ The all-data W3 fit used the same subsampling and integration protocol as the he
 |---|---:|---:|---|
 | `k` | 13.044 | [11.859, 14.347] | degrees per hour, shared gain |
 | `tau` | 2.620 | [2.307, 2.976] | hours |
-| `max_rate` | 9.121 | [5.815, 14.307] | degrees per hour |
+| `max_rate` | 9.121 | [5.815, 14.307] | effective fitted rate limit, not physiological |
 | `c0` | -0.433 | [-0.574, -0.292] | log gamma at 1 W/m² |
 | `gamma(1 W/m²) = exp(c0)` | 0.649 | [0.563, 0.747] | inverse hours |
 | `c1` | -0.484 | [-0.572, -0.396] | exponent of intensity in gamma(I) |
@@ -93,6 +93,14 @@ The `c1` interval excludes zero. The negative `c1` means the fitted restoring co
 The measured late-window angle in the same archive also rises with intensity. The supporting analysis script reproduces the previously measured partial Spearman rho of +0.498, with a two-sided t-approximation p value of 1.44e-14 on 213 length-paired plants, controlling for `theta(0)`, interval-average elongation, and starting length. This is contextual evidence from the archive, not a new result from the W3 fit. Using the specified 16-21 hour angle mean, the exact group medians in all 268 plants range from 18.56 degrees at 0.7 W/m² to 33.60 degrees at 5.8 W/m², with non-monotonic interior groups. These endpoints differ from the earlier approximate summary of about 22 to 30 degrees; the computed values and procedure are reported in `PHASE_E_SUPPORTING_ANALYSIS.md` and `phase_e_supporting_associations.json`.
 
 The directional part of the preregistered proposal was therefore supported in sign, while the predictive criterion was not met. A correctly signed trend without predictive gain is the finding.
+
+### Status of the fitted rate limit
+
+For each of the 268 plants, `phase_e_peak_rate_check.py` applies a centred five-observation rolling mean, approximately 20 minutes at the archive cadence, then uses `numpy.gradient` with the observed times in hours. The per-plant peak is the maximum absolute derivative magnitude. The median peak rate is 19.18 degrees per hour, the 90th percentile is 35.32 degrees per hour, and the maximum is 66.57 degrees per hour. For 266 of 268 plants, the smoothed observed peak exceeds the all-data fitted `max_rate` of 9.121 degrees per hour.
+
+Under this stated procedure, the observed median is about 1.8 degrees per hour below the review's approximate value of 21. The 90th percentile and maximum are 35.32 and 66.57 degrees per hour, compared with the review's approximate values of 36 and 70. The values above are the direct recomputation from the committed script and JSON output; no fit was run for this check.
+
+The fitted `max_rate` sits below the median observed peak rate. It therefore acts as a smoothing or effective rate in this fit, not as a measured physiological limit. This is consistent with the existing Phase B0 finding that `max_rate` was inactive and unidentified from the tip-angle trajectories (`PHASE_B0_REPORT.md`, Section 2). The fitted value `max_rate = 9.121 degrees per hour` must not be quoted as a biological maximum bending rate. A pinned-cap sensitivity fit is a reasonable follow-up, but it was not run for this reporting correction.
 
 ## Leave-one-intensity-group-out results
 
