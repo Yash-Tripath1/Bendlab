@@ -1,13 +1,13 @@
-# BendLab — Actual Code Changes & Simulation Results
+# BendLab: Actual Code Changes and Simulation Results
 **Date:** 15 Oct 2026 | **Checkout:** `Yash-Tripath1/Bendlab` main (13 Oct clock-fix) | **Runner:** Umaid
 
-> All commands were run from fresh clone `/tmp/Bendlab_check` with `PYTHONPATH=/tmp/Bendlab_check`. Original repo untouched — new files in `/home/user/`.
+> All commands were run from a fresh clone. In this historical note, `$CLONE_ROOT` denotes the clone and `$EXPERIMENT_DIR` denotes the separate working directory that held external scripts and plots. The original repository was left untouched; new files were kept outside it.
 
 ---
 
-## 1. File Created: `sim_gamma.py` — Proprioception (Bastien 2012)
+## 1. File Created: `sim_gamma.py` - Proprioception (Bastien 2012)
 
-**Location:** `/home/user/sim_gamma.py` (drop-in for `sim.py`)
+**Location:** `$EXPERIMENT_DIR/sim_gamma.py` (drop-in for `sim.py`)
 
 **Diff vs GitHub `sim.py:24` (1 line):**
 ```python
@@ -28,10 +28,10 @@ def batch_simulate(..., gamma=0.0)  # broadcasts scalar to array
 
 **Command:**
 ```bash
-cp /home/user/sim_gamma.py /tmp/Bendlab_check/sim.py  # to test
+cp "$EXPERIMENT_DIR/sim_gamma.py" "$CLONE_ROOT/sim.py"  # to test
 ```
 
-**Simulation:** `PYTHONPATH=/tmp/Bendlab_check python3 /home/user/test_gamma_ZT9.py`
+**Simulation:** `(cd "$CLONE_ROOT" && PYTHONPATH="$CLONE_ROOT" python3 "$EXPERIMENT_DIR/test_gamma_ZT9.py")`
 - Fits ZT9-1 with `gamma` fixed at 0.0,0.5,1.0,1.5,2.0 and free (least_squares, bounds LO=[0.001,0.05,0.5,0,0] HI=[50,48,200,130,5])
 
 **Result ZT9-1 (fastest riser, 9.9deg in 1h):**
@@ -45,7 +45,7 @@ cp /home/user/sim_gamma.py /tmp/Bendlab_check/sim.py  # to test
 
 > **Verdict:** Optimizer chose `gamma=0.00`. Improvement **0.0%**, `tau` still at wall. Proves dip not fixed by simple `gamma*theta`.
 
-**Plot:** `/home/user/test_gamma_ZT9.png` — black line through middle, blue `gamma=1.0` flatlines at 39deg.
+**Plot:** `test_gamma_ZT9.png` (saved outside the repository) - black line through middle, blue `gamma=1.0` flatlines at 39deg.
 
 ---
 
@@ -53,9 +53,9 @@ cp /home/user/sim_gamma.py /tmp/Bendlab_check/sim.py  # to test
 
 **Command:**
 ```bash
-cat > /tmp/run_zt9_sim.py  # loops ZT9-1..6
+cat > "$EXPERIMENT_DIR/run_zt9_sim.py"  # loops ZT9-1..6
 # for each plant: t_e = t - t[0]; yc = run_model(k,tau,max_rate,phi0,t_e)
-PYTHONPATH=/tmp/Bendlab_check python3 /tmp/run_zt9_sim.py
+(cd "$CLONE_ROOT" && PYTHONPATH="$CLONE_ROOT" python3 "$EXPERIMENT_DIR/run_zt9_sim.py")
 ```
 
 **Input:** `results/fit_fig1c.csv` (13 Oct corrected, 44/48 clean)
@@ -71,16 +71,16 @@ PYTHONPATH=/tmp/Bendlab_check python3 /tmp/run_zt9_sim.py
 | ZT9-6 | 4.68 | 3.08 | 75.53 | 61.33 | 1.38 | [] |
 | **Median** |  |  |  |  | **2.42** | 4/6 at wall |
 
-**Plot:** `/home/user/zt9_all_simulation.png` — top row dips huge (ZT9-1 30->23deg at 9-11h), bottom row 2 clean fits sit on dots.
+**Plot:** `zt9_all_simulation.png` (saved outside the repository) - top row dips huge (ZT9-1 30->23deg at 9-11h), bottom row 2 clean fits sit on dots.
 
 **Check:** Segment residuals match official `zt9_diagnostics.py` exactly:
 `ZT9-1 1-4h +10.93, 4-8h +11.49, 8-16h -4.34` vs `ZT9-5 4-8h +0.74`.
 
 ---
 
-## 3. File Created: Clock `k(t)` — Circadian Gating (Atamian 2016)
+## 3. File Created: Clock `k(t)` - Circadian Gating (Atamian 2016)
 
-**Location:** `/tmp/test_clock_ZT9.py:14` (not yet merged to `sim_gamma.py`)
+**Location:** `$EXPERIMENT_DIR/test_clock_ZT9.py:14` (not yet merged to `sim_gamma.py`)
 
 ```python
 def run_model_clock(k0, tau, max_rate, phi0, a, phase, ZT_start, t_eval):
@@ -97,7 +97,7 @@ def run_model_clock(k0, tau, max_rate, phi0, a, phase, ZT_start, t_eval):
 
 **Command:**
 ```bash
-PYTHONPATH=/tmp/Bendlab_check python3 /tmp/test_clock_ZT9.py
+(cd "$CLONE_ROOT" && PYTHONPATH="$CLONE_ROOT" python3 "$EXPERIMENT_DIR/test_clock_ZT9.py")
 # differential_evolution 60iter pop15 (seed1) + least_squares polish
 ```
 
@@ -118,9 +118,9 @@ POLISHED same  RMSE 3.204  Improvement 52.6%  tau LIFTED 0.05->0.10
 | ZT9-5 | 1.20 | **0.84** | 30.1% |
 | ZT9-6 | 1.38 | **1.20** | 13.6% |
 
-**Plot:** `/home/user/zt9_clock_ZT9-1.png` — red clock line follows dip, blue dashed `k(t)` high 9 at 0h, low 0.3 at 10h dip, high 9 at 23h.
+**Plot:** `zt9_clock_ZT9-1.png` (saved outside the repository) - red clock line follows dip, blue dashed `k(t)` high 9 at 0h, low 0.3 at 10h dip, high 9 at 23h.
 
-> Clock `a=0.90` = 90% swing (0.5 to 9) — matches Atamian Fig3B morning 50deg vs night 15deg.
+> Clock `a=0.90` = 90% swing (0.5 to 9) - matches Atamian Fig3B morning 50deg vs night 15deg.
 
 ---
 
@@ -128,15 +128,15 @@ POLISHED same  RMSE 3.204  Improvement 52.6%  tau LIFTED 0.05->0.10
 
 **Commands:**
 ```bash
-cd /tmp/Bendlab_check && python3 zt9_diagnostics.py
-cd /tmp/Bendlab_check && timeout 90 python3 vector_stimulus.py
-cd /tmp/Bendlab_check && timeout 100 python3 vector_grand_atlas.py
+(cd "$CLONE_ROOT" && python3 zt9_diagnostics.py)
+(cd "$CLONE_ROOT" && timeout 90 python3 vector_stimulus.py)
+(cd "$CLONE_ROOT" && timeout 100 python3 vector_grand_atlas.py)
 ```
 
 **`zt9_diagnostics.py` (210 lines, 1s):**
 - Segment residuals: `ZT9-1 1-4h +10.93, 4-8h +11.49` (matches our run)
-- Tau floor sensitivity: `0.05 -> 2.420, 0.01 ->2.401, 0.001 ->2.400` median RMSE — only **0.8%** improvement (official: wall is symptom)
-- Stall: 42/48 plants stall, elapsed IQR 3.31h vs circadian IQR 7.31h — inconclusive
+- Tau floor sensitivity: `0.05 -> 2.420, 0.01 ->2.401, 0.001 ->2.400` median RMSE - only **0.8%** improvement (official: wall is symptom)
+- Stall: 42/48 plants stall, elapsed IQR 3.31h vs circadian IQR 7.31h - inconclusive
 
 **`vector_stimulus.py` (476 lines, 4.3s, 20k plants):**
 - Validation `max_abs_diff vs sim.py = 0.000 deg`
@@ -146,7 +146,7 @@ cd /tmp/Bendlab_check && timeout 100 python3 vector_grand_atlas.py
 - Moving sun + diffuse vs sun-only diff median `-9 to -16 deg`, `max 60-83 deg`
 
 **`vector_grand_atlas.py` (303 lines, 145.7s, 100k plants):**
-- Sensitivity sweep `alpha 0.15/0.30/0.50 x T 0/0.10/0.25 x diffuse 0-0.30` — diffuse drives effect
+- Sensitivity sweep `alpha 0.15/0.30/0.50 x T 0/0.10/0.25 x diffuse 0-0.30` - diffuse drives effect
 - Cluster ARI vs sun-only: `physical 0.678, transduced 0.679, circumference 0.713`
 - Twin median RMSE `circumference 0.011deg` vs `sun-only 0.035deg`
 
@@ -154,7 +154,7 @@ cd /tmp/Bendlab_check && timeout 100 python3 vector_grand_atlas.py
 - `results/figures/zt9_diagnostic_dashboard.png` (344K)
 - `results/figures/vector_stimulus_dashboard.png` (361K)
 - `results/figures/vector_atlas_dashboard.png` (286K)
-- Copied to `/home/user/` for viewing
+- Copied outside the repository for viewing
 
 ---
 
@@ -162,11 +162,11 @@ cd /tmp/Bendlab_check && timeout 100 python3 vector_grand_atlas.py
 
 | Change | Code Location | Benefit | Result |
 |---|---|---|---|
-| `gamma` proprioception | `sim_gamma.py:24` `- gamma*theta` | Stiffens valley walls, stops wobble, defines `B` | **Did NOT fix ZT9 dip** (0% gain) — honest negative |
-| All-ZT9 sim | `/tmp/run_zt9_sim.py` `t_e = t-t0` | Shows 2/6 clean, 4/6 wall but only ZT9-1 truly bad | Verified correct handling vs official |
+| `gamma` proprioception | `sim_gamma.py:24` `- gamma*theta` | Stiffens valley walls, stops wobble, defines `B` | **Did NOT fix ZT9 dip** (0% gain) - honest negative |
+| All-ZT9 sim | `$EXPERIMENT_DIR/run_zt9_sim.py` `t_e = t-t0` | Shows 2/6 clean, 4/6 wall but only ZT9-1 truly bad | Verified correct handling vs official |
 | Clock `k(t)` | `run_model_clock` `k_eff = k0*(1+a*cos)` | Explains rise-stall-fall-rise, lifts tau | **52-70% RMSE cut on ZT9**, all 6 improve |
 | Official vector work | `vector_*.py` `alpha=0.30 T=0.10` | 30deg two-torch illusion, H7 successor | Already validated 0.000 deg, ready for H7 |
 
-All outputs packed in `/home/user/BendLab_Important_Files.zip` (48 files, 2.8MB).
+All outputs packed in `BendLab_Important_Files.zip` (48 files, 2.8MB); the archive was stored outside the repository.
 
 **Next step suggested:** Merge `k(t)` into `sim_gamma.py` as `sim_clock_gamma.py` with 6 dials `k0,tau,max_rate,phi0,gamma,a,phase` for full 48-plant fit.

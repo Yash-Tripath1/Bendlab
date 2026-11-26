@@ -4,7 +4,7 @@ Status: **candidates under evaluation; not adopted.** The reference model
 remains `sim.py`. Both candidates reduce to the reference model exactly at
 their default settings.
 
-## Candidate A — proprioceptive term (`sim_gamma.py`)
+## Candidate A - proprioceptive term (`sim_gamma.py`)
 
 ```
 tau * dr/dt = k * sin(phi - theta) - gamma * theta - r
@@ -14,7 +14,7 @@ Following Bastien et al. (2012), reduced to a single tip angle.
 Evaluation on ZT9-1 (`gamma_zt9_test.py`): no improvement; the optimiser
 returns gamma to ~0. See `docs/CHANGES_2026-10-15.md`, Section 1.
 
-## Candidate B — circadian gating (`sim_clock_gamma.py`)
+## Candidate B - circadian gating (`sim_clock_gamma.py`)
 
 ```
 k_eff(t) = k0 * (1 + a * cos(2 * pi * (ZT - phase) / 24))

@@ -1,4 +1,4 @@
-# BendLab — problem statement
+# BendLab - problem statement
 
 ## Parameter identifiability in a minimal model of phototropic stem bending
 
@@ -122,7 +122,7 @@ weighted population is derived from the clean fits reported in
 
 ## 4. Hypotheses and falsification criteria
 
-### H1 — Behavioural degeneracy
+### H1 - Behavioural degeneracy
 
 After clustering simulated trajectories obtained under static light,
 within-cluster parameter ranges will retain at least 20 per cent of the
@@ -131,7 +131,7 @@ full population range for at least three of the four parameters.
 **Falsification:** retention below 20 per cent for at least three
 parameters.
 
-### H2 — Information from a change in light direction
+### H2 - Information from a change in light direction
 
 A 45-degree change in light direction during the observation period will
 reduce within-cluster parameter spread by at least 10 percentage points
@@ -140,7 +140,7 @@ relative to static light.
 **Falsification:** no parameter shows a reduction of at least 10
 percentage points, or reductions are inconsistent in direction.
 
-### H3 — Discontinuities in the parameter-to-behaviour mapping
+### H3 - Discontinuities in the parameter-to-behaviour mapping
 
 The mapping from parameters to behavioural features contains regions in
 which a small parameter change produces a qualitatively different
@@ -150,7 +150,7 @@ trajectory.
 whose behavioural distance exceeds five times the median adjacent-pair
 distance.
 
-### H4 — Protocol dependence of behavioural classes
+### H4 - Protocol dependence of behavioural classes
 
 Behavioural clusters obtained under a moving-light regime will differ
 materially from those obtained under static light.
@@ -159,7 +159,7 @@ materially from those obtained under static light.
 and moving-light cluster assignments is interpreted as failure of cluster
 persistence.
 
-### H5 — Adequacy for measured sunflower trajectories
+### H5 - Adequacy for measured sunflower trajectories
 
 When fitted independently to each measured sunflower trajectory, the
 model will produce a median RMSE below the across-plant standard
@@ -169,7 +169,7 @@ deviation in at least five of the six stimulus-start-time groups.
 than half of the individual fits require a parameter at an optimisation
 bound.
 
-### H6 — Connectivity of the degenerate parameter set
+### H6 - Connectivity of the degenerate parameter set
 
 Parameter vectors obtained by recombining pairs of behaviourally
 equivalent simulated plants will remain in the source behavioural class
@@ -178,7 +178,7 @@ more frequently than recombinants of behaviourally distinct pairs.
 **Falsification:** the class-retention rate for equivalent source pairs
 does not exceed that for the control pairs.
 
-### H7 — Differences among light protocols
+### H7 - Differences among light protocols
 
 Light protocols differ in the parameter information they provide, as
 measured by nearest-neighbour parameter-recovery error under noisy
@@ -187,7 +187,7 @@ observations.
 **Criterion:** H7 is supported if the difference between the best and
 worst protocols is at least 0.10 in mean relative recovery error.
 
-### H8 — Adaptive protocol selection
+### H8 - Adaptive protocol selection
 
 A policy that selects the next light protocol adaptively will identify
 more plants than random or fixed protocol selection when identification

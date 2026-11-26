@@ -46,10 +46,11 @@ item 6). A short documentation-corrections commit follows this one.
   Added the 90 deg case (k +36.7%, tau +5.2%, max_rate −0.3%);
   k/tau/max_rate reporting separated from phi0 throughout.
 - `02_workstream_A_external_benchmark/TEST_LOG.md` (new), this file.
-- `PACKAGE_README.md`: build date corrected to 2026-10-23; provenance
-  now distinguishes the b09ea5a analysis snapshot from current main;
-  data tracking corrected (full Zenodo ZIP untracked; the 2.1 MB
-  extracted CSV is tracked for reproducibility).
+- `docs/archive/PACKAGE_README_2026-10-23.md` (originally the root
+  `PACKAGE_README.md`): build date corrected to 2026-10-23; provenance
+  distinguishes the b09ea5a analysis snapshot from current main; data
+  tracking corrected (full Zenodo ZIP untracked; the 2.1 MB extracted
+  CSV is tracked for reproducibility).
 
 ## Remaining limitations
 - The Kempinski archive remains cleaned tip-angle data only: no raw

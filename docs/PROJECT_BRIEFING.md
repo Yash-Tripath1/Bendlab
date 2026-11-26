@@ -1,4 +1,4 @@
-# BendLab — Complete Project Briefing
+# BendLab - Complete Project Briefing
 
 > **Status note, 16 October 2026.** This briefing is superseded by `docs/CURRENT_STATUS.md`, the canonical summary. Several claims here (hypothesis verdicts, H6 connectivity, vector sample sizes) were corrected or withdrawn after external review; see `docs/AUDIT_FOLLOWUP_RESULTS.md`.
 
@@ -46,7 +46,7 @@ This simplicity is deliberate: with only four parameters, we can fit real plants
 All real data come from one published source: **Brooks, Atamian & Harmer (2023), PLOS Biology** (doi: 10.1371/journal.pbio.3002344), supplementary dataset S13.
 
 - **Figure 1C (our main dataset):** 48 sunflower seedlings, each bent toward blue light switched on at one of six times of day (ZT0, 3, 6, 9, 12, 16). Each seedling gives a bending-angle time course.
-- We also scoped other panels: Figure 2B (field heliotropism — plants tracking the sun, n=6) and Figure 4A (transplant-after-sunset, n=17) are candidates for future moving-sun fits. Figure 4J is **parked**: its values appear to be Z-score normalised in a way we could not resolve, and modelling it before resolving that would be building on sand.
+- We also scoped other panels: Figure 2B (field heliotropism - plants tracking the sun, n=6) and Figure 4A (transplant-after-sunset, n=17) are candidates for future moving-sun fits. Figure 4J is **parked**: its values appear to be Z-score normalised in a way we could not resolve, and modelling it before resolving that would be building on sand.
 - Mutant and light-quality sheets exist, but our model has no receptor "dials," so we do not fit them.
 
 ---
@@ -56,7 +56,7 @@ All real data come from one published source: **Brooks, Atamian & Harmer (2023),
 ### 4.1 Fitted the model to real seedlings
 Each of the 48 seedlings was fitted individually. After an important bug fix (Section 5), the honest result is:
 
-- **Median fit error: 1.80°** across all 48 curves — small compared to the ~50–80° the plants actually bend.
+- **Median fit error: 1.80°** across all 48 curves - small compared to the ~50–80° the plants actually bend.
 - **44 of 48 fits are "clean"** (no fitted parameter pushed against an allowed boundary, which usually means the model is straining).
 - Those 44 clean fits define our **empirically weighted population**: simulated plants sampled to look like real measured seedlings, rather than arbitrary parameter values.
 
@@ -69,11 +69,11 @@ Findings (confirmed at 100,000 plants and again at 400,000):
 - **Parameter recovery:** from a plant's nearest behavioural neighbour, k, tau and φ0 are recovered to ~1–2% error, but **max_rate only to ~33%**. Reason: if the speed limit never actually binds during an experiment, the data contain almost no information about it.
 - **Behavioural twins exist:** genuinely different parameter sets can produce near-identical bending curves (twin searches found pairs matching to ~0.01° over 24 h with very different parameters). This is a real identifiability limit, not a numerical accident.
 
-### 4.3 Adaptive identification (H8) — designed, frozen, not run
+### 4.3 Adaptive identification (H8) - designed, frozen, not run
 We designed an experiment-in-silico: can an adaptive policy that *chooses* the next light stimulus identify a hidden plant faster than fixed protocols? Version 1 was run; the improved version 2 (12 h budget, 5° observation noise, held-out ramp24 test, preregistered success criteria) is **written down and frozen in `docs/ADAPTIVE_IDENTIFICATION.md` and has deliberately not been run**. It remains available but is no longer the highest-value next step.
 
 ### 4.4 The visual simulator
-`bendlab_visual_simulator.html` is a standalone, browser-based version of the exact same model (validated to agree with the Python integrator to floating-point precision). It lets anyone — including non-programmers — change parameters, pick light regimes, compare twin plants, and export data. It is prepared for GitHub Pages (`docs/index.html`); publishing it only requires pushing the repo and enabling Pages.
+`bendlab_visual_simulator.html` is a standalone, browser-based version of the exact same model (validated to agree with the Python integrator to floating-point precision). It lets anyone - including non-programmers - change parameters, pick light regimes, compare twin plants, and export data. It is prepared for GitHub Pages (`docs/index.html`); publishing it only requires pushing the repo and enabling Pages.
 
 ---
 
@@ -98,7 +98,7 @@ Lesson we now operate by: any number in this project should be reproducible by a
 Seedlings whose light switched on at ZT9 (mid-morning in the source experiment) fit systematically worse (median 2.42°, worst plant 6.76°). Diagnostics show a consistent **two-phase shape**: the real plants bend *faster* than the model early (4–8 h) and *slower* later (8–16 h), then agree again late. Refitting with the tau floor removed barely helps (2.420° → 2.400°), so this is a genuine **model-shape failure**, not an optimiser artefact.
 
 Two candidate biological mechanisms, both from papers sent to us by a collaborator contact (Section 8):
-- **Biphasic memory** (Rivière & Meroz 2023): plants integrate past stimuli with a kernel that goes positive then negative — literally "respond, then partially undo."
+- **Biphasic memory** (Rivière & Meroz 2023): plants integrate past stimuli with a kernel that goes positive then negative - literally "respond, then partially undo."
 - **Proprioception / autostraightening** (Bastien et al. 2012): the stem senses its own curvature and straightens itself; a model without this term cannot reproduce late-time behaviour.
 
 Testing these two against each other on held-out data ("Model v2") is the largest open scientific item in the project. It is deliberately *specified before it is coded*.
@@ -109,9 +109,9 @@ Testing these two against each other on held-out data ("Model v2") is the larges
 
 Kempinski et al. (2026) reported that sunflower seedlings do not respond to the *physical* sum of multiple lights; they respond to a sum of **nonlinearly transduced** local light signals around the stem (compressive exponent α ≈ 0.30, cross-stem transmission T ≈ 0.10). We built a stimulus-layer comparison inside BendLab, keeping the dynamics fixed and varying only how multiple sources become one effective direction and strength:
 
-1. **Physical** — vector sum of raw intensities (current BendLab behaviour for multiple sources).
-2. **Transduced-source** — each source compressed by I^α before vector summation.
-3. **Circumference** — light integrated around a discretised stem circumference with transmission and local transduction (a 2-D reduction of the distributed-sensing idea).
+1. **Physical** - vector sum of raw intensities (current BendLab behaviour for multiple sources).
+2. **Transduced-source** - each source compressed by I^α before vector summation.
+3. **Circumference** - light integrated around a discretised stem circumference with transmission and local transduction (a 2-D reduction of the distributed-sensing idea).
 
 Validation first: for a single source, all models reduce exactly to current BendLab (0.000° difference against `sim.py`).
 
@@ -120,7 +120,7 @@ Validation first: for a single source, all models reduce exactly to current Bend
 - Under a moving sun plus diffuse sky, final angles differ from sun-only simulations by median ~9–16° depending on model, with 95th-percentile differences above 40°.
 - A 45-condition sensitivity atlas (100,000 weighted plants) showed the effect is **driven by diffuse light**: ~0° with no diffuse sky, ~12–13° at strong diffuse. Varying α (0.15–0.50) changes it modestly; transmission T up to 0.25 softens but does not remove it.
 - Behaviour clusters under the moving sun are moderately robust to the stimulus model at this scale (ARI 0.68–0.71 vs sun-only).
-- The models are **most separable at near-opposing geometries**: 140–170° separation, intensity ratios 1.5–3. At 160°/2:1 the predicted final angles are ~61° (physical), ~44° (circumference), ~23° (transduced) — differences far larger than measurement noise. This motivated the experimental-design analysis in Section 8.
+- The models are **most separable at near-opposing geometries**: 140–170° separation, intensity ratios 1.5–3. At 160°/2:1 the predicted final angles are ~61° (physical), ~44° (circumference), ~23° (transduced) - differences far larger than measurement noise. This motivated the experimental-design analysis in Section 8.
 
 ---
 
@@ -133,12 +133,12 @@ The models disagree *in silico*; the practical question is whether the disagreem
 - **Readouts tested:** stem angle at 2 h, final angle at 24 h, and mean angle over 12/18/24 h.
 - **Analysis:** 2,000 Monte-Carlo repetitions per cell; n seedlings per group, Gaussian measurement noise σ = 0.5–5°, Welch t-tests between each model pair; power = fraction significant at p < 0.05.
 
-**Validation:** at the control condition, power came out at **0.044–0.051** — statistically indistinguishable from the 5% false-positive rate, exactly as it must if the machinery is honest.
+**Validation:** at the control condition, power came out at **0.044–0.051** - statistically indistinguishable from the 5% false-positive rate, exactly as it must if the machinery is honest.
 
 **Findings:**
 - At the best condition (**160 degrees separation, 2:1 intensity ratio**, final-angle readout, sigma = 2 degrees noise), the simulated final-angle distributions differ most strongly. An earlier version of this briefing quoted Welch-test sample sizes (n = 5 to 20 per group) as model-discrimination power. That interpretation is **withdrawn**: a Welch test between samples simulated under two candidate mechanisms measures distribution separation, not the probability that an experiment plus a model-selection procedure would identify the correct mechanism. Those sample sizes should not be quoted.
 - **Measurement precision is nearly irrelevant; plant variability is the bottleneck.** Raising noise from σ = 0.5° to σ = 5° barely changes the required n (15 → 20 for the hardest pair). A phone camera and a protractor app would, statistically speaking, be enough; more seedlings beat better cameras.
-- **Final angle at 24 h is the best readout.** The 2 h early angle is nearly useless for discrimination (power < 0.10 at n = 20) — early on, all models predict similar small bends. Trajectory averaging (12/18/24 h) is slightly worse than the final angle alone.
+- **Final angle at 24 h is the best readout.** The 2 h early angle is nearly useless for discrimination (power < 0.10 at n = 20) - early on, all models predict similar small bends. Trajectory averaging (12/18/24 h) is slightly worse than the final angle alone.
 - Several geometries work, not just the champion: 120°/2:1 and 140°/3:1 need only n = 10–15 for every pair.
 
 **Bottom line (revised):** the two-source geometry is a promising, inexpensive candidate design, and the three stimulus models make clearly different predictions under it. A defensible sample size requires a further simulation study: generate full datasets under each candidate mechanism, apply the actual planned model-selection procedure (including parameter-fitting uncertainty and biological variation), and report how often it selects the correct model. Until that is done, the vector results are model predictions that motivate a test, not a costed, statistically validated protocol.
@@ -147,7 +147,7 @@ Files: `exp_design.py`; `results/exp_design_power.csv`; `results/exp_design_reco
 
 ---
 
-## 9. Limitations — read before quoting any number
+## 9. Limitations - read before quoting any number
 
 1. The model has four parameters and no biology below the stem-tip angle: no photoreceptors, no hormones, no gravity response, no growth. It is a phenomenological bending model.
 2. ZT9 (Section 6) is a genuine failure of the current model. Nothing in the vector-stimulus work fixes it; the stimulus work addresses *multi-source direction/gain*, not temporal response shape.
@@ -171,7 +171,7 @@ not part of this public document.
 
 1. **Seek external criticism** of the vector-stimulus predictions and of the model-selection experimental design (Section 8), before any sample-size claim is quoted.
 2. **Model v2 specification** (on paper, before code): biphasic-memory vs proprioception arms, judged on held-out ZT9/non-ZT9 data under preregistered criteria.
-3. **Fit the moving-sun panels** (Fig2B, Fig4A) now that moving-sun stimulus machinery exists — the next real-data validation.
+3. **Fit the moving-sun panels** (Fig2B, Fig4A) now that moving-sun stimulus machinery exists - the next real-data validation.
 4. Publish the visual simulator via GitHub Pages (push + enable; five minutes).
 5. H8 v2 run, only if the above stall.
 

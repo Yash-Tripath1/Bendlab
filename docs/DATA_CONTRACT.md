@@ -120,6 +120,29 @@ generated from a declared integer seed recorded in the generating script.
 Simulated trajectories and behavioural features are written to the CSV
 files listed in the relevant results documents.
 
+## Legacy inverse-model datasets and provenance
+
+The two large files below are preserved at their existing `results/` paths.
+The repository history shows that both were first added in commit
+`f5cb795` (2026-10-16). This records when the files entered Git, not a
+complete generation history.
+
+| Path | Bytes | Rows excluding header | SHA-256 | Repository evidence and current references |
+|---|---:|---:|---|---|
+| `results/adaption_inverse_dataset.csv` | 6,012,348 | 20,000 | `314acb6182bb4453e7f0d3d4febefaae4c580836af99f06de020fd40a431e336` | `train_inverse_model.py` describes a uniform simulated population with seed 777 and reads this file. No tracked script regenerates the CSV, so that description cannot be independently verified from this checkout. |
+| `results/adaption_instruction_dataset.csv` | 5,575,004 | 20,000 | `2b7241f51951dc0320fd7599d9d54d6b199a8c4730e7ad10ae2e1c5d7952985e` | No current tracked code or documentation references this file, and no generator, seed, or source record was found. Its provenance cannot be established from repository evidence; it is retained as an orphan dataset. |
+
+The legacy spelling `adaption` is retained in the filenames. Neither file
+was moved or edited in this consolidation. The inverse dataset has a
+consumer but incomplete reproducibility evidence; the instruction dataset
+has no current consumer and unknown generation provenance. Do not infer a
+scientific result from either file without resolving those gaps.
+
+The smaller `results/adaption_test_prompts.csv` and
+`results/adaption_test_truth.csv` files are inputs to the v1, v2, and v3
+inverse-model evaluation scripts. They were added with the inverse-model
+code in commit `b451e36`; they are not the unreferenced instruction dataset.
+
 ## Provenance requirements
 
 Every externally obtained data file must be accompanied by its source URL

@@ -1,4 +1,4 @@
-# sim_clock_gamma.py — 6-Dial Clock + Proprioception Simulator
+# sim_clock_gamma.py - 6-Dial Clock + Proprioception Simulator
 
 **File:** `sim_clock_gamma.py` | **Based on:** `sim.py` + Bastien 2012 + Atamian 2016 | **Date:** 15 Oct 2026
 
@@ -32,7 +32,7 @@ dtheta/dt = r_clipped
 ```python
 from sim_clock_gamma import simulate, batch_simulate
 
-# Old 4-dial (no clock, no gamma) — works exactly as before:
+# Old 4-dial (no clock, no gamma) - works exactly as before:
 times, thetas = simulate(k0=5, tau=1, max_rate=30, phi_fn=lambda t:45, t_end=24)
 
 # ZT9-1 with clock (52% better):
@@ -49,15 +49,15 @@ times, thetas = batch_simulate(k0, tau, max_rate, phi0, light_fn, 24, record_dt=
 **ZT9-1 (fast riser, dip at 10h):**
 - Old static `k`: RMSE **6.76**, `tau=0.05` at wall
 - New `k(t)`: RMSE **3.20**, `tau=0.10` lifted, **52.6% improvement**
-- `k_eff` swings 0.5 (dip at 10h) -> 9 (peaks at 0h/23h) — directly creates dip
+- `k_eff` swings 0.5 (dip at 10h) -> 9 (peaks at 0h/23h) - directly creates dip
 
 **All 6 ZT9:**
-ZT9-1 52.6% | ZT9-2 62.9% | ZT9-3 70.3% | ZT9-4 48.2% | ZT9-5 30% | ZT9-6 13.6% — all improve
+ZT9-1 52.6% | ZT9-2 62.9% | ZT9-3 70.3% | ZT9-4 48.2% | ZT9-5 30% | ZT9-6 13.6% - all improve
 
 **GitHub verification:**
-- `gamma` alone on ZT9-1: 0% (stays 6.76) — proves dip needs clock, not stiffening
-- `zt9_diagnostics.py` official: lowering tau 0.05->0.001 helps only 0.8% — same conclusion
-- `vector_stimulus.py` validation 0.000 deg — our elapsed handling correct
+- `gamma` alone on ZT9-1: 0% (stays 6.76) - proves dip needs clock, not stiffening
+- `zt9_diagnostics.py` official: lowering tau 0.05->0.001 helps only 0.8% - same conclusion
+- `vector_stimulus.py` validation 0.000 deg - our elapsed handling correct
 
 ## Why Use It
 

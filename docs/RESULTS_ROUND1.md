@@ -42,7 +42,7 @@ Summary figure: `results/figures/round1_dashboard.png`.
 > random 89.4 successes per 100). Historical sections below are retained
 > unchanged as the record of the original analyses.
 
-## H3: Discontinuities in parameter space — falsified as specified
+## H3: Discontinuities in parameter space - falsified as specified
 
 A dense 64 × 64 grid was evaluated over response gain (`k`) and sensing
 lag (`tau`) at `phi0 = 45` degrees and `max_rate = 30` degrees h⁻¹ under
@@ -58,7 +58,7 @@ not retained. This conclusion does not exclude discontinuities at finer
 resolution or under alternative behavioural features, such as overshoot
 under step-change regimes.
 
-## H4: Persistence of behavioural clusters across light regimes — supported
+## H4: Persistence of behavioural clusters across light regimes - supported
 
 The same 6,000 weighted simulated plants were clustered under static light
 and under a 12 h sawtooth light sweep (±45 degrees about each plant's own
@@ -76,11 +76,11 @@ stimulus-start groups because of the time-base error and is retracted.
 
 An implication is that a cluster label should not be interpreted as a
 plant type independent of the measurement protocol. This finding is
-consistent with the motivation for H2—that richer light regimes may reveal
-additional structure—although H2's cluster-retention metric did not itself
+consistent with the motivation for H2-that richer light regimes may reveal
+additional structure-although H2's cluster-retention metric did not itself
 demonstrate improved parameter recovery.
 
-## H6: Connectivity of the degenerate parameter set — supported with incomplete retention
+## H6: Connectivity of the degenerate parameter set - supported with incomplete retention
 
 Two behaviourally equivalent source parameter vectors were recombined
 parameter by parameter. Each parameter of the recombinant was selected
@@ -110,7 +110,7 @@ is the more informative control. Assignment to either source class in
 cross-cluster pairs is a union event over two classes and therefore has a
 higher chance rate.
 
-## H7: Differences in identifiability among light protocols — not supported as specified
+## H7: Differences in identifiability among light protocols - not supported as specified
 
 For each protocol, 1,000 weighted simulated plants were simulated.
 Gaussian observation noise with standard deviation 2 degrees was added,
@@ -140,7 +140,7 @@ non-saturating trajectories. Under the two-step protocol, `tau` was the
 most accurately recovered parameter (0.085). These observations do not
 meet the pre-specified criterion for H7.
 
-## H8: Adaptive protocol selection — original design saturated
+## H8: Adaptive protocol selection - original design saturated
 
 The experiment used 500 hidden weighted plants, a 24 h observation
 budget, additive noise of 2 degrees, and a hypothesis set of 3,000

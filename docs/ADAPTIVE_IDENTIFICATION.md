@@ -76,7 +76,7 @@ parameter space occupied by the hidden plant.
 
 Version 1 realised this anticipated failure mode.
 
-## Version 2 — declared 13 October 2026, not yet run
+## Version 2 - declared 13 October 2026, not yet run
 
 Individual changes to the budget, noise and success tolerance were
 considered insufficient because each leaves an alternative route by which

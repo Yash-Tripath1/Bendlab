@@ -1,4 +1,4 @@
-# Phase B0 report — Workstream A: Kempinski external benchmark of the scalar model
+# Phase B0 report - Workstream A: Kempinski external benchmark of the scalar model
 
 **Companion deliverable:** `SHAPE_EXTENSION_AUDIT.md` (Workstream B).
 The two workstreams are independent: this report uses only real
@@ -49,7 +49,7 @@ archive's own analysis code (`01_Preprocessing/02_Uni_cleanup.py`,
 | Item | Finding |
 |---|---|
 | Rows / plants | 88,504 rows; 268 distinct `real_id`; 323–331 rows per plant |
-| Schema | `dt` [h], `theta` [deg], `light_i` [W/m²], `real_id` — nothing else |
+| Schema | `dt` [h], `theta` [deg], `light_i` [W/m²], `real_id` - nothing else |
 | Missing / duplicates | none; no duplicated (plant, time) pairs |
 | Intensity groups | 10: 0.7, 1.1, 1.4, 1.9, 2.25, 3.0, 3.2, 3.85, 4.4, 5.8 W/m²; 15–33 plants each; **every plant belongs to exactly one group** |
 | Sampling | 0–22 h (a few plants end at 21.47 h); intervals alternate 0.06/0.07 h (≈4 min, i.e. 1/15 h rounded to 2 dp) |
@@ -59,8 +59,8 @@ archive's own analysis code (`01_Preprocessing/02_Uni_cleanup.py`,
 
 **Angle definition and mapping (documented, decisive for fairness).**
 Per the paper's Methods, theta is the angle between the stem tangent
-near the tip — from two fluorescent markers painted at the tip and a
-few millimetres below, tracked with a CSRT tracker — and the vertical.
+near the tip - from two fluorescent markers painted at the tip and a
+few millimetres below, tracked with a CSRT tracker - and the vertical.
 It is a *local tip-segment angle over millimetres*, not a whole-stem
 centerline and not the base-to-apex chord angle of the Brooks dataset.
 In the archive, theta is positive toward the light for both `L` and `R`
@@ -74,7 +74,7 @@ is a horizontal side panel, so the known shared light angle is
 **Discrepancy flagged (as requested).** The paper states unilateral
 intensities spanning 0.7–7 W/m², and the archive's plotting code uses a
 colour scale extending to 7.5 W/m² with a preprocessing cutoff that
-"removes high-intensity (light-saturation) points" above 7 W/m² — yet
+"removes high-intensity (light-saturation) points" above 7 W/m² - yet
 the archived `light_i` values top out at **5.8 W/m²** and no group above
 that exists in `uni_trajectories.csv` or `uni_stst_angles.csv`. Whether
 a ≈7 W/m² group was measured and excluded, or never run, cannot be
@@ -90,7 +90,7 @@ be modelled; recomputing group means from the raw CSV reproduces the
 archive's late-window summary table, so the cleaned file is internally
 consistent with the published summaries.
 
-## 2. How intensity enters (it doesn't — wrapper declared)
+## 2. How intensity enters (it doesn't - wrapper declared)
 
 The published model contains no intensity variable: `k` is a per-plant
 gain. Rather than silently inventing a mapping inside the model, the
@@ -190,7 +190,7 @@ this scalar model fits these data, "phi0" is functioning as an
 empirical equilibrium angle that absorbs the balance between the light
 drive and the counteracting gravitropic/proprioceptive terms that the
 Kempinski ORGAN model carries explicitly (its β and γ terms) and
-BendLab omits — not as the known 90° lamp direction.
+BendLab omits - not as the known 90° lamp direction.
 
 Sensitivity to fit subsampling (added in this revision,
 `workstream_a/sensitivity_all_observations.py`): refitting the all-data
@@ -215,7 +215,7 @@ stand.
    the Brooks data, which used a different protocol and a different
    angle definition; it says the model does not transfer, unchanged in
    structure, across assays and intensity ranges.
-2. **The model remains usable in its original narrow role** — within a
+2. **The model remains usable in its original narrow role** - within a
    single fixed protocol (the Brooks assay), with phi0 fitted per
    plant/block and interpreted strictly as a nuisance/effective angle.
    Note this benchmark neither confirms nor refutes that use: different
@@ -236,7 +236,7 @@ stand.
 
 Tip angles only (millimetre-scale tip tangent); no curvature, shape,
 ZT or autostraightening inference is possible, and none is made.
-Cleaned data only — tracker errors and batch effects could not be
+Cleaned data only - tracker errors and batch effects could not be
 audited. Observed trajectories carry large high-frequency circumnutation
 (paper-reported growth-direction SE ≈ 12°), which no smooth model here
 attempts to represent and which inflates all arms' RMSE roughly
