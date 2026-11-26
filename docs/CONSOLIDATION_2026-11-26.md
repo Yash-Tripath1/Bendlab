@@ -66,14 +66,36 @@ scientific result is inferred by this document.
   PNG SHA-256:
   `5e619a7d829f8359e1623bcc7ec9570446f0f9a5d4bad2f53c5ee9f1fe4dea0c`.
   The clone's committed artifacts were restored after comparison.
+- During PR creation, unquoted Markdown backticks in a shell argument
+  triggered command substitution in the repository root. The unintended
+  system-Python `python -m pytest -q` attempt failed because `pytest` was
+  not installed there; `python real_seedling_sim.py` failed immediately
+  at its first import with `ModuleNotFoundError: No module named 'numpy'`,
+  before reading inputs or writing outputs. The result files and protected
+  paths remained unchanged, as confirmed by Git status/diff. The generator
+  was not modified or retried in the working tree; its successful run and
+  byte comparison were confined to the disposable clone. This was a
+  command-quoting mistake, not a script failure repaired in this task.
 - Active references to the renamed external-validation note and archived
   packaging notes were updated. The full tracked-Markdown relative-link
-  scan found **0 broken links**. In the fresh-clone inventory, 31 Markdown
-  documents contained 193 em dashes: 15 working documents contained 85,
-  and 16 frozen documents contained 108. The working-document count is now
-  zero; the 108 frozen occurrences were left untouched. The renamed
-  external-validation note has no `/home`, `/tmp`, or other machine-specific
-  absolute paths.
+  scan found **0 broken links**. The fresh-baseline dash-cleanup inventory,
+  excluding the separately handled validation note, contained 30 documents
+  and 181 em dashes: 14 working documents / 73 occurrences and 16 frozen
+  documents / 108 occurrences. The validation note separately had 12
+  occurrences at baseline and was normalized during its rename, so the raw
+  all-tracked-Markdown baseline was 31 documents / 193 occurrences. Current
+  working Markdown contains zero; all 108 occurrences in frozen documents
+  remain untouched. The renamed external-validation note has no `/home`,
+  `/tmp`, or other machine-specific absolute paths.
+- Checked the README's latency-HR rounding against the committed primary
+  source. `growth_phase/outputs/phase_c_latency_cox.json` records
+  `HR_per_logL0 = 1.416546000518116`, 95% CI
+  `[0.9742758104887702, 2.0595836928120055]`, and `p = 0.06822353681295405`;
+  the narrative source `growth_phase/PHASE_BC_RESULTS.md` reports these as
+  HR 1.42, CI `[0.97, 2.06]`, and `p = 0.068`. The raw value rounds to 1.42
+  at two decimals. The isolated earlier 1.41 note is not present in the
+  tracked source files. The README retains 1.42 and now links the source
+  report and latency addendum; no analysis was rerun and no result changed.
 - The specified v1 shape-audit script passed `py_compile`; its only changes
   are path resolution and the output path. Its analysis was not rerun.
 - From the final working tree, after activating the temporary clone's

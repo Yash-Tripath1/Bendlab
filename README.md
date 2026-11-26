@@ -112,7 +112,10 @@ historical analysis, starting length `L0` is associated with the early
 HR 1.42 per log unit (95% CI [0.97, 2.06], p = 0.068). Length-aware ODE
 variants do not improve held-out trajectory RMSE over length-blind M0:
 10.25 degrees for M0, 10.41 for M1a, 10.35 for M1d, and 10.29 for M1c.
-These associations and model comparisons do not establish a mechanism.
+These associations and model comparisons do not establish a mechanism. See
+the [Phase A-C results](growth_phase/PHASE_BC_RESULTS.md) and the
+[censoring-aware latency addendum](growth_phase/PHASE_C_LATENCY_ADDENDUM.md)
+for source detail and endpoint definitions.
 
 Phase D is design simulation only; it adds no plants or biological result.
 For the prudent half-pilot early-rate slope, the simulated 80 per cent

@@ -36,9 +36,8 @@ This script reads the committed `results/fit_fig1c.csv` and measured data;
 it does not refit the 48 trajectories. It writes the predicted protocol
 summary to `results/real_seedling_protocols.csv` and the dashboard to
 `results/figures/real_seedlings_dashboard.png`. The command can replace
-those two files in the clone. The consolidation verification was run only
-in a temporary fresh clone; no regenerated output was committed to this
-working branch.
+those two files in the clone. The successful byte-comparison run below was
+performed in a temporary fresh clone, and its outputs were not committed.
 
 ## Fresh-clone verification record
 
