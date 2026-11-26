@@ -78,7 +78,7 @@ scientific result is inferred by this document.
   are path resolution and the output path. Its analysis was not rerun.
 - From the final working tree, after activating the temporary clone's
   virtual environment, the exact command `python -m pytest -q` passed:
-  **17 passed in 1.77s**. The required command
+  **17 passed**. The required command
   `(cd growth_phase && sha256sum -c SHA256SUMS.txt)` completed with **58/58
   OK**. `git diff --check` and the staged whitespace check were clean.
 
