@@ -34,8 +34,8 @@ fitted `tau` reached its lower bound. The measured trajectories therefore
 rise more rapidly in mid-course than the model permits, then slow while
 the fitted trajectory continues to increase (for ZT9-1, the 2.5 h
 smoothed bend rate reached −2.9 degrees h⁻¹). The measured response is
-thus characterised by a two-phase rate profile—rapid rise, marked
-reduction in bend rate, and a second rise—which a model containing a
+thus characterised by a two-phase rate profile-rapid rise, marked
+reduction in bend rate, and a second rise-which a model containing a
 single first-order lag cannot reproduce at any parameter values.
 
 **Conclusion A.** The ZT9 misfit is systematic in time and is attributable
@@ -89,9 +89,9 @@ at which reductions in bend rate occur and is reported as inconclusive.
 
 The ZT9 result is a localised structural limitation of the two-state
 model: the model cannot generate the observed rapid-rise, reduced-rate,
-second-rise profile. Candidate extensions—circadian modulation of
+second-rise profile. Candidate extensions-circadian modulation of
 response gain and an autostraightening term superimposed on the
-phototropic response—are hypotheses for subsequent work, not conclusions
+phototropic response-are hypotheses for subsequent work, not conclusions
 of this analysis. They require a model extension and falsification
 criteria specified in advance. The population-mean Arabidopsis curvature
 curves identified in `docs/DATA_SOURCES.md` provide a possible external

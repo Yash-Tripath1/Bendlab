@@ -5,7 +5,7 @@ BendLab and identifies candidate datasets for subsequent validation. It
 also distinguishes measured data from reference simulations. Only the
 PLOS Biology S13 dataset is currently used in the fitting pipeline.
 
-## Tier 1 — datasets suitable for immediate analysis
+## Tier 1 - datasets suitable for immediate analysis
 
 | Source | Data provided | Access |
 |---|---|---|
@@ -29,7 +29,7 @@ suitable for external validation of trajectory shape, including whether
 a two-phase rise occurs outside the sunflower dataset, but not for the
 per-plant fitting pipeline. Digitisation has not yet been performed.
 
-## Tier 2 — numerical extraction from published figures
+## Tier 2 - numerical extraction from published figures
 
 Where numerical data are available only as figures, the following
 procedure will be used:
@@ -41,7 +41,7 @@ procedure will be used:
 4. represent digitisation uncertainty in subsequent analyses, or restrict
    conclusions from digitised data to trajectory shape.
 
-## Tier 3 — larger phenotyping and modelling resources
+## Tier 3 - larger phenotyping and modelling resources
 
 | Resource | Content | Access |
 |---|---|---|

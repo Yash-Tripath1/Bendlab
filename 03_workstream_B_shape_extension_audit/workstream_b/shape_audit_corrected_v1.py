@@ -20,13 +20,16 @@ from __future__ import annotations
 
 import json
 import sys
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
 from sklearn.neighbors import NearestNeighbors
 from sklearn.preprocessing import StandardScaler
 
-sys.path.insert(0, "/home/user/phase_b0/shape_repo")
+_HERE = Path(__file__).resolve().parent
+_BRANCH = _HERE.parents[1] / "04_shape_extension_branch"
+sys.path.insert(0, str(_BRANCH))
 
 import features as F
 import features_shape as FS
@@ -39,7 +42,7 @@ N_PLANTS = 10_000
 SEEDS = (101, 102, 103)
 N_TWINS = 20
 ALL_PARAMS = list(PARAM_NAMES) + ["c", "zeta"]
-OUT = "/home/user/phase_b0/workstream_b/corrected_audit_results.json"
+OUT = _HERE / "corrected_audit_results.json"
 
 
 def corrected_s_shape(thetas: np.ndarray) -> np.ndarray:

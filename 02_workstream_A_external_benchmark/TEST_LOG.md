@@ -12,7 +12,7 @@ No private paths, no symlinks, canonical main untouched, nothing pushed.
 | 3 | `python 03_workstream_B_shape_extension_audit/workstream_b/shape_audit_corrected_v2.py` | PASS in ~12 s; primary results identical to v1 (k +49.2%, phi0 +45.9%); fixed-phi0 cases: 60 deg k +33.4 / tau +13.1 / max_rate −0.8; 90 deg k +36.7 / tau +5.2 / max_rate −0.3; no NaN in JSON (zero-range metrics serialised as null with note) |
 | 4 | `python 02_workstream_A_external_benchmark/workstream_a/phase_b0_kempinski_benchmark.py` | PASS, 7.5 min approx. Reproduces the published headline numbers (W1 median held-out RMSE 14.41 deg; B1 9.73; W2 9.97); adds B1r (10.03), stratified bootstrap CI (3.64–4.72), and the common 4–22 h window population value (15.14 deg) |
 | 5 | `python 02_workstream_A_external_benchmark/workstream_a/sensitivity_all_observations.py` | PASS, ~23 s. Every-observation refits match every-4th fits (W1 tau remains at its 0.05 h bound at both densities) |
-| 6 | `git diff --stat 7f4e148 -- sim.py docs/ '*.html' docs/*.html` | Shows changes ONLY in 02_*, 03_* and PACKAGE_README.md. Root sim.py, site HTML and live docs/ unchanged on this branch |
+| 6 | `git diff --stat 7f4e148 -- sim.py docs/ '*.html' docs/*.html` | Shows changes ONLY in 02_*, 03_* and the package note, now archived at `docs/archive/PACKAGE_README_2026-10-23.md`. Root sim.py, site HTML and live docs/ unchanged on that branch |
 
 Notes:
 - Test A1 now asserts the actual condition: every `real_id` has exactly

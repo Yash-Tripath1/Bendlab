@@ -2,7 +2,7 @@
 
 This is the single canonical summary of what BendLab has established,
 what it has withdrawn, and what remains open across Experiment Series 1,
-Phase B0, and the Growth-Aware Phototropism study (Phases A–C). Where
+Phase B0, and the Growth-Aware Phototropism study (Phases A to E). Where
 older documents differ, this file and the dated amendments in them take
 precedence.
 
@@ -81,6 +81,23 @@ present, evidence for a particular biological mechanism.
   `gamma(L0)`) do not improve held-out trajectory RMSE over length-blind
   M0 (10.25 degrees; all within 1.5 per cent: M1a 10.41, M1d 10.35, M1c
   10.29 degrees).
+- **Growth-aware Phase D is design simulation only:** for the prudent
+  half-pilot early-rate slope, simulated 80% power requires 753 analysed
+  plants under archive-like Design A, 745 under balanced-intensity Design
+  B, and 411 under wider-natural-length Design C. The 90% target is not
+  reached by 900 in A or B and is 569 in C. Latency remains an exploratory
+  secondary endpoint. No plants were added and no biological finding was
+  produced (`growth_phase/PHASE_D_DESIGN_SIMULATION_RESULTS.md`).
+- **Growth-aware Phase E W3:** the preregistered primary criterion was
+  median held-out RMSE strictly below 9.73 degrees. W3's median is 9.9968
+  degrees, so the primary threshold result is negative. The B1 comparator
+  is 9.7347 degrees. W3 minus B1 has paired median +0.0509 degrees and mean
+  -0.0419 degrees; the paired test does not distinguish the difference
+  from zero and is not a formal TOST equivalence test. The fitted `c1` is
+  -0.484 (95% CI [-0.572, -0.396]), which supports the intensity trend in
+  sign within this parameterization, not a biological mechanism. The
+  fitted `max_rate` is an effective model parameter, not a measured
+  physiological limit (`02_workstream_A_external_benchmark/PHASE_E_RESULTS.md`).
 
 ## Withdrawn or corrected, on the record
 
@@ -112,4 +129,10 @@ Key sources: `docs/RESULTS_ROUND0.md`, `docs/RESULTS_ROUND1.md`,
 `docs/AUDIT_FOLLOWUP_RESULTS.md`, `docs/MODEL_V2_CANDIDATES.md`,
 `02_workstream_A_external_benchmark/PHASE_B0_REPORT.md`,
 `03_workstream_B_shape_extension_audit/SHAPE_EXTENSION_AUDIT.md`,
-`growth_phase/PHASE_BC_RESULTS.md`, `results/phaseA_summary.json`.
+`growth_phase/PHASE_BC_RESULTS.md`,
+`growth_phase/PHASE_D_DESIGN_SIMULATION_PLAN.md`,
+`growth_phase/PHASE_D_DESIGN_SIMULATION_RESULTS.md`,
+`growth_phase/PHASE_E_PREREGISTRATION.md`,
+`02_workstream_A_external_benchmark/PHASE_E_RESULTS.md`,
+`02_workstream_A_external_benchmark/PHASE_E_SUPPORTING_ANALYSIS.md`,
+`results/phaseA_summary.json`.

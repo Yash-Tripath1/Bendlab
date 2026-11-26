@@ -91,8 +91,8 @@ whose behaviour is indistinguishable under static light?
 
 ## Recommended reading order
 
-1. `PROBLEM_STATEMENT.md` — research question, model and hypotheses
-2. `docs/RESULTS_ROUND0.md` — model fitting and degeneracy results
-3. `docs/RESULTS_ROUND1.md` — protocol, connectivity and identification analyses
-4. `docs/RESULTS_ROUND2_ZT9.md` — diagnostic analysis of the remaining ZT9 model limitation
-5. `docs/DATA_SOURCES.md` and `docs/DATA_CONTRACT.md` — data provenance and handling rules
+1. `PROBLEM_STATEMENT.md` - research question, model and hypotheses
+2. `docs/RESULTS_ROUND0.md` - model fitting and degeneracy results
+3. `docs/RESULTS_ROUND1.md` - protocol, connectivity and identification analyses
+4. `docs/RESULTS_ROUND2_ZT9.md` - diagnostic analysis of the remaining ZT9 model limitation
+5. `docs/DATA_SOURCES.md` and `docs/DATA_CONTRACT.md` - data provenance and handling rules

@@ -1,4 +1,4 @@
-# Phase B0 — Workstream B: audit of the shape-extension submission
+# Phase B0 - Workstream B: audit of the shape-extension submission
 
 **Scope of this audit.** Independent check of the `shape-extension`
 branch of umaidsiddiqui10/Bendlab at commit

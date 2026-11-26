@@ -5,10 +5,9 @@ Built 2026-10-23. Contents map (workstreams kept separate, as specified):
 ## 01_canonical_bendlab/
 The BendLab repository (scalar tip-angle model in sim.py, measured-data
 fitter, simulation sweeps, inverse-model demos, documentation, website
-sources). Identical to the public repository except one housekeeping
-change pending commit: docs/CHANGES_15OCT_UMAID.md renamed to
-docs/CHANGES_2026-10-15_VALIDATION_RUN.md (file naming by date and
-subject; attribution is retained inside the document and in git history).
+sources). The 15 October external-validation note is now
+`docs/CHANGES_2026-10-15_EXTERNAL_VALIDATION.md`. Its attribution is
+retained inside the document and in Git history.
 
 ## 02_workstream_A_external_benchmark/
 Phase B0 Workstream A: external benchmark of the scalar model.

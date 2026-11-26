@@ -42,7 +42,7 @@ from data_real import curves, load_long
 from sim import static_light
 from sim_clock_gamma import simulate as clock_simulate
 
-ZT9_FREE_CLOCK_REPORTED = {  # Umaid, PR #1, docs/CHANGES_15OCT_UMAID.md
+ZT9_FREE_CLOCK_REPORTED = {  # Umaid, PR #1, docs/CHANGES_2026-10-15_EXTERNAL_VALIDATION.md
     "ZT9-1": 3.20, "ZT9-2": 1.80, "ZT9-3": 0.86,
     "ZT9-4": 1.01, "ZT9-5": 0.84, "ZT9-6": 1.20,
 }

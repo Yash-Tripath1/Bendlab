@@ -51,7 +51,7 @@ variation under the stated conditions.
 **Boundary solutions.** Four of the 48 fits have a parameter at an
 optimisation bound. All four are ZT9 plants for which `tau` reaches its
 lower bound of 0.05 h (3 min). These plants respond within the first hour
-— by as much as 10 degrees in 60 min, the fastest onset in the dataset —
+- by as much as 10 degrees in 60 min, the fastest onset in the dataset -
 and their fitted lag is shorter than the model is permitted to express.
 ZT9-1 is also the largest individual fit error (RMSE 6.76 degrees). The
 ZT9 trajectories rise rapidly, slow, and rise again; that two-phase rate
@@ -247,11 +247,11 @@ degeneracy is concentrated in the approach dynamics (`k`, `tau` and
 
 ## 7. Subsequent steps identified at this stage
 
-1. ~~Increase the `tau` upper bound and refit~~ — completed 12 October
+1. ~~Increase the `tau` upper bound and refit~~ - completed 12 October
    (Section 1). The apparent persistence of boundary solutions was later
    shown to result from the time-base error. This interpretation is
    retracted; see Section 8.
-2. ~~Fit a non-static light regime to ZT12 and ZT16~~ — superseded on
+2. ~~Fit a non-static light regime to ZT12 and ZT16~~ - superseded on
    13 October. Those groups did not require a moving-light model; they
    required elapsed time from their respective stimulus onsets. The
    remaining question is the ZT9 onset pattern: four plants with fitted
@@ -263,7 +263,7 @@ degeneracy is concentrated in the approach dynamics (`k`, `tau` and
 3. Replace the cluster-retention metric for H2 with a continuous
    identifiability metric.
 4. Evaluate H3 using a dense two-dimensional sweep over (`k`, `tau`).
-5. ~~Construct the empirically weighted population~~ — completed
+5. ~~Construct the empirically weighted population~~ - completed
    12 October; corrected 13 October (Section 5).
 6. Evaluate H6 by recombining parameter vectors from behaviourally
    equivalent plants, applying mutation, and measuring retention of the
@@ -324,9 +324,9 @@ compensation was to increase `tau` to its upper bound. Consequences were:
 - all fits except those in ZT0 (for which elapsed and absolute time
   coincide) were distorted, with `tau` inflated approximately in
   proportion to group ZT;
-- the original H5 qualification — that the static-light assumption failed
+- the original H5 qualification - that the static-light assumption failed
   by time of day, with 20/48 fits bound-pinned in ZT12/ZT16 and midday and
-  afternoon plants excluded from the supported region — measured the
+  afternoon plants excluded from the supported region - measured the
   timestamp error rather than a property of the plants and is **retracted
   in full**;
 - the 12 October argument against a missing-mechanism explanation was
