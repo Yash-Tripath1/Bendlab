@@ -40,9 +40,31 @@ those two files in the clone. The consolidation verification was run only
 in a temporary fresh clone; no regenerated output was committed to this
 working branch.
 
-## Verification record
+## Fresh-clone verification record
 
-The exact command, elapsed time, and output comparison for the one
-regeneration check are recorded in
-[`CONSOLIDATION_2026-11-26.md`](CONSOLIDATION_2026-11-26.md). Use the saved
-reports for scientific values; the quickstart is not a new analysis.
+The install, test, and regeneration commands in this section were run from
+a fresh temporary clone of the active branch at commit `7e54a0a`, using
+Python 3.11.2. Installation with `python -m pip install -r requirements.txt`
+completed successfully. The README entry point and
+[`CURRENT_STATUS.md`](CURRENT_STATUS.md) were read before testing.
+
+`python -m pytest -q` completed with **17 passed in 1.87s**.
+
+The exact artifact-generation command was:
+
+```bash
+python real_seedling_sim.py
+```
+
+It exited without error in **2.535 seconds**, wrote
+`results/real_seedling_protocols.csv` (264 rows), and saved
+`results/figures/real_seedlings_dashboard.png`. Both generated files were
+byte-for-byte identical to their committed versions. Their SHA-256 values
+were `9472329b54ed4e9e4549c0c15a59f4b7e09d39ca119e8664924ccb61a12901a9`
+for the CSV and
+`5e619a7d829f8359e1623bcc7ec9570446f0f9a5d4bad2f53c5ee9f1fe4dea0c` for
+the PNG. The temporary clone was restored to its committed artifacts after
+comparison; no generated output was committed to this working branch.
+
+Use the saved reports for scientific values; this quickstart run is a
+reproduction check, not a new analysis.
