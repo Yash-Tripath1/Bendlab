@@ -1,33 +1,24 @@
-# Growth-aware phototropism: Phases A to E
+# Growth-aware phototropism: Phases A-C, audit revision v3 (branch package)
 
-This folder contains the growth-aware phototropism documentation and
-analysis package for chamber-grown sunflower seedlings under fixed
-unilateral blue light. Phase A audits paired length and trajectory data;
-Phase B is the simulation identifiability study (Gate 2); Phase C tests
-length associations on the 213 paired plants (Gate 3); Phase D simulates
-prospective study designs; and Phase E preregisters the W3 model evaluated
-on the existing external archive. Phase D adds no plants, and Phase E is
-not a new biological experiment.
+This folder contains the growth-aware phototropism analysis for
+chamber-grown sunflower seedlings under fixed unilateral blue light:
+the paired length/trajectory audit (Phase A), the simulation
+identifiability study (Phase B, Gate 2), and the historical checks
+on 213 paired plants (Phase C, Gate 3), revised through two
+external audit rounds (report versions 1 and 2 preserved).
 
-Status: the reports and scripts are part of the current repository. The
-Phase A-C audit and its versioned records, the Phase D design simulation,
-and the Phase E preregistration are documented here. Phase E results and
-supporting analysis are in the sibling
-`02_workstream_A_external_benchmark/` directory. None of these analyses
-changes the published simulator, website, or original Phase B0 conclusions.
+Status: prepared for upload on a dedicated branch for review. It
+is not a `main` update and makes no change to the published
+simulator, the website, or any Phase B0 workstream.
 
-## Historical package metadata
-
-The following metadata describes the original Phase A-C package prepared
-for review on 2026-10-24. It is historical and is not current branch
-or pull-request guidance.
-
-- Original intended branch: `growth-phase-audit-v2` (or a successor branch
-  if version 2 of this package was already pushed there; the original note
-  instructed contributors not to rewrite a pushed branch)
+- Intended branch: `growth-phase-audit-v2` (or a successor branch
+  if version 2 of this package is already pushed there; do not
+  rewrite a pushed branch, add a new commit or a new branch)
 - Base repository: `Yash-Tripath1/Bendlab`
-- Reported base commit on `main`: `8860865` (short SHA, as reported
-  2026-10-23)
+- Base commit on `main`: `8860865` (short SHA, as reported
+  2026-10-23; verify locally with `git rev-parse --short HEAD`
+  before branching, and record the new branch commit SHA in the
+  pull-request description after pushing)
 - Package date: 2026-10-24 (version 3)
 
 ## Labels: pre-registered, post-audit, preserved
@@ -90,31 +81,6 @@ under the null, is conservative at small effects, is not
 mechanism-specific between gain and opposing, and is insensitive
 to transport effects scored on whole-trajectory RMSE. See
 `PHASE_BC_RESULTS.md`.
-
-## Phase D: prospective design simulation
-
-The pre-fixed simulation plan and results are in
-`PHASE_D_DESIGN_SIMULATION_PLAN.md` and
-`PHASE_D_DESIGN_SIMULATION_RESULTS.md`. These are design simulations only,
-with no new plants or biological claim. For the prudent half-pilot
-primary slope, 80% power requires 753 analysed plants under archive-like
-Design A, 745 under balanced-intensity Design B, or 411 under wider-natural-
-length Design C. The 90% target is not reached by 900 in A or B and is 569
-in C. Latency remains an exploratory secondary endpoint under the plan.
-
-## Phase E: preregistration and external-archive evaluation
-
-The W3 preregistration is `PHASE_E_PREREGISTRATION.md`; the results and
-supporting analysis are in
-`../02_workstream_A_external_benchmark/PHASE_E_RESULTS.md` and
-`../02_workstream_A_external_benchmark/PHASE_E_SUPPORTING_ANALYSIS.md`.
-The primary median held-out RMSE is 9.9968 degrees, above the fixed
-success criterion of strictly below 9.73 degrees. The threshold result is
-negative. W3 is described as reaching parity with the B1 group-mean
-baseline in the paired comparison, not as establishing a mechanism. The
-paired test is not a formal TOST equivalence test, and the fitted
-`max_rate` is not a biological limit. No new plants or refits are part of
-this README update.
 
 ## Data included
 

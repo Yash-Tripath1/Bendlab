@@ -32,7 +32,7 @@ actual runs; no scientific result is inferred by this document.
 | Working Markdown documents | Replaced em dashes only in working documents; frozen snapshots were left untouched. |
 | `03_workstream_B_shape_extension_audit/workstream_b/shape_audit_corrected_v1.py` | Changed only its import and output paths to repository-relative `Path` values. Analysis calculations were not changed or rerun. |
 | `clock_validation.py`, package/test notes | Updated references to renamed or archived documentation paths. |
-| `growth_phase/README.md` | Updated the folder guide through Phase E; all other protected growth-phase files were left untouched. |
+| `growth_phase/README.md` | A draft update was restored byte-for-byte to the manifest-listed version after the fresh-clone test showed that the protected checksum manifest includes this README. It has no final content change. |
 
 ## Verification
 

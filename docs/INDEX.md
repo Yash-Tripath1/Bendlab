@@ -54,7 +54,7 @@ locations are identified by the reports below.
 
 | Document | Use and preservation status |
 |---|---|
-| [Growth-phase guide](../growth_phase/README.md) | Folder overview and Phase A-E signposting |
+| [Growth-phase guide](../growth_phase/README.md) | Historical Phases A-C package guide; Phases D and E are indexed below |
 | [Phase A data audit](../growth_phase/PHASE_A_DATA_AUDIT.md) | Paired length and unilateral trajectory archive audit |
 | [Phase A data audit v1](../growth_phase/PHASE_A_DATA_AUDIT_v1.md) | Frozen earlier report version; retained unchanged |
 | [Phase B preregistration](../growth_phase/PHASE_B_PREREGISTRATION.md) | Gate 2 model family and adoption rule |
