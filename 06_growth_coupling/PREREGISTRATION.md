@@ -12,7 +12,7 @@ The packaged `growth_phase/data/07_Supplementary/length_est.py` computes:
 growth_speed = (length_df["length_finish"] - length_df["length_start"]) / length_df["dt"]
 ```
 
-It labels the derived rate `[mm/hour]` and the start and finish summaries `[mm]`, but describes no measurement procedure or geometry. `growth_phase/PHASE_A_DATA_AUDIT.md` says: “Units verified from source code, not from column names: mm and mm/h per `length_est.py`.” It also says whether `length_start` was measured exactly at trajectory time zero “cannot be verified from the archive files alone.” The packaged CSV supplies values and column names but no measurement metadata. `02_workstream_A_external_benchmark/PHASE_E_SUPPORTING_ANALYSIS.md` describes one net elongation over the full interval, not a geometric measurement definition.
+It labels the derived rate `[mm/hour]` and the start and finish summaries `[mm]`, but describes no measurement procedure or geometry. `growth_phase/PHASE_A_DATA_AUDIT.md` verifies the units with the exact wording: “Units verified from source code, not from column names: mm and mm/h per `length_est.py`.” It also states: “Whether `length_start` was measured exactly at trajectory t = 0 cannot be verified from the archive files alone and is flagged as an assumption, consistent with the supplementary script's design.” The packaged CSV supplies values and column names but no measurement metadata. `02_workstream_A_external_benchmark/PHASE_E_SUPPORTING_ANALYSIS.md` describes one net elongation over the full interval, not a geometric measurement definition.
 
 Therefore Task 4 will be run under both candidate interpretations below. Neither is asserted to be the archive's actual measurement.
 
@@ -89,3 +89,31 @@ The new analysis script must print every numeric result reported in `RESULTS.md`
 ## Task 7 consistency checks
 
 Without changing source documents, calculate the median W1 held-out RMSE from the committed per-plant held-out output and report the value as a recommendation for paper text. Scan working documents for a statement that presents 0.7 to 7 W/m2 as the archive's measured unilateral range; distinguish a paper-reported range from the tracked archive range, which ends at 5.8 W/m2. Do not edit any existing source document.
+
+## Amendments after the initial Task 4 run
+
+**Chronology:** This amendment is added in a separate commit after the initial Task 4 simulation and before the amended Task 4 rerun. It does not alter or retroactively preregister the initial run. The original preregistration commit remains unchanged. The additional work below is explicitly post-registration.
+
+### Correction to Task 1 source wording
+
+The sentence quoted in the original first draft was a paraphrase presented as verbatim. The exact Phase A wording is: “Whether `length_start` was measured exactly at trajectory t = 0 cannot be verified from the archive files alone and is flagged as an assumption, consistent with the supplementary script's design.” This establishes uncertainty about timing, not measurement geometry. The repository still does not establish whether the length columns are axial lengths or vertical heights.
+
+### Conditional interpretation of vertical height
+
+`sim.py` defines `theta` in degrees from vertical and uses the light direction in the same angular frame. For a vertical-height interpretation only, the projection is `H(t) = L_axis(t) * cos(theta(t))`; as `theta` bends away from vertical toward 90 degrees, the cosine and projected vertical height decrease. Do not assign this direction to the archive's recorded `length_start` or `length_finish`, because their geometry is undocumented. The axial-length case is unaffected by this projection. Both interpretations remain in the analysis.
+
+### Clarification and extension of Task 4 nulls
+
+Keep the original fitted-trajectory, within-intensity permutation null. It breaks the same-plant pairing between observed growth records and fitted angular response while preserving intensity-group structure. It therefore asks whether the association exceeds a no-same-plant-pairing null under the fitted response distribution. In the vertical-height case the projection is applied too, so this null combines a pairing test with a geometry sensitivity; it does not isolate the projection effect on its own.
+
+Add a cheaper empirical-angle projection null with 1,000 replicates and seed `20261115`. Keep each record's observed axial starting length and interval-average axial growth fixed. In each replicate resample only empirical angle trajectories within exact intensity groups, and apply the same trajectory draws to both the axial and vertical-height interpretations. For the vertical-height interpretation, infer axial endpoints from each observed height record and that plant's observed endpoint angles, then project those endpoints using the resampled angle trajectory. Report the axial-versus-height contrast under the identical draws as the geometry-only contrast conditional on the observed growth records and intensity structure. State that trajectory resampling still breaks plant-specific pairing; it is not a causal test. This null complements, and does not replace, the fitted-trajectory permutation null.
+
+### Degenerate fitted-equilibrium rule
+
+Before the amended simulation, report the distribution of `phi_fit_deg` among the 213 matched plants and compare each fitted equilibrium with that plant's observed `theta(0)`. Flag a fit when `phi_fit_deg < theta(0)`. Exclude flagged plants from the primary fitted-trajectory Task 4 analysis and report the count and excluded-sample results; do not silently drop them. Define “more than a small fraction” as more than 5 percent of the original matched sample. Show the full-sample result as well if this threshold is exceeded. For transparency, the amended report will show both full and excluded results regardless of whether the threshold is exceeded. Do not refit any source fit.
+
+The original Task 4 seed remains `20261113` for the fitted-trajectory permutation null. The empirical-angle projection null uses seed `20261115`. Each null uses the fixed count of 1,000 replicates per geometry and sample definition.
+
+### Simulator call details
+
+Use `sim.batch_simulate` with the per-plant arrays `(k_fit, tau_fit, max_rate_fit, phi_fit_deg)` passed positionally, the per-plant observed `theta0` array, and the default light function. Do not pass the one-argument `static_light` helper as `light_fn`. This uses the fitted `phi_fit_deg` as each `phi_free` trajectory's effective target. The original collapse and survival thresholds, 0.10 absolute and 0.20 material positive remainder, remain unchanged; the original rationale that 0.20 is about one third of 0.603 remains in force.
