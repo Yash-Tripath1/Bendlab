@@ -1,0 +1,418 @@
+{
+  "analysis": "growth and angular-response coupling sensitivity",
+  "task1_measurement_geometry": {
+    "finding": "cannot be determined from the repository",
+    "source_evidence": [
+      "length_est.py computes (length_finish - length_start) / dt and labels the result mm/hour; it does not define measurement geometry",
+      "PHASE_A_DATA_AUDIT.md verifies units mm and mm/h, but says timing of length_start relative to trajectory time zero cannot be verified from archive files alone",
+      "length_est_data.csv contains numeric length_start and length_finish fields without a measurement protocol"
+    ],
+    "both_interpretations_run": true
+  },
+  "inputs": {
+    "trajectory_file": "growth_phase/data/00_Data/uni_trajectories.csv",
+    "length_file": "growth_phase/data/07_Supplementary/length_est_data.csv",
+    "per_plant_fit_file": "02_workstream_A_external_benchmark/workstream_a/outputs/per_plant_fullfit_diagnostic.csv",
+    "matched_plants": 213,
+    "trajectory_plants": 268,
+    "length_rows_raw": 246,
+    "duplicate_length_ids_removed": 1,
+    "matched_intensity_values_w_m2": [
+      0.7,
+      1.1,
+      1.4,
+      1.9,
+      2.25,
+      3.0,
+      3.2,
+      3.85,
+      4.4,
+      5.8
+    ],
+    "late_window_hours_inclusive": [
+      16,
+      21
+    ],
+    "total_angle_change_definition": "last observed tip angle minus first observed tip angle",
+    "peak_angle_definition": "maximum observed tip angle in the trajectory",
+    "partial_spearman_method": "average ranks, separate OLS residualization, Pearson correlation of residuals",
+    "p_value_method": "two-sided residual-correlation t approximation; df = n - covariate count - 2"
+  },
+  "task3_seed": 20261112,
+  "task3_bootstrap_replicates": 1000,
+  "task3": {
+    "original_association_recomputed": {
+      "rho": 0.6025934547569243,
+      "two_sided_t_approx_p": 3.809590923416631e-22,
+      "t_statistic": 10.889975118568922,
+      "degrees_freedom": 208,
+      "controls": [
+        "theta0_deg",
+        "log_intensity",
+        "log_L0"
+      ],
+      "method": "average ranks, OLS residual correlation, residual-correlation t approximation",
+      "source_reported_rho": 0.603,
+      "source_reported_ci95": [
+        0.521,
+        0.672
+      ]
+    },
+    "elongation_vs_late_angle_with_total_change_control": {
+      "rho": 0.3419017170633429,
+      "two_sided_t_approx_p": 4.047830826056794e-07,
+      "t_statistic": 5.234566500034822,
+      "degrees_freedom": 207,
+      "controls": [
+        "theta0_deg",
+        "log_intensity",
+        "log_L0",
+        "total_angle_change_deg"
+      ],
+      "method": "plant-level percentile bootstrap; ranks and OLS refit in each resample",
+      "ci95_percentile": [
+        0.20077577378622188,
+        0.46464834954703327
+      ],
+      "bootstrap_replicates": 1000,
+      "bootstrap_valid_replicates": 1000
+    },
+    "starting_length_vs_late_angle_with_total_change_control": {
+      "rho": 0.04510528909000486,
+      "two_sided_t_approx_p": 0.5166622643599177,
+      "t_statistic": 0.649613253198191,
+      "degrees_freedom": 207,
+      "controls": [
+        "theta0_deg",
+        "log_intensity",
+        "elongation_rate_mm_h",
+        "total_angle_change_deg"
+      ],
+      "method": "plant-level percentile bootstrap; ranks and OLS refit in each resample",
+      "ci95_percentile": [
+        -0.07661877038200346,
+        0.1797386879190586
+      ],
+      "bootstrap_replicates": 1000,
+      "bootstrap_valid_replicates": 1000
+    },
+    "elongation_total_change_and_peak_reproduction": {
+      "primary_endpoint_total_change_definition": "last observed tip angle minus first observed tip angle",
+      "elongation_vs_total_angle_change_raw": {
+        "rho": 0.44217164797293346,
+        "two_sided_p": 1.3115097161645505e-11,
+        "n": 213,
+        "method": "raw Spearman rank correlation with SciPy two-sided p value"
+      },
+      "elongation_vs_total_angle_change_partial": {
+        "rho": 0.5349304867515454,
+        "two_sided_t_approx_p": 6.083563080182209e-17,
+        "t_statistic": 9.131155228167273,
+        "degrees_freedom": 208,
+        "controls": [
+          "theta0_deg",
+          "log_intensity",
+          "log_L0"
+        ],
+        "method": "average ranks, OLS residual correlation, residual-correlation t approximation"
+      },
+      "existing_phase_c_total_change_definition": "mean tip angle from 16 through 21 hours minus theta(0), as in growth_phase/phase_c_historical.py",
+      "elongation_vs_existing_phase_c_total_change_raw": {
+        "rho": 0.48736964193909704,
+        "two_sided_p": 4.1654291635663065e-14,
+        "n": 213,
+        "method": "raw Spearman rank correlation with SciPy two-sided p value"
+      },
+      "elongation_vs_existing_phase_c_total_change_partial": {
+        "rho": 0.5956345838673348,
+        "two_sided_t_approx_p": 1.4903802551015119e-21,
+        "t_statistic": 10.69443513292787,
+        "degrees_freedom": 208,
+        "controls": [
+          "theta0_deg",
+          "log_intensity",
+          "log_L0"
+        ],
+        "method": "average ranks, OLS residual correlation, residual-correlation t approximation"
+      },
+      "peak_excursion_definition": "maximum observed tip angle minus theta(0)",
+      "elongation_vs_peak_excursion_raw": {
+        "rho": 0.37200544660608603,
+        "two_sided_p": 2.1489923161563946e-08,
+        "n": 213,
+        "method": "raw Spearman rank correlation with SciPy two-sided p value"
+      },
+      "elongation_vs_peak_excursion_partial": {
+        "rho": 0.47308542621214855,
+        "two_sided_t_approx_p": 4.142221333801198e-13,
+        "t_statistic": 7.74438910124767,
+        "degrees_freedom": 208,
+        "controls": [
+          "theta0_deg",
+          "log_intensity",
+          "log_L0"
+        ],
+        "method": "average ranks, OLS residual correlation, residual-correlation t approximation"
+      },
+      "elongation_vs_peak_angle_raw": {
+        "rho": 0.41455457175475496,
+        "two_sided_p": 2.9687307129009695e-10,
+        "n": 213,
+        "method": "raw Spearman rank correlation with SciPy two-sided p value"
+      }
+    },
+    "post_registration_definition_sensitivity": {
+      "status": "added after the preregistered endpoint definition failed to match the approximate review check; not used to overwrite the primary estimate",
+      "existing_phase_c_total_change_control": {
+        "rho": 0.12601036725185447,
+        "two_sided_t_approx_p": 0.06905819631637562,
+        "t_statistic": 1.827540941136382,
+        "degrees_freedom": 207,
+        "controls": [
+          "theta0_deg",
+          "log_intensity",
+          "log_L0",
+          "phase_c_total_change_deg"
+        ],
+        "method": "plant-level percentile bootstrap; ranks and OLS refit in each resample",
+        "ci95_percentile": [
+          -0.011033781920118947,
+          0.26621953109686786
+        ],
+        "bootstrap_replicates": 1000,
+        "bootstrap_valid_replicates": 1000
+      },
+      "peak_excursion_control": {
+        "rho": 0.4236528058722241,
+        "two_sided_t_approx_p": 1.642566732138471e-10,
+        "t_statistic": 6.729009230338387,
+        "degrees_freedom": 207,
+        "controls": [
+          "theta0_deg",
+          "log_intensity",
+          "log_L0",
+          "peak_excursion_deg"
+        ],
+        "method": "plant-level percentile bootstrap; ranks and OLS refit in each resample",
+        "ci95_percentile": [
+          0.29088009128468617,
+          0.5385152989693901
+        ],
+        "bootstrap_replicates": 1000,
+        "bootstrap_valid_replicates": 1000
+      },
+      "peak_excursion_starting_length_control": {
+        "rho": -0.12325939174374777,
+        "two_sided_t_approx_p": 0.07539734420084876,
+        "t_statistic": -1.7870207796852462,
+        "degrees_freedom": 207,
+        "controls": [
+          "theta0_deg",
+          "log_intensity",
+          "elongation_rate_mm_h",
+          "peak_excursion_deg"
+        ],
+        "method": "plant-level percentile bootstrap; ranks and OLS refit in each resample",
+        "ci95_percentile": [
+          -0.24628139615852146,
+          0.0014643881148616133
+        ],
+        "bootstrap_replicates": 1000,
+        "bootstrap_valid_replicates": 1000
+      }
+    },
+    "overlap_decision_category": "survives"
+  },
+  "task4_fit_and_simulation": {
+    "fit_file": "02_workstream_A_external_benchmark/workstream_a/outputs/per_plant_fullfit_diagnostic.csv",
+    "fit_mode": "phi_free",
+    "archive_fit_rows": 268,
+    "matched_fit_rows": 213,
+    "integrator": "repository-root sim.py batch_simulate",
+    "integration_step_hours": 0.016666666666666666,
+    "simulation_end_hours": 25.933333333333334,
+    "trajectory_count": 213,
+    "trajectory_sample_count": 1557,
+    "fit_per_plant_description": "committed full-curve phi_free fits; each source parameter vector was fitted to its source plant"
+  },
+  "task4_seed": 20261113,
+  "task4_replicates_per_interpretation": 1000,
+  "task4_null": {
+    "seed": 20261113,
+    "replicates_per_interpretation": 1000,
+    "fit_source": "02_workstream_A_external_benchmark/workstream_a/outputs/per_plant_fullfit_diagnostic.csv",
+    "within_intensity_pairing": "random permutation of length records relative to fitted trajectories; fixed points are allowed",
+    "axial_length": {
+      "median": 0.05707915345766526,
+      "percentile_2_5": -0.07583569469198403,
+      "percentile_97_5": 0.18726771382159071,
+      "observed_rho": 0.6025934547569243,
+      "observed_percentile_empirical": 100.0,
+      "simulated_values_at_or_below_observed": 1000,
+      "simulated_values_above_observed": 0,
+      "replicates": 1000,
+      "classification": "above",
+      "quantile_method": "numpy linear sample quantiles"
+    },
+    "vertical_height": {
+      "median": -0.24809701956046526,
+      "percentile_2_5": -0.36021287727832024,
+      "percentile_97_5": -0.12609119293649826,
+      "observed_rho": 0.6025934547569243,
+      "observed_percentile_empirical": 100.0,
+      "simulated_values_at_or_below_observed": 1000,
+      "simulated_values_above_observed": 0,
+      "replicates": 1000,
+      "classification": "above",
+      "quantile_method": "numpy linear sample quantiles"
+    },
+    "height_geometry": {
+      "assumed_projection": "vertical tip height = axial organ length * cos(angle from vertical)",
+      "observed_endpoint_angle_rule": "linear interpolation within the observed trajectory; np.interp holds its final value if length dt is longer",
+      "positive_cosine_rows": 213,
+      "inferred_positive_axial_endpoint_rows": 213
+    }
+  },
+  "task4_null_draws_file": "06_growth_coupling/outputs/simulation_null_rhos.csv",
+  "task5": {
+    "triggered": true,
+    "trigger_reason": {
+      "task3_category": "survives",
+      "geometry_categories": [
+        "above",
+        "above"
+      ],
+      "task4_inconclusive": false,
+      "task3_task4_conflict": false,
+      "post_registration_definition_sensitivity_categories": {
+        "existing_phase_c_total_change_control": "ambiguous",
+        "peak_excursion_control": "survives"
+      },
+      "definition_sensitivity_conflict": true
+    },
+    "seed": 20261114,
+    "bootstrap_replicates_per_stratum": 1000,
+    "strata": [
+      {
+        "rho": 0.11786236990249187,
+        "ci95_percentile": [
+          -0.13869182285327225,
+          0.37868769900127086
+        ],
+        "bootstrap_replicates": 1000,
+        "bootstrap_valid_replicates": 1000,
+        "controls": [
+          "theta0_deg",
+          "log_intensity",
+          "log_L0"
+        ],
+        "method": "plant-level percentile bootstrap; ranks and OLS refit in each resample",
+        "stratum": 1,
+        "n": 71,
+        "total_angle_change_min_deg": -9.399999999999999,
+        "total_angle_change_max_deg": 20.299999999999997
+      },
+      {
+        "rho": 0.5798702835625712,
+        "ci95_percentile": [
+          0.3750187675047981,
+          0.7239903665177209
+        ],
+        "bootstrap_replicates": 1000,
+        "bootstrap_valid_replicates": 1000,
+        "controls": [
+          "theta0_deg",
+          "log_intensity",
+          "log_L0"
+        ],
+        "method": "plant-level percentile bootstrap; ranks and OLS refit in each resample",
+        "stratum": 2,
+        "n": 71,
+        "total_angle_change_min_deg": 20.3,
+        "total_angle_change_max_deg": 32.7
+      },
+      {
+        "rho": 0.3452585785740938,
+        "ci95_percentile": [
+          0.10937644006800899,
+          0.5452070503509208
+        ],
+        "bootstrap_replicates": 1000,
+        "bootstrap_valid_replicates": 1000,
+        "controls": [
+          "theta0_deg",
+          "log_intensity",
+          "log_L0"
+        ],
+        "method": "plant-level percentile bootstrap; ranks and OLS refit in each resample",
+        "stratum": 3,
+        "n": 71,
+        "total_angle_change_min_deg": 32.8,
+        "total_angle_change_max_deg": 59.7
+      }
+    ],
+    "robust_positive_within_strata": true
+  },
+  "overall_verdict": "ambiguous",
+  "overall_verdict_reason": "The preregistered estimate, geometry null, and/or post-registration total-response definition sensitivity do not yield one consistent classification.",
+  "task7_consistency": {
+    "w1_heldout_rows": 268,
+    "w1_median_rmse_deg_from_committed_per_plant_output": 14.407214533499541,
+    "recommended_paper_rounding_2dp": 14.41,
+    "working_document_archive_range_scan": {
+      "working_markdown_scope": "tracked Markdown excluding frozen snapshot directories and the new 06_growth_coupling deliverables",
+      "exact_0_7_to_7_w_m2_mentions": [
+        {
+          "path": "02_workstream_A_external_benchmark/PHASE_B0_REPORT.md",
+          "line": 75,
+          "text": "intensities spanning 0.7\u20137 W/m\u00b2, and the archive's plotting code uses a"
+        }
+      ],
+      "mention_count": 1,
+      "seven_w_m2_mentions": [
+        {
+          "path": "02_workstream_A_external_benchmark/PHASE_B0_REPORT.md",
+          "line": 75,
+          "text": "intensities spanning 0.7\u20137 W/m\u00b2, and the archive's plotting code uses a"
+        },
+        {
+          "path": "02_workstream_A_external_benchmark/PHASE_B0_REPORT.md",
+          "line": 77,
+          "text": "\"removes high-intensity (light-saturation) points\" above 7 W/m\u00b2 - yet"
+        },
+        {
+          "path": "02_workstream_A_external_benchmark/PHASE_B0_REPORT.md",
+          "line": 80,
+          "text": "a \u22487 W/m\u00b2 group was measured and excluded, or never run, cannot be"
+        },
+        {
+          "path": "02_workstream_A_external_benchmark/PHASE_E_RESULTS.md",
+          "line": 126,
+          "text": "The archive covers one species and one protocol family. Its tracked unilateral intensities end at 5.8 W/m\u00b2, so the analysis does not evaluate the stated 7 W/m\u00b2 upper range. The measurements are tip-segment angles, not whole-stem shape or curvature. The archive does not expose batch structure or ground-truth model parameters. The cluster-sandwich intervals are approximate local Wald intervals and do not include uncertainty from model selection or archive sampling."
+        },
+        {
+          "path": "docs/archive/PHASE_B0_FIXES_2026-10-23.md",
+          "line": 58,
+          "text": "paper-vs-archive intensity discrepancy (stated up to 7 W/m2; archived"
+        }
+      ],
+      "seven_w_m2_mention_count": 5,
+      "tracked_unilateral_archive_intensity_min_w_m2": 0.7,
+      "tracked_unilateral_archive_intensity_max_w_m2": 5.8,
+      "tracked_unilateral_archive_intensity_groups": [
+        0.7,
+        1.1,
+        1.4,
+        1.9,
+        2.25,
+        3.0,
+        3.2,
+        3.85,
+        4.4,
+        5.8
+      ]
+    }
+  },
+  "runtime_seconds": 13.501236008999967,
+  "no_existing_outputs_modified": true
+}
