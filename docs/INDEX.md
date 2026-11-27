@@ -36,6 +36,7 @@ sources.
 | [Explainer, part 2](EXPLAINER_PART2.md) | Simulation experiments, validation, and corrections |
 | [Project briefing](PROJECT_BRIEFING.md) | Expanded project briefing and research context |
 | [Full project overview](PROJECT_OVERVIEW.md) | Preserved longer version of the former root README |
+| [Restructuring verification](RESTRUCTURING_VERIFICATION_2026-11-11.md) | Test, checksum, generation, scan, and tree-count outcomes |
 | [Results round 0](RESULTS_ROUND0.md) | Model fitting, parameter degeneracy, corrections, and error log |
 | [Results round 1](RESULTS_ROUND1.md) | H3-H8 analyses and independent audit |
 | [Results round 2, ZT9](RESULTS_ROUND2_ZT9.md) | Diagnostics for the ZT9 model limitation |
