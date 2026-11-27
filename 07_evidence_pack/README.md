@@ -5,6 +5,8 @@ and five figures regenerated from committed outputs. It was assembled on
 2026-11-11. No source report, model, fit, legacy result, or input data outside
 this directory was changed.
 
+For the paper-facing close, start with [`PROJECT_CLOSE.md`](PROJECT_CLOSE.md), then [`PAPER_DATA.md`](PAPER_DATA.md), then [`PAPER_OUTLINE.md`](PAPER_OUTLINE.md).
+
 ## Start here
 
 - [`CLAIM_AUDIT.md`](CLAIM_AUDIT.md): quantitative-claim audit of the root
