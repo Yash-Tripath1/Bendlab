@@ -4,6 +4,18 @@
 Verification outcomes are recorded below from the actual runs; no
 scientific result is inferred by this document.
 
+## Follow-up correction
+
+This record describes the consolidation baseline. The later restructuring
+retired the root snapshot formerly named `01_canonical_bendlab/`; its history
+and recovery point are documented in
+[`archive/SNAPSHOT_INDEX_2026-10-16.md`](archive/SNAPSHOT_INDEX_2026-10-16.md).
+The four CSV paths formerly spelled `results/adaption_*.csv` were renamed to
+`results/adaptation_*.csv`, with bytes and all four SHA-256 values unchanged.
+These follow-up changes supersede the baseline statements below about keeping
+the snapshot and retaining the misspelled CSV paths; the earlier entries remain
+as a record of what was true at that time.
+
 ## Repository reality and branch reconciliation
 
 - Fresh-clone baseline: `main` at `92df6e0`, 417 tracked files, and 58

@@ -137,8 +137,8 @@ def main() -> None:
     ev("early12_heldout_clean", predict_early, curves[te], pop[te])
     ev("early12_heldout_noise2deg", predict_early, noisy_te, pop[te])
 
-    prompts = pd.read_csv("results/adaption_test_prompts.csv")
-    truth10 = pd.read_csv("results/adaption_test_truth.csv")
+    prompts = pd.read_csv("results/adaptation_test_prompts.csv")
+    truth10 = pd.read_csv("results/adaptation_test_truth.csv")
     curves10 = np.array([[float(v) for v in re.search(r"\[([^\]]+)\]", p).group(1).split(",")]
                          for p in prompts.prompt])
     ev("full_adaption_test10", predict_full, curves10, truth10[TARGETS].to_numpy(float))
