@@ -1,0 +1,519 @@
+{
+  "analysis": "Saved-fit rate-cap identifiability reconciliation",
+  "model_fits_rerun": false,
+  "n_plants": 48,
+  "direct_observed_peak_rate_criterion": {
+    "definition": "fitted max_rate exceeds the plant's maximum absolute adjacent-sample observed angle change divided by the uniform sampling interval",
+    "feature_implementation": "01_canonical_bendlab/features.py::peak_rate",
+    "smoothing": "none; raw adjacent observations",
+    "units": "degrees per hour",
+    "fitted_cap_above_observed_peak_count": 40,
+    "fitted_cap_above_observed_peak_fraction": 0.8333333333333334,
+    "cap_at_or_below_observed_peak_count": 8,
+    "cap_at_or_below_observed_peak_plants": [
+      "ZT0-2",
+      "ZT0-3",
+      "ZT0-6",
+      "ZT0-7",
+      "ZT3-4",
+      "ZT3-8",
+      "ZT6-7",
+      "ZT6-8"
+    ]
+  },
+  "historical_phase_a_jacobian_criterion": {
+    "definition": "part2_uncertainty in phase_a.py sets max_rate SE to infinity when the fitted residual Jacobian column norm is below 1e-9; the summary counts non-finite max_rate relative SE values",
+    "saved_uncertainty_table_count": 47,
+    "saved_phase_a_summary_count": 47,
+    "jacobian_flagged_plants": [
+      "ZT0-1",
+      "ZT0-2",
+      "ZT0-3",
+      "ZT0-4",
+      "ZT0-5",
+      "ZT0-6",
+      "ZT0-7",
+      "ZT12-1",
+      "ZT12-2",
+      "ZT12-3",
+      "ZT12-4",
+      "ZT12-5",
+      "ZT12-6",
+      "ZT12-7",
+      "ZT12-8",
+      "ZT12-9",
+      "ZT16-1",
+      "ZT16-2",
+      "ZT16-3",
+      "ZT16-4",
+      "ZT16-5",
+      "ZT16-6",
+      "ZT16-7",
+      "ZT16-8",
+      "ZT16-9",
+      "ZT3-1",
+      "ZT3-2",
+      "ZT3-3",
+      "ZT3-4",
+      "ZT3-5",
+      "ZT3-6",
+      "ZT3-7",
+      "ZT3-9",
+      "ZT6-1",
+      "ZT6-2",
+      "ZT6-3",
+      "ZT6-4",
+      "ZT6-5",
+      "ZT6-6",
+      "ZT6-7",
+      "ZT6-8",
+      "ZT9-1",
+      "ZT9-2",
+      "ZT9-3",
+      "ZT9-4",
+      "ZT9-5",
+      "ZT9-6"
+    ]
+  },
+  "interpretation": "The 47/48 Jacobian-based count is reproducible from committed code and output. It is not the same estimand as the direct comparison with each plant's observed maximum adjacent-sample rate, which yields 40/48.",
+  "inputs": {
+    "fit_csv": "01_canonical_bendlab/results/fit_fig1c.csv",
+    "uncertainty_csv": "01_canonical_bendlab/results/phaseA_fit_uncertainty.csv",
+    "phase_a_summary_json": "01_canonical_bendlab/results/phaseA_summary.json",
+    "observed_workbook": "01_canonical_bendlab/data/real/stem_angles_plosbiol2023_s13.xlsx"
+  },
+  "per_plant": [
+    {
+      "plant": "ZT0-1",
+      "fitted_max_rate_deg_h": 43.90524808039209,
+      "observed_peak_adjacent_rate_deg_h": 11.695999999999998,
+      "cap_minus_observed_peak_deg_h": 32.20924808039209,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT0-2",
+      "fitted_max_rate_deg_h": 7.678168741997145,
+      "observed_peak_adjacent_rate_deg_h": 8.879999999999995,
+      "cap_minus_observed_peak_deg_h": -1.2018312580028505,
+      "fitted_cap_exceeds_observed_peak": false,
+      "cap_at_or_below_observed_peak": true,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT0-3",
+      "fitted_max_rate_deg_h": 8.687386302322432,
+      "observed_peak_adjacent_rate_deg_h": 12.334000000000003,
+      "cap_minus_observed_peak_deg_h": -3.646613697677571,
+      "fitted_cap_exceeds_observed_peak": false,
+      "cap_at_or_below_observed_peak": true,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT0-4",
+      "fitted_max_rate_deg_h": 16.464414303316797,
+      "observed_peak_adjacent_rate_deg_h": 14.630000000000024,
+      "cap_minus_observed_peak_deg_h": 1.8344143033167732,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT0-5",
+      "fitted_max_rate_deg_h": 31.509857903167187,
+      "observed_peak_adjacent_rate_deg_h": 11.171999999999997,
+      "cap_minus_observed_peak_deg_h": 20.33785790316719,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT0-6",
+      "fitted_max_rate_deg_h": 8.728073162414864,
+      "observed_peak_adjacent_rate_deg_h": 10.96599999999998,
+      "cap_minus_observed_peak_deg_h": -2.237926837585116,
+      "fitted_cap_exceeds_observed_peak": false,
+      "cap_at_or_below_observed_peak": true,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT0-7",
+      "fitted_max_rate_deg_h": 8.744378157591232,
+      "observed_peak_adjacent_rate_deg_h": 12.542000000000002,
+      "cap_minus_observed_peak_deg_h": -3.7976218424087698,
+      "fitted_cap_exceeds_observed_peak": false,
+      "cap_at_or_below_observed_peak": true,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT12-1",
+      "fitted_max_rate_deg_h": 8.611271489227587,
+      "observed_peak_adjacent_rate_deg_h": 8.475999999999999,
+      "cap_minus_observed_peak_deg_h": 0.1352714892275877,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT12-2",
+      "fitted_max_rate_deg_h": 20.394864261663898,
+      "observed_peak_adjacent_rate_deg_h": 7.424000000000007,
+      "cap_minus_observed_peak_deg_h": 12.970864261663891,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT12-3",
+      "fitted_max_rate_deg_h": 59.38832894536782,
+      "observed_peak_adjacent_rate_deg_h": 4.77200000000002,
+      "cap_minus_observed_peak_deg_h": 54.6163289453678,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT12-4",
+      "fitted_max_rate_deg_h": 30.0,
+      "observed_peak_adjacent_rate_deg_h": 6.617999999999995,
+      "cap_minus_observed_peak_deg_h": 23.382000000000005,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT12-5",
+      "fitted_max_rate_deg_h": 22.83593008079214,
+      "observed_peak_adjacent_rate_deg_h": 5.804000000000002,
+      "cap_minus_observed_peak_deg_h": 17.031930080792137,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT12-6",
+      "fitted_max_rate_deg_h": 23.510228358768373,
+      "observed_peak_adjacent_rate_deg_h": 7.7099999999999795,
+      "cap_minus_observed_peak_deg_h": 15.800228358768393,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT12-7",
+      "fitted_max_rate_deg_h": 75.68216341255459,
+      "observed_peak_adjacent_rate_deg_h": 8.968000000000018,
+      "cap_minus_observed_peak_deg_h": 66.71416341255457,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT12-8",
+      "fitted_max_rate_deg_h": 17.671145075773456,
+      "observed_peak_adjacent_rate_deg_h": 7.515999999999991,
+      "cap_minus_observed_peak_deg_h": 10.155145075773465,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT12-9",
+      "fitted_max_rate_deg_h": 29.984639566382885,
+      "observed_peak_adjacent_rate_deg_h": 12.857999999999976,
+      "cap_minus_observed_peak_deg_h": 17.12663956638291,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT16-1",
+      "fitted_max_rate_deg_h": 20.991463098709584,
+      "observed_peak_adjacent_rate_deg_h": 9.872000000000014,
+      "cap_minus_observed_peak_deg_h": 11.11946309870957,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT16-2",
+      "fitted_max_rate_deg_h": 45.402848786253074,
+      "observed_peak_adjacent_rate_deg_h": 8.800000000000011,
+      "cap_minus_observed_peak_deg_h": 36.60284878625306,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT16-3",
+      "fitted_max_rate_deg_h": 60.3250696864107,
+      "observed_peak_adjacent_rate_deg_h": 6.576000000000022,
+      "cap_minus_observed_peak_deg_h": 53.74906968641068,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT16-4",
+      "fitted_max_rate_deg_h": 33.69171873491764,
+      "observed_peak_adjacent_rate_deg_h": 6.402000000000015,
+      "cap_minus_observed_peak_deg_h": 27.289718734917628,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT16-5",
+      "fitted_max_rate_deg_h": 60.596964769816125,
+      "observed_peak_adjacent_rate_deg_h": 6.849999999999994,
+      "cap_minus_observed_peak_deg_h": 53.74696476981613,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT16-6",
+      "fitted_max_rate_deg_h": 30.0,
+      "observed_peak_adjacent_rate_deg_h": 4.806000000000012,
+      "cap_minus_observed_peak_deg_h": 25.19399999999999,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT16-7",
+      "fitted_max_rate_deg_h": 179.7526621591991,
+      "observed_peak_adjacent_rate_deg_h": 13.189999999999998,
+      "cap_minus_observed_peak_deg_h": 166.5626621591991,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT16-8",
+      "fitted_max_rate_deg_h": 46.55546713817437,
+      "observed_peak_adjacent_rate_deg_h": 12.627999999999986,
+      "cap_minus_observed_peak_deg_h": 33.927467138174386,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT16-9",
+      "fitted_max_rate_deg_h": 91.49600137551421,
+      "observed_peak_adjacent_rate_deg_h": 8.949999999999989,
+      "cap_minus_observed_peak_deg_h": 82.54600137551422,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT3-1",
+      "fitted_max_rate_deg_h": 60.792679904027636,
+      "observed_peak_adjacent_rate_deg_h": 14.555999999999983,
+      "cap_minus_observed_peak_deg_h": 46.23667990402765,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT3-2",
+      "fitted_max_rate_deg_h": 60.68108217605911,
+      "observed_peak_adjacent_rate_deg_h": 15.318000000000012,
+      "cap_minus_observed_peak_deg_h": 45.363082176059095,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT3-3",
+      "fitted_max_rate_deg_h": 20.703376330189894,
+      "observed_peak_adjacent_rate_deg_h": 11.344000000000023,
+      "cap_minus_observed_peak_deg_h": 9.359376330189871,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT3-4",
+      "fitted_max_rate_deg_h": 6.209596041466756,
+      "observed_peak_adjacent_rate_deg_h": 8.936000000000007,
+      "cap_minus_observed_peak_deg_h": -2.7264039585332513,
+      "fitted_cap_exceeds_observed_peak": false,
+      "cap_at_or_below_observed_peak": true,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT3-5",
+      "fitted_max_rate_deg_h": 43.92562505609175,
+      "observed_peak_adjacent_rate_deg_h": 10.725999999999999,
+      "cap_minus_observed_peak_deg_h": 33.19962505609175,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT3-6",
+      "fitted_max_rate_deg_h": 36.668573452231286,
+      "observed_peak_adjacent_rate_deg_h": 10.478000000000009,
+      "cap_minus_observed_peak_deg_h": 26.190573452231277,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT3-7",
+      "fitted_max_rate_deg_h": 157.67708180229346,
+      "observed_peak_adjacent_rate_deg_h": 9.697999999999979,
+      "cap_minus_observed_peak_deg_h": 147.97908180229348,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT3-8",
+      "fitted_max_rate_deg_h": 7.392013714531133,
+      "observed_peak_adjacent_rate_deg_h": 9.674000000000007,
+      "cap_minus_observed_peak_deg_h": -2.2819862854688733,
+      "fitted_cap_exceeds_observed_peak": false,
+      "cap_at_or_below_observed_peak": true,
+      "phase_a_jacobian_zero_sensitivity_flag": false
+    },
+    {
+      "plant": "ZT3-9",
+      "fitted_max_rate_deg_h": 30.780038476695868,
+      "observed_peak_adjacent_rate_deg_h": 8.351999999999975,
+      "cap_minus_observed_peak_deg_h": 22.428038476695892,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT6-1",
+      "fitted_max_rate_deg_h": 74.95818512674188,
+      "observed_peak_adjacent_rate_deg_h": 8.939999999999998,
+      "cap_minus_observed_peak_deg_h": 66.01818512674188,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT6-2",
+      "fitted_max_rate_deg_h": 30.006971154262004,
+      "observed_peak_adjacent_rate_deg_h": 12.298000000000002,
+      "cap_minus_observed_peak_deg_h": 17.708971154262002,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT6-3",
+      "fitted_max_rate_deg_h": 130.19829231936995,
+      "observed_peak_adjacent_rate_deg_h": 10.948000000000008,
+      "cap_minus_observed_peak_deg_h": 119.25029231936995,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT6-4",
+      "fitted_max_rate_deg_h": 40.68203672098938,
+      "observed_peak_adjacent_rate_deg_h": 14.232,
+      "cap_minus_observed_peak_deg_h": 26.45003672098938,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT6-5",
+      "fitted_max_rate_deg_h": 37.21494593233494,
+      "observed_peak_adjacent_rate_deg_h": 10.966000000000008,
+      "cap_minus_observed_peak_deg_h": 26.248945932334934,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT6-6",
+      "fitted_max_rate_deg_h": 123.08611450013318,
+      "observed_peak_adjacent_rate_deg_h": 9.895999999999987,
+      "cap_minus_observed_peak_deg_h": 113.19011450013319,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT6-7",
+      "fitted_max_rate_deg_h": 8.704911334654446,
+      "observed_peak_adjacent_rate_deg_h": 10.245999999999981,
+      "cap_minus_observed_peak_deg_h": -1.5410886653455353,
+      "fitted_cap_exceeds_observed_peak": false,
+      "cap_at_or_below_observed_peak": true,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT6-8",
+      "fitted_max_rate_deg_h": 11.1943518776218,
+      "observed_peak_adjacent_rate_deg_h": 33.623999999999995,
+      "cap_minus_observed_peak_deg_h": -22.429648122378197,
+      "fitted_cap_exceeds_observed_peak": false,
+      "cap_at_or_below_observed_peak": true,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT9-1",
+      "fitted_max_rate_deg_h": 46.57011595516369,
+      "observed_peak_adjacent_rate_deg_h": 14.585999999999984,
+      "cap_minus_observed_peak_deg_h": 31.98411595516371,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT9-2",
+      "fitted_max_rate_deg_h": 32.84579747616728,
+      "observed_peak_adjacent_rate_deg_h": 8.816000000000003,
+      "cap_minus_observed_peak_deg_h": 24.029797476167275,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT9-3",
+      "fitted_max_rate_deg_h": 35.4434081902269,
+      "observed_peak_adjacent_rate_deg_h": 7.71599999999998,
+      "cap_minus_observed_peak_deg_h": 27.727408190226917,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT9-4",
+      "fitted_max_rate_deg_h": 30.0,
+      "observed_peak_adjacent_rate_deg_h": 11.307999999999993,
+      "cap_minus_observed_peak_deg_h": 18.692000000000007,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT9-5",
+      "fitted_max_rate_deg_h": 8.562799802378947,
+      "observed_peak_adjacent_rate_deg_h": 6.309999999999974,
+      "cap_minus_observed_peak_deg_h": 2.2527998023789735,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    },
+    {
+      "plant": "ZT9-6",
+      "fitted_max_rate_deg_h": 75.53320919649943,
+      "observed_peak_adjacent_rate_deg_h": 17.74599999999998,
+      "cap_minus_observed_peak_deg_h": 57.78720919649945,
+      "fitted_cap_exceeds_observed_peak": true,
+      "cap_at_or_below_observed_peak": false,
+      "phase_a_jacobian_zero_sensitivity_flag": true
+    }
+  ]
+}

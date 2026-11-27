@@ -1,0 +1,152 @@
+{
+  "analysis": "Derived committed-output audit and no-fit checks",
+  "model_fits_rerun": false,
+  "canonical_fig1c_aggregate": {
+    "n_saved_fits": 48,
+    "median_in_sample_rmse_degrees": 1.8011197944778374,
+    "median_across_plant_spread_degrees": 8.58240903160146,
+    "fits_not_at_any_optimization_bound": 44,
+    "source_output": "01_canonical_bendlab/results/fit_fig1c.csv",
+    "producer": "01_canonical_bendlab/fit_real.py::main and plant_spread",
+    "derivation_note": "The in-sample RMSE and spread medians are recomputed from the saved per-plant CSV because no separate overall summary field is stored."
+  },
+  "model_selection_20_seedlings": {
+    "separation_degrees": 160,
+    "intensity_ratio": 2.0,
+    "seedlings_per_dataset": 20,
+    "true_mechanism_rows": [
+      {
+        "true_model": "physical",
+        "replicates": 25,
+        "correct_selection_fraction": 1.0
+      },
+      {
+        "true_model": "transduced_source",
+        "replicates": 25,
+        "correct_selection_fraction": 0.88
+      },
+      {
+        "true_model": "circumference",
+        "replicates": 25,
+        "correct_selection_fraction": 1.0
+      }
+    ],
+    "correct_selections": 72,
+    "datasets_total": 75,
+    "pooled_correct_fraction": 0.96,
+    "source_output": "01_canonical_bendlab/results/exp_design_model_selection.csv",
+    "producer": "01_canonical_bendlab/exp_design_model_selection.py"
+  },
+  "h4_ari_reproduction": {
+    "ari_static_vs_sweep": 0.4416816742662783,
+    "n_simulated_parameter_vectors": 6000,
+    "n_clusters": 6,
+    "population_seed": 21,
+    "kmeans_seed": 13,
+    "kmeans_n_init": 10,
+    "duration_hours": 24.0,
+    "record_interval_hours": 0.5,
+    "persistence_threshold": 0.5,
+    "reported_ari_three_decimals": 0.442,
+    "source_code": "01_canonical_bendlab/round1.py::run_h4_h6",
+    "reproduction_scope": "H4 static-versus-sweep simulation and clustering only; H6 is not run"
+  },
+  "phase_e_baseline_and_w1_rounding": {
+    "primary_success": false,
+    "fixed_threshold_degrees": 9.73,
+    "w3_primary_median_rmse_degrees": 9.996777824068058,
+    "baseline_reproduction_checks": [
+      {
+        "model": "W1",
+        "existing_benchmark_median_rmse_deg": 14.407214533499543,
+        "reproduced_median_rmse_deg": 14.407214538481043,
+        "delta_deg": 4.981499657219501e-09,
+        "within_tolerance": true
+      },
+      {
+        "model": "W2",
+        "existing_benchmark_median_rmse_deg": 9.970707636336023,
+        "reproduced_median_rmse_deg": 9.978097434519338,
+        "delta_deg": 0.007389798183314866,
+        "within_tolerance": true
+      },
+      {
+        "model": "B1",
+        "existing_benchmark_median_rmse_deg": 9.734699794356064,
+        "reproduced_median_rmse_deg": 9.734699794356064,
+        "delta_deg": 0.0,
+        "within_tolerance": true
+      },
+      {
+        "model": "B1r",
+        "existing_benchmark_median_rmse_deg": 10.025806219377554,
+        "reproduced_median_rmse_deg": 10.025806219377554,
+        "delta_deg": 0.0,
+        "within_tolerance": true
+      },
+      {
+        "model": "B2",
+        "existing_benchmark_median_rmse_deg": 10.916628253442823,
+        "reproduced_median_rmse_deg": 10.916628259212938,
+        "delta_deg": 5.770115052428082e-09,
+        "within_tolerance": true
+      }
+    ],
+    "all_five_baselines_within_tolerance": true,
+    "w1_b0_median_degrees": 14.407214533499543,
+    "w1_phase_e_reproduced_median_degrees": 14.407214538481043,
+    "w1_cross_run_delta_degrees": 4.981499657219501e-09,
+    "w1_rounding": {
+      "two_decimals": 14.41,
+      "four_decimals": 14.4072
+    },
+    "phase_e_source_output": "02_workstream_A_external_benchmark/workstream_a/outputs/phase_e_w3_summary.json",
+    "b0_source_output": "02_workstream_A_external_benchmark/workstream_a/outputs/benchmark_summary.json"
+  },
+  "max_rate_identifiability_reconciliation": {
+    "phase_a_jacobian_flag_count": 47,
+    "direct_observed_peak_cap_above_count": 40,
+    "direct_observed_peak_cap_at_or_below_count": 8,
+    "source_output": "07_evidence_pack/outputs/identifiability_count.json"
+  },
+  "root_simulator_frame_check": {
+    "source_code": "sim.py::batch_simulate",
+    "static_light_interface": "default light_fn uses each supplied phi0",
+    "phi_degrees": [
+      90.0,
+      90.0
+    ],
+    "theta0_degrees": [
+      5.0,
+      40.0
+    ],
+    "k_degrees_per_hour": [
+      10.0,
+      10.0
+    ],
+    "tau_hours": [
+      2.2,
+      2.2
+    ],
+    "max_rate_degrees_per_hour": [
+      200.0,
+      200.0
+    ],
+    "dt_hours": 0.016666666666666666,
+    "duration_hours": 24.0,
+    "terminal_theta_degrees": [
+      90.68702811075718,
+      90.37605314667597
+    ],
+    "theta0_5_terminal_rounded_1dp": 90.7,
+    "test_values_are_explicitly_chosen": true,
+    "fit_or_parameter_optimization_run": false
+  },
+  "input_files": [
+    "01_canonical_bendlab/results/fit_fig1c.csv",
+    "01_canonical_bendlab/results/exp_design_model_selection.csv",
+    "02_workstream_A_external_benchmark/workstream_a/outputs/phase_e_w3_summary.json",
+    "02_workstream_A_external_benchmark/workstream_a/outputs/benchmark_summary.json",
+    "07_evidence_pack/outputs/identifiability_count.json"
+  ]
+}
