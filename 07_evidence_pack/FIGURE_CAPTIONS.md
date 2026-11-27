@@ -7,6 +7,7 @@
 | `07_evidence_pack/figures/fig03_intensity_transfer.png` | `07_evidence_pack/figures/fig03_intensity_transfer.py` | `02_workstream_A_external_benchmark/workstream_a/outputs/phase_e_w3_primary_by_intensity.csv` |
 | `07_evidence_pack/figures/fig04_growth_coupling_nulls.png` | `07_evidence_pack/figures/fig04_growth_coupling_nulls.py` | `06_growth_coupling/outputs/analysis_results_amended.json`; `06_growth_coupling/outputs/amended_task4_null_rhos.csv` |
 | `07_evidence_pack/figures/fig05_zt9_transfer.png` | `07_evidence_pack/figures/fig05_zt9_transfer.py` | `01_canonical_bendlab/results/clock_validation_shared_heldout.csv` |
+| `07_evidence_pack/figures/fig06_phase_e_equivalence.png` | `07_evidence_pack/figures/fig06_phase_e_equivalence.py` | `02_workstream_A_external_benchmark/workstream_a/outputs/phase_e_w3_heldout_per_plant.csv`; `02_workstream_A_external_benchmark/workstream_a/outputs/phase_e_w3_summary.json` |
 
 ## `fig01_identifiability_rate_cap.png`
 
@@ -27,3 +28,7 @@ The horizontal axis is partial Spearman rho, a dimensionless statistic, and the 
 ## `fig05_zt9_transfer.png`
 
 The horizontal axis identifies the base scalar and shared-clock models, and the vertical axis shows per-plant held-out RMSE, in degrees. The paired points represent the same n = 6 held-out ZT9 plants under both models (`01_canonical_bendlab/results/clock_validation_shared_heldout.csv`; `01_canonical_bendlab/results/clock_validation_summary.json`). No horizontal threshold line is drawn; grey segments connect each plant's paired errors (`07_evidence_pack/figures/fig05_zt9_transfer.py`). The shared-clock fit excluded ZT9, and this comparison does not show the separate per-plant free-clock refit or establish a circadian mechanism (`01_canonical_bendlab/results/clock_validation_summary.json`; `docs/CURRENT_STATUS.md`).
+
+## `fig06_phase_e_equivalence.png`
+
+The left panel's horizontal axis is W3 per-plant held-out RMSE, in degrees, and its vertical axis is B1 per-plant held-out RMSE, in degrees. Each point is one paired plant, n = 268 (`02_workstream_A_external_benchmark/workstream_a/outputs/phase_e_w3_heldout_per_plant.csv`; `02_workstream_A_external_benchmark/workstream_a/outputs/phase_e_w3_summary.json`). The solid diagonal is labelled "equal performance"; points on either side show which model had the lower RMSE for that plant (`07_evidence_pack/figures/fig06_phase_e_equivalence.py`). In the right panel, the horizontal axis is the paired difference W3 minus B1 RMSE, in degrees, and the vertical axis is plants per histogram bin, a count. The marked median difference is +0.0509 degrees, with a 95 per cent percentile-bootstrap interval of [-0.1954, +0.2798] degrees from 2,000 resamples with seed 0; the interval spans the solid zero reference (`02_workstream_A_external_benchmark/workstream_a/outputs/phase_e_w3_summary.json`, `paired_equivalence.W3_minus_B1`; recomputed and asserted by `07_evidence_pack/figures/fig06_phase_e_equivalence.py`). This result is described as parity in the held-out comparison, not superiority or formal equivalence, and it is not evidence of a mechanism (`02_workstream_A_external_benchmark/PHASE_E_RESULTS.md`).
