@@ -9,7 +9,7 @@ static-versus-sweep simulation/clustering reproduction. Neither performs
 parameter fitting. A deterministic `sim.py::batch_simulate` convention check
 uses explicitly chosen parameters and is not a historical benchmark.
 
-Do **not** rerun `01_canonical_bendlab/phase_a.py` as part of this pack. Its
+Do **not** rerun `phase_a.py` as part of this pack. Its
 committed `results/phaseA_run.log` contains a recorded traceback. No Phase A,
 Phase E, growth-coupling, inverse-model, or other parameter fits were rerun for
 this pack. The committed Phase E baseline checks were read and validated from
@@ -100,7 +100,7 @@ with `sha256sum -c SHA256SUMS.txt`.
 | `fig02_external_benchmark_rmse.py` | `02_workstream_A_external_benchmark/workstream_a/outputs/phase_e_w3_heldout_per_plant.csv` | `figures/fig02_external_benchmark_rmse.png` |
 | `fig03_intensity_transfer.py` | `02_workstream_A_external_benchmark/workstream_a/outputs/phase_e_w3_primary_by_intensity.csv` | `figures/fig03_intensity_transfer.png` |
 | `fig04_growth_coupling_nulls.py` | `06_growth_coupling/outputs/analysis_results_amended.json`, `amended_task4_null_rhos.csv` | `figures/fig04_growth_coupling_nulls.png` |
-| `fig05_zt9_transfer.py` | `01_canonical_bendlab/results/clock_validation_shared_heldout.csv` | `figures/fig05_zt9_transfer.png` |
+| `fig05_zt9_transfer.py` | `results/clock_validation_shared_heldout.csv` | `figures/fig05_zt9_transfer.png` |
 
 Figure 4 summarizes the 1,000 stored eligible-sample draws for each of the
 four amended null series; its intervals are recomputed as linear 2.5th, 50th,

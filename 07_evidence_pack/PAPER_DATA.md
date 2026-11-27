@@ -10,7 +10,7 @@
 
 ### Canonical Fig1C curves
 
-- Saved Fig1C fit rows: 48 plants. Source: `01_canonical_bendlab/results/fit_fig1c.csv`; measured source workbook: `01_canonical_bendlab/data/real/stem_angles_plosbiol2023_s13.xlsx`, sheet `Fig1C`.
+- Saved Fig1C fit rows: 48 plants. Source: `results/fit_fig1c.csv`; measured source workbook: `data/real/stem_angles_plosbiol2023_s13.xlsx`, sheet `Fig1C`.
 
 ### Growth length-paired subset
 
@@ -50,17 +50,17 @@ PY
 
 ## 3. Identifiability
 
-- Jacobian criterion: 47 of 48 saved fits have non-finite `max_rate_se` and `max_rate_rel_se` values. `phase_a.py` sets the standard error to infinity when the residual-Jacobian column norm is below 1e-9. Sources: `01_canonical_bendlab/results/phaseA_fit_uncertainty.csv`; `01_canonical_bendlab/phase_a.py`; `01_canonical_bendlab/results/phaseA_summary.json`.
-- Direct observed-peak criterion: in 40 of 48 plants, the fitted cap is above that plant's maximum absolute adjacent-sample observed rate; 8 of 48 are at or below the observed peak. Source: `07_evidence_pack/outputs/identifiability_count.json`; rate definition: `01_canonical_bendlab/features.py`, `peak_rate`.
-- These criteria answer different questions. The paper will use the Jacobian count because it concerns local estimability, not merely the fitted cap's position relative to the observed peak. Sources: `01_canonical_bendlab/phase_a.py`; `01_canonical_bendlab/results/phaseA_fit_uncertainty.csv`; `07_evidence_pack/outputs/identifiability_count.json`.
-- Median within-cluster range-retention fractions: k = 0.766, tau = 0.976, max_rate = 0.999, phi0 = 0.835. The criterion is at least 3 of 4 parameters retaining at least 20 per cent. Source: `01_canonical_bendlab/results/audit_followup_summary.json`, `H1_as_written`.
-- The max_rate retention fraction of 0.999 follows from the cap not binding and is a consequence of that condition, not an independent finding. Sources: `01_canonical_bendlab/results/audit_followup_summary.json`; `01_canonical_bendlab/results/phaseA_summary.json`; `01_canonical_bendlab/docs/CURRENT_STATUS.md`; `01_canonical_bendlab/phase_a.py`.
+- Jacobian criterion: 47 of 48 saved fits have non-finite `max_rate_se` and `max_rate_rel_se` values. `phase_a.py` sets the standard error to infinity when the residual-Jacobian column norm is below 1e-9. Sources: `results/phaseA_fit_uncertainty.csv`; `phase_a.py`; `results/phaseA_summary.json`.
+- Direct observed-peak criterion: in 40 of 48 plants, the fitted cap is above that plant's maximum absolute adjacent-sample observed rate; 8 of 48 are at or below the observed peak. Source: `07_evidence_pack/outputs/identifiability_count.json`; rate definition: `features.py`, `peak_rate`.
+- These criteria answer different questions. The paper will use the Jacobian count because it concerns local estimability, not merely the fitted cap's position relative to the observed peak. Sources: `phase_a.py`; `results/phaseA_fit_uncertainty.csv`; `07_evidence_pack/outputs/identifiability_count.json`.
+- Median within-cluster range-retention fractions: k = 0.766, tau = 0.976, max_rate = 0.999, phi0 = 0.835. The criterion is at least 3 of 4 parameters retaining at least 20 per cent. Source: `results/audit_followup_summary.json`, `H1_as_written`.
+- The max_rate retention fraction of 0.999 follows from the cap not binding and is a consequence of that condition, not an independent finding. Sources: `results/audit_followup_summary.json`; `results/phaseA_summary.json`; `docs/CURRENT_STATUS.md`; `phase_a.py`.
 
 ## 4. In-sample fit and transfer
 
-- Saved Fig1C median per-plant RMSE: 1.8011 degrees. Median between-plant spread: 8.5824 degrees. Source for both saved per-plant columns and their aggregation: `01_canonical_bendlab/results/fit_fig1c.csv`; derived aggregate check: `07_evidence_pack/outputs/committed_number_audit.json`.
-- Leave-one-block-out median curve RMSE: 11.7539 degrees. Mean band coverage: 0.88065. Source: `01_canonical_bendlab/results/phaseA_summary.json`; related audit record: `docs/AUDIT_FOLLOWUP_RESULTS.md`.
-- Held-out ZT9 transfer: median RMSE was 2.4198 degrees for the static base model and 1.4392 degrees for the shared-clock model across 6 plants; all 6 per-plant errors decreased. The shared clock was fitted without ZT9. Sources: `01_canonical_bendlab/results/clock_validation_summary.json`; `01_canonical_bendlab/results/clock_validation_shared_heldout.csv`.
+- Saved Fig1C median per-plant RMSE: 1.8011 degrees. Median between-plant spread: 8.5824 degrees. Source for both saved per-plant columns and their aggregation: `results/fit_fig1c.csv`; derived aggregate check: `07_evidence_pack/outputs/committed_number_audit.json`.
+- Leave-one-block-out median curve RMSE: 11.7539 degrees. Mean band coverage: 0.88065. Source: `results/phaseA_summary.json`; related audit record: `docs/AUDIT_FOLLOWUP_RESULTS.md`.
+- Held-out ZT9 transfer: median RMSE was 2.4198 degrees for the static base model and 1.4392 degrees for the shared-clock model across 6 plants; all 6 per-plant errors decreased. The shared clock was fitted without ZT9. Sources: `results/clock_validation_summary.json`; `results/clock_validation_shared_heldout.csv`.
 
 ## 5. External benchmark
 

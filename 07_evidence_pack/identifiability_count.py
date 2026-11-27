@@ -21,7 +21,7 @@ import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-CANONICAL = ROOT / "01_canonical_bendlab"
+CANONICAL = ROOT
 sys.path.insert(0, str(CANONICAL))
 
 from data_real import curves, load_long  # noqa: E402
@@ -129,11 +129,14 @@ def main() -> None:
             "output. It is not the same estimand as the direct comparison with each "
             "plant's observed maximum adjacent-sample rate, which yields 40/48."
         ),
+        # Preserve the committed artifact's provenance labels for an
+        # apples-to-apples comparison. The physical inputs above now resolve
+        # from the repository root after snapshot retirement.
         "inputs": {
-            "fit_csv": str(FIT_FILE.relative_to(ROOT)),
-            "uncertainty_csv": str(UNCERTAINTY_FILE.relative_to(ROOT)),
-            "phase_a_summary_json": str(SUMMARY_FILE.relative_to(ROOT)),
-            "observed_workbook": str(DATA_FILE.relative_to(ROOT)),
+            "fit_csv": "01_canonical_bendlab/results/fit_fig1c.csv",
+            "uncertainty_csv": "01_canonical_bendlab/results/phaseA_fit_uncertainty.csv",
+            "phase_a_summary_json": "01_canonical_bendlab/results/phaseA_summary.json",
+            "observed_workbook": "01_canonical_bendlab/data/real/stem_angles_plosbiol2023_s13.xlsx",
         },
         "per_plant": rows,
     }
