@@ -2,14 +2,16 @@
 
 This index maps the repository's tracked Markdown documents and user-facing
 HTML pages. Data files, logs, generated figures, code, and archived binary
-outputs are not enumerated individually; the reports below identify their
-locations and point to specific sources.
+outputs are not enumerated individually; the [Research Map](RESEARCH_MAP.md)
+identifies their locations and the evidence documents point to specific
+sources.
 
 ## Start here
 
 | Document | Use |
 |---|---|
-| [Root README](../README.md) | Project overview, model, major findings, current status, and entry points |
+| [Root README](../README.md) | Concise project entry point and reading order |
+| [Research map](RESEARCH_MAP.md) | Directory/section map, categorized root scripts, and evidence routes |
 | [Current status](CURRENT_STATUS.md) | Canonical cross-workstream findings, withdrawals, and open questions |
 | [Quickstart](QUICKSTART.md) | Fresh-clone installation, tests, and verified artifact regeneration |
 | [Implementation status](IMPLEMENTATION_STATUS.md) | Implementation and evidence status by workstream |
@@ -32,6 +34,7 @@ locations and point to specific sources.
 | [Explainer](EXPLAINER.md) | Project overview and reading sequence |
 | [Explainer, part 2](EXPLAINER_PART2.md) | Simulation experiments, validation, and corrections |
 | [Project briefing](PROJECT_BRIEFING.md) | Expanded project briefing and research context |
+| [Full project overview](PROJECT_OVERVIEW.md) | Preserved longer version of the former root README |
 | [Results round 0](RESULTS_ROUND0.md) | Model fitting, parameter degeneracy, corrections, and error log |
 | [Results round 1](RESULTS_ROUND1.md) | H3-H8 analyses and independent audit |
 | [Results round 2, ZT9](RESULTS_ROUND2_ZT9.md) | Diagnostics for the ZT9 model limitation |
