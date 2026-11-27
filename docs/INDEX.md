@@ -11,6 +11,7 @@ sources.
 | Document | Use |
 |---|---|
 | [Root README](../README.md) | Concise project entry point and reading order |
+| [Reading paths](READING_PATH.md) | Four short routes for orientation, checking a number, reproduction, and extension |
 | [Research map](RESEARCH_MAP.md) | Directory/section map, categorized root scripts, and evidence routes |
 | [Current status](CURRENT_STATUS.md) | Canonical cross-workstream findings, withdrawals, and open questions |
 | [Quickstart](QUICKSTART.md) | Fresh-clone installation, tests, and verified artifact regeneration |
@@ -66,6 +67,26 @@ sources.
 | [Phase D design plan](../growth_phase/PHASE_D_DESIGN_SIMULATION_PLAN.md) | Preregistered prospective design simulation plan |
 | [Phase D design results](../growth_phase/PHASE_D_DESIGN_SIMULATION_RESULTS.md) | Sample-size and design simulation findings |
 | [Phase E preregistration](../growth_phase/PHASE_E_PREREGISTRATION.md) | Preregistered W3 model and evaluation criteria |
+
+## Growth coupling, directory 06
+
+| Document | Use |
+|---|---|
+| [Growth-coupling preregistration](../06_growth_coupling/PREREGISTRATION.md) | Registered questions, endpoints, and decision rules |
+| [Growth-coupling results](../06_growth_coupling/RESULTS.md) | Observational association, endpoint sensitivities, and conditional null analyses |
+
+## Evidence pack, directory 07
+
+| Document | Use |
+|---|---|
+| [Evidence-pack README](../07_evidence_pack/README.md) | Scope, key reconciliations, and paper-facing order |
+| [Paper data sheet](../07_evidence_pack/PAPER_DATA.md) | Source-linked numerical values, definitions, and discrepancies |
+| [Paper outline](../07_evidence_pack/PAPER_OUTLINE.md) | Proposed paper sections and claim limits |
+| [Quantitative-claim audit](../07_evidence_pack/CLAIM_AUDIT.md) | Audit of numerical statements in project summaries |
+| [Figure captions](../07_evidence_pack/FIGURE_CAPTIONS.md) | Figure sources, axes, and interpretation limits |
+| [Evidence-pack reproducibility](../07_evidence_pack/REPRODUCIBILITY.md) | Commands, inputs, scope, and figure provenance |
+| [Project close](../07_evidence_pack/PROJECT_CLOSE.md) | Evidence summary, limitations, and requirements for a next study |
+| [Release readiness](../07_evidence_pack/RELEASE_READINESS.md) | Release checklist and evidence-pack status |
 
 ## Archived packaging notes
 

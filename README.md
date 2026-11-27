@@ -1,5 +1,7 @@
 # BendLab
 
+[Choose a reading path](docs/READING_PATH.md)
+
 **Parameter identifiability in a minimal model of phototropic stem bending**
 
 BendLab asks what stem-angle trajectories can reveal about a plant's internal parameters. It combines a four-parameter simulator, fits to published sunflower trajectories, external benchmarking, shape-extension audits, and growth-aware analyses.

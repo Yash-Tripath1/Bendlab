@@ -42,6 +42,7 @@
       <li><b>Fitting is not predicting:</b> the model fits published curves well in-sample (median 1.80 degrees on PLOS Biology S13 Fig1C) but predicts held-out stimulus-onset groups weakly (11.75 degrees).</li>
       <li><b>External benchmark (Phase B0, n = 268):</b> on independent unilateral-light trajectories across 10 intensities (Kempinski et al. 2026), fixing <code>phi = 90°</code> overshoots (14.41° held-out median RMSE vs 9.73° group-mean baseline) because <code>phi0</code> in the minimal model acts as an empirical equilibrium angle (measured plateaus 18–37°; per-plant <code>phi_free</code> median 28.8°) rather than physical lamp geometry; the <code>W2</code> effective-angle diagnostic reaches 9.97°.</li>
       <li><b>Shape &amp; growth extensions:</b> observing full multi-segment stem curvature reduces <code>k</code> twin-lookup error by 33–49% (46.8% on a leakage-safe split, while <code>max_rate</code> stays unidentifiable); starting hypocotyl length <code>L0</code> (n = 213) is associated with faster 0–2 h bending (+2.12 °/h per log unit, 95% CI [0.66, 3.62]) without improving held-out ODE trajectory RMSE over M0 (10.25°, all variants within 1.5%).</li>
+      <li><b>Phase E primary result is negative:</b> preregistered W3 median held-out RMSE is 9.9968 degrees, above the strict-below 9.73-degree criterion. B1 is 9.7347 degrees. The paired W3-minus-B1 median difference is +0.0509 degrees (95% bootstrap interval [-0.1954, +0.2798]); this is not W3 superiority or a formal equivalence test.</li>
     </ul>
   </div>
 
@@ -65,6 +66,11 @@
     </ul>
   </div>
 
+  <div class="card wide">
+    <h2>Closing state</h2>
+    <p class="small">BendLab closes as a study of identifiability and held-out prediction within the stated model classes and archived assays. The evidence establishes no causal growth mechanism, validated biological mechanism, or wet-lab performance. The Phase E primary threshold result remains negative; it is not retuned into a success. A future study would need repeated within-plant length measurements, direct curvature measurements, and appropriately specified light exposures to resolve the remaining questions.</p>
+  </div>
+
   <div class="card">
     <h2>Where to read more</h2>
     <ul>
@@ -74,6 +80,8 @@
       <li><a href="https://github.com/Yash-Tripath1/Bendlab/blob/main/03_workstream_B_shape_extension_audit/SHAPE_EXTENSION_AUDIT.md">Multi-segment stem shape extension audit</a></li>
       <li><a href="https://github.com/Yash-Tripath1/Bendlab/blob/main/growth_phase/PHASE_BC_RESULTS.md">Growth-aware phototropism results (Phases A–C)</a></li>
       <li><a href="https://github.com/Yash-Tripath1/Bendlab/blob/main/docs/AUDIT_FOLLOWUP_RESULTS.md">Experiment series 1 external-audit follow-up</a></li>
+      <li><a href="https://github.com/Yash-Tripath1/Bendlab/blob/main/07_evidence_pack/PROJECT_CLOSE.md">Evidence-pack project close</a></li>
+      <li><a href="https://github.com/Yash-Tripath1/Bendlab/blob/main/07_evidence_pack/PAPER_DATA.md">Paper data sheet and discrepancies</a></li>
       <li><a href="https://github.com/Yash-Tripath1/Bendlab">Full repository on GitHub</a></li>
     </ul>
   </div>
