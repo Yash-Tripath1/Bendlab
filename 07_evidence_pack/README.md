@@ -7,12 +7,12 @@ this directory was changed.
 
 ## Start here
 
-- [`CLAIM_AUDIT.md`](CLAIM_AUDIT.md) — quantitative-claim audit of the root
+- [`CLAIM_AUDIT.md`](CLAIM_AUDIT.md): quantitative-claim audit of the root
   [`README.md`](../README.md), [`docs/CURRENT_STATUS.md`](../docs/CURRENT_STATUS.md),
   and [`06_growth_coupling/RESULTS.md`](../06_growth_coupling/RESULTS.md).
-- [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md) — environment, commands, inputs,
+- [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md): environment, commands, inputs,
   scope, and figure notes.
-- [`requirements-evidence.txt`](requirements-evidence.txt) — exact Python
+- [`requirements-evidence.txt`](requirements-evidence.txt): exact Python
   package versions used for this pack's audit and plots.
 
 ## Key reconciliation
