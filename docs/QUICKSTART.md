@@ -1,9 +1,10 @@
 # Fresh-clone quickstart
 
 This short workflow covers the canonical project entry points, the test
-suite, and one saved figure/results regeneration. Use Python 3.10 or later.
-Run commands from the repository root unless a command explicitly changes
-directories.
+suite, and one saved figure/results regeneration. Use Python 3.11. The root
+requirements install the general analysis and test stack; exact saved-value
+reproduction uses a separate environment with the evidence pins. Run commands
+from the repository root unless a command explicitly changes directories.
 
 ## Clone and install
 
@@ -23,6 +24,35 @@ Start with [`README.md`](../README.md), then read
 ```bash
 python -m pytest -q
 ```
+
+## Reproduce the Phase E W3 result
+
+Run these commands from a disposable fresh clone only; they write to the
+workstream output paths. Create a separate environment for the pinned evidence
+stack rather than adding these pins to the general `.venv`: the root
+requirements include `lifelines`, which currently requires pandas below 3.0,
+while the evidence stack pins `pandas==3.1.1`.
+
+```bash
+python -m venv .venv-evidence
+.venv-evidence/bin/python -m pip install -r 07_evidence_pack/requirements-evidence.txt
+.venv-evidence/bin/python 02_workstream_A_external_benchmark/workstream_a/phase_e_w3_equilibrium.py
+.venv-evidence/bin/python 02_workstream_A_external_benchmark/workstream_a/phase_e_paired_equivalence.py
+```
+
+The pinned environment used for the reported W3 median RMSE of **9.9968°**
+includes NumPy 2.4.6, pandas 3.1.1, and SciPy 1.17.1. An environment using
+only the unpinned minimum-version requirements produced 10.0303° in the audit
+sweep, so those floors are not sufficient for exact reproduction.
+
+Run the paired-comparison script **after** the W3 script. The W3 script
+rewrites the summary at
+`02_workstream_A_external_benchmark/workstream_a/outputs/phase_e_w3_summary.json`;
+the paired script then adds its `paired_equivalence` block. Rerunning W3
+afterward removes that block, so rerun the paired script after every W3 rerun.
+The paired block is not a formal
+TOST equivalence test; see [`PHASE_E_RESULTS.md`](../02_workstream_A_external_benchmark/PHASE_E_RESULTS.md)
+for its interpretation.
 
 ## Regenerate one figure and one results file
 

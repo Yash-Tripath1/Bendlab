@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: >-
+  This citation describes the archived BendLab v1.0.0 software release only.
+  It does not identify the later post-Phase B0-through-E code in the current
+  repository. When a future paper-facing version is archived, cite that
+  version-specific DOI instead.
+title: BendLab
+type: software
+authors:
+  - family-names: Tripathi
+    given-names: Anadi
+  - family-names: Siddiqui
+    given-names: Umaid
+version: 1.0.0
+date-released: '2026-10-18'
+doi: '10.5281/zenodo.23457746'
+repository-code: 'https://github.com/Yash-Tripath1/Bendlab'
+url: 'https://zenodo.org/records/23457746'
+identifiers:
+  - type: doi
+    value: '10.5281/zenodo.23457744'
+    description: Zenodo concept DOI for the software version series

@@ -1,4 +1,4 @@
-# Shape extension — results
+# Shape extension -- results
 
 **Date:** 18 October 2026
 **Branch:** `shape-extension`
@@ -38,7 +38,7 @@ Retention (median within-cluster IQR / full range):
 | c | 51.0% | 51.3% | -0.3 |
 
 **Verdict against the pre-registered criterion (>= 10 pp reduction for
->= 2 parameters): NOT SUPPORTED — falsified as specified. No parameter
+>= 2 parameters): NOT SUPPORTED -- falsified as specified. No parameter
 shows a reduction of even 1 pp.**
 
 Two independent confirmations that the tip arm is faithfully the H1
@@ -71,7 +71,7 @@ saved feature table:
 uniform initial state, the chain's uniform subspace is invariant (the
 discrete Laplacian is exactly zero) and it is also attracting: both the
 tropic drive and the elastic coupling act as restoring terms against
-curvature. A uniform chain therefore rotates as a rigid rod — the model
+curvature. A uniform chain therefore rotates as a rigid rod -- the model
 is dynamically the rigid sim.py model with extra labels. Rigid rotation
 cannot report shape, so the shape arm carried literally zero
 information and the v1 comparison was uninformative about the value of
@@ -142,7 +142,7 @@ Retention (median within-cluster IQR / full range):
 | zeta | 44.2% | 41.5% | +2.7 |
 
 **Verdict against the pre-registered criterion (>= 10 pp reduction for
->= 2 of the four original parameters): NOT SUPPORTED — falsified as
+>= 2 of the four original parameters): NOT SUPPORTED -- falsified as
 specified. No original parameter reaches the threshold; for three of the
 four, retention is WORSE under the shape arm.**
 
@@ -154,8 +154,8 @@ original parameters do not benefit at all.
 Cluster structure is consistent with that reading: the largest tip-only
 cluster holds 2,751 plants, the largest shape-arm cluster 4,089. Once
 the clustering metric is dominated by the eight shape features (8 of 14
-dimensions after scaling), plants group by shape-making similarity —
-largely c and zeta — and within those shape-homogeneous groups the drive
+dimensions after scaling), plants group by shape-making similarity --
+largely c and zeta -- and within those shape-homogeneous groups the drive
 parameters k, tau, max_rate and phi0 are freer to vary, not less.
 Adding shape features to the clustering set actively displaced the
 drive-parameter information the tip features carried.
@@ -168,13 +168,13 @@ warning about that metric (H2, `docs/RESULTS_ROUND1.md`): cluster
 retention is a blunt instrument, and a negative under it is evidence
 about the metric as much as about the hypothesis. What v2 does show is
 that the curvature profile identifies the shape-making parameters of the
-model class (c materially; zeta weakly) — measurement of shape answers
+model class (c materially; zeta weakly) -- measurement of shape answers
 questions about shape.
 
 **Declared follow-ups (not run, not used to reinterpret the verdict).**
 Each requires its own pre-registration: (1) shape-only arm vs tip-only,
 without mixing the two in one metric; (2) a more sensitive
-identifiability metric — nearest-neighbour parameter recovery as in H7 —
+identifiability metric -- nearest-neighbour parameter recovery as in H7 --
 applied to both arms; (3) a moving-light protocol arm; (4) observation
 noise, at the measured-data cadence and amplitude. Image-derived stem
 tracing remains the data requirement for any claim about living plants.
@@ -198,7 +198,7 @@ range): with COMBINED features the behavioural twin's parameter error
 falls to 5.0% (k), 4.3% (phi0), 7.1% (zeta) against 11.8%, 10.2%, 19.1%
 with tip-only features.
 
-Probe B (twin refinement — the original shape method, stated properly:
+Probe B (twin refinement -- the original shape method, stated properly:
 among a plant's 20 nearest tip-space neighbours, pick the one closest in
 shape space): error falls from 11.8% to 6.0% (k), 10.2% to 5.5% (phi0),
 24.7% to 13.9% (c), 19.1% to 8.6% (zeta). tau and max_rate do not
@@ -214,7 +214,7 @@ Reading: the H-SHAPE-v2 negative was a decoder failure (shape dimensions
 displacing tip dimensions in a KMeans distance, scored by the blunt
 cluster-retention metric), not an information failure. Shape features
 identify parameters, and among tip-space curve twins they identify which
-twin is which — the original idea of this extension.
+twin is which -- the original idea of this extension.
 
 ## 8. Twin-refinement v3 (pre-registered)
 
@@ -250,7 +250,7 @@ the extension parameters c and zeta.
 
 **Declared expectations.** The exploration suggests k and phi0 will
 qualify and tau and max_rate will not (max_rate because the cap rarely
-binds — an exact-degeneracy property from H1, not a method failure).
+binds -- an exact-degeneracy property from H1, not a method failure).
 The criterion is unchanged by this expectation.
 
 ## 9. Twin-refinement v3: results
@@ -311,7 +311,7 @@ What shape cannot do is equally clear and equally informative:
 
 - **max_rate** stays at chance in every arm. The oracle row (1.68 per
   cent) shows the 20 twins do contain near-correct max_rate values, but
-  shape cannot tell which — and when the rate cap does not bind, no
+  shape cannot tell which -- and when the rate cap does not bind, no
   observable can (the H1 exact-degeneracy result). This is a property
   of the parameter under static light, not of the method.
 - **tau** does not improve under twin refinement (though the combined
@@ -322,7 +322,7 @@ What shape cannot do is equally clear and equally informative:
 
 **Conclusion for the shape-measurement question.** Measuring angles
 between the vertical and multiple points of the stem does make plants
-tell apart what a single bending curve conflates — for the response
+tell apart what a single bending curve conflates -- for the response
 gain and the target angle, and for the shape-making parameters of the
 model class. It is not a universal key (tau, max_rate under non-binding
 caps), and it requires a decoder that respects what each observable
