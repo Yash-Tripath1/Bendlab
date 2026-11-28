@@ -12,7 +12,7 @@ import pandas as pd
 from matplotlib.lines import Line2D
 
 ROOT = Path(__file__).resolve().parents[2]
-SOURCE = ROOT / "01_canonical_bendlab/results/clock_validation_shared_heldout.csv"
+SOURCE = ROOT / "results/clock_validation_shared_heldout.csv"
 OUTPUT = ROOT / "07_evidence_pack/figures/fig05_zt9_transfer.png"
 
 

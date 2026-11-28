@@ -2,7 +2,7 @@
 """Train a neural inverse model for BendLab: bending curve -> parameters.
 
 Trains an ensemble of small MLPs on simulated trajectories
-(results/adaption_inverse_dataset.csv, uniform population, seed 777).
+(results/adaptation_inverse_dataset.csv, uniform population, seed 777).
 Targets are k, tau, max_rate, phi0. Ensemble spread is exported with the
 weights so downstream tools can report model disagreement as a simple
 uncertainty signal. Evaluation uses a held-out split, the 10-plant
@@ -56,7 +56,7 @@ def make_model(seed: int) -> MLPRegressor:
 
 def main() -> None:
     t0 = time.time()
-    df = pd.read_csv("results/adaption_inverse_dataset.csv")
+    df = pd.read_csv("results/adaptation_inverse_dataset.csv")
     X_raw = df[ANGLE_COLS].to_numpy(float)
     y = df[TARGETS].to_numpy(float)
     rng = np.random.default_rng(123)
@@ -99,8 +99,8 @@ def main() -> None:
 
     rows = [evaluate("heldout_split", X_raw[te], y[te])]
 
-    prompts = pd.read_csv("results/adaption_test_prompts.csv")
-    truth10 = pd.read_csv("results/adaption_test_truth.csv")
+    prompts = pd.read_csv("results/adaptation_test_prompts.csv")
+    truth10 = pd.read_csv("results/adaptation_test_truth.csv")
     curves10 = np.array([[float(v) for v in re.search(r"\[([^\]]+)\]", p).group(1).split(",")]
                          for p in prompts.prompt])
     rows.append(evaluate("adaption_test10", curves10, truth10[TARGETS].to_numpy(float)))

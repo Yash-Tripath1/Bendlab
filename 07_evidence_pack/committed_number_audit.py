@@ -26,7 +26,7 @@ from sklearn.metrics import adjusted_rand_score
 from sklearn.preprocessing import StandardScaler
 
 ROOT = Path(__file__).resolve().parents[1]
-CANONICAL = ROOT / "01_canonical_bendlab"
+CANONICAL = ROOT
 sys.path.insert(0, str(CANONICAL))
 
 import round1  # noqa: E402

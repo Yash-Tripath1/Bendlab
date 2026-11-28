@@ -1,18 +1,18 @@
 # BendLab document index
 
-This inventory covers all tracked Markdown documents and user-facing HTML
-pages in the repository at the consolidation baseline. The fresh clone
-contained 58 tracked Markdown documents and 16 tracked HTML pages before
-this index, implementation status, quickstart, and consolidation record
-were added. The four additions bring the Markdown inventory to 62. Data
-files, logs, generated figures, and code are not enumerated here; their
-locations are identified by the reports below.
+This index maps the repository's tracked Markdown documents and user-facing
+HTML pages. Data files, logs, generated figures, code, and archived binary
+outputs are not enumerated individually; the [Research Map](RESEARCH_MAP.md)
+identifies their locations and the evidence documents point to specific
+sources.
 
 ## Start here
 
 | Document | Use |
 |---|---|
-| [Root README](../README.md) | Project overview, model, major findings, current status, and entry points |
+| [Root README](../README.md) | Concise project entry point and reading order |
+| [Reading paths](READING_PATH.md) | Four short routes for orientation, checking a number, reproduction, and extension |
+| [Research map](RESEARCH_MAP.md) | Directory/section map, categorized root scripts, and evidence routes |
 | [Current status](CURRENT_STATUS.md) | Canonical cross-workstream findings, withdrawals, and open questions |
 | [Quickstart](QUICKSTART.md) | Fresh-clone installation, tests, and verified artifact regeneration |
 | [Implementation status](IMPLEMENTATION_STATUS.md) | Implementation and evidence status by workstream |
@@ -35,6 +35,8 @@ locations are identified by the reports below.
 | [Explainer](EXPLAINER.md) | Project overview and reading sequence |
 | [Explainer, part 2](EXPLAINER_PART2.md) | Simulation experiments, validation, and corrections |
 | [Project briefing](PROJECT_BRIEFING.md) | Expanded project briefing and research context |
+| [Full project overview](PROJECT_OVERVIEW.md) | Preserved longer version of the former root README |
+| [Restructuring verification](RESTRUCTURING_VERIFICATION_2026-11-11.md) | Test, checksum, generation, scan, and tree-count outcomes |
 | [Results round 0](RESULTS_ROUND0.md) | Model fitting, parameter degeneracy, corrections, and error log |
 | [Results round 1](RESULTS_ROUND1.md) | H3-H8 analyses and independent audit |
 | [Results round 2, ZT9](RESULTS_ROUND2_ZT9.md) | Diagnostics for the ZT9 model limitation |
@@ -67,47 +69,47 @@ locations are identified by the reports below.
 | [Phase D design results](../growth_phase/PHASE_D_DESIGN_SIMULATION_RESULTS.md) | Sample-size and design simulation findings |
 | [Phase E preregistration](../growth_phase/PHASE_E_PREREGISTRATION.md) | Preregistered W3 model and evaluation criteria |
 
+## Growth coupling, directory 06
+
+| Document | Use |
+|---|---|
+| [Growth-coupling preregistration](../06_growth_coupling/PREREGISTRATION.md) | Registered questions, endpoints, and decision rules |
+| [Growth-coupling results](../06_growth_coupling/RESULTS.md) | Observational association, endpoint sensitivities, and conditional null analyses |
+
+## Evidence pack, directory 07
+
+| Document | Use |
+|---|---|
+| [Evidence-pack README](../07_evidence_pack/README.md) | Scope, key reconciliations, and paper-facing order |
+| [Paper data sheet](../07_evidence_pack/PAPER_DATA.md) | Source-linked numerical values, definitions, and discrepancies |
+| [Paper outline](../07_evidence_pack/PAPER_OUTLINE.md) | Proposed paper sections and claim limits |
+| [Quantitative-claim audit](../07_evidence_pack/CLAIM_AUDIT.md) | Audit of numerical statements in project summaries |
+| [Figure captions](../07_evidence_pack/FIGURE_CAPTIONS.md) | Figure sources, axes, and interpretation limits |
+| [Evidence-pack reproducibility](../07_evidence_pack/REPRODUCIBILITY.md) | Commands, inputs, scope, and figure provenance |
+| [Project close](../07_evidence_pack/PROJECT_CLOSE.md) | Evidence summary, limitations, and requirements for a next study |
+| [Release readiness](../07_evidence_pack/RELEASE_READINESS.md) | Release checklist and evidence-pack status |
+
 ## Archived packaging notes
 
 | Document | Use |
 |---|---|
 | [Package inventory, 2026-10-23](archive/PACKAGE_README_2026-10-23.md) | Historical package map and provenance record |
 | [Phase B0 fixes, 2026-10-23](archive/PHASE_B0_FIXES_2026-10-23.md) | Historical audit-fix summary and prior duplication recommendation |
+| [Retired snapshot index, 2026-10-16](archive/SNAPSHOT_INDEX_2026-10-16.md) | Commit, recoverability, file count, result comparison, and unique-document move |
+| [Validation run note](archive/CHANGES_2026-10-15_VALIDATION_RUN.md) | Unique snapshot document retained in the archive |
 
-## Frozen snapshots and preserved source documents
+## Preserved and retired snapshots
 
-The directories `01_canonical_bendlab/`, `04_shape_extension_branch/`,
-and `05_data_external/` are preserved snapshots or data packages. They
-were not edited or relocated in this consolidation. Under `growth_phase/`,
-the `_v1` and `_v2` report snapshots are also frozen. The workstream B
-v1 report and its saved result remain historical evidence; only the
-specified v1 script path was made repository-relative. Audit response
-files listed above were left unchanged.
+The former root snapshot `01_canonical_bendlab/` has been retired from the
+current checkout. Its provenance and Git-history recovery point are recorded
+in the [retired snapshot index](archive/SNAPSHOT_INDEX_2026-10-16.md). The
+`04_shape_extension_branch/` snapshot and `05_data_external/` package remain
+present. Under `growth_phase/`, the `_v1` and `_v2` report snapshots remain
+frozen. The workstream B v1 report and saved result remain historical
+evidence; only the specified v1 script path was made repository-relative.
+Audit response files listed above remain unchanged.
 
-### Frozen canonical repository snapshot: `01_canonical_bendlab/`
-
-| Document | Use |
-|---|---|
-| [Snapshot README](../01_canonical_bendlab/README.md) | Frozen canonical-repository README copy |
-| [Snapshot problem statement](../01_canonical_bendlab/PROBLEM_STATEMENT.md) | Frozen problem-statement copy |
-| [Adaptive identification](../01_canonical_bendlab/docs/ADAPTIVE_IDENTIFICATION.md) | Frozen specification copy |
-| [Audit follow-up results](../01_canonical_bendlab/docs/AUDIT_FOLLOWUP_RESULTS.md) | Frozen results copy |
-| [Audit response](../01_canonical_bendlab/docs/AUDIT_RESPONSE_2026-10-16.md) | Frozen response copy |
-| [Changes, 2026-10-15](../01_canonical_bendlab/docs/CHANGES_2026-10-15.md) | Frozen model v2 note |
-| [Validation run note](../01_canonical_bendlab/docs/CHANGES_2026-10-15_VALIDATION_RUN.md) | Frozen snapshot filename retained unchanged |
-| [Current status](../01_canonical_bendlab/docs/CURRENT_STATUS.md) | Frozen historical status copy |
-| [Data contract](../01_canonical_bendlab/docs/DATA_CONTRACT.md) | Frozen data contract copy |
-| [Data sources](../01_canonical_bendlab/docs/DATA_SOURCES.md) | Frozen source list copy |
-| [Explainer](../01_canonical_bendlab/docs/EXPLAINER.md) | Frozen overview copy |
-| [Explainer, part 2](../01_canonical_bendlab/docs/EXPLAINER_PART2.md) | Frozen overview copy |
-| [Model v2 candidates](../01_canonical_bendlab/docs/MODEL_V2_CANDIDATES.md) | Frozen candidate note |
-| [Project briefing](../01_canonical_bendlab/docs/PROJECT_BRIEFING.md) | Frozen briefing copy |
-| [Results round 0](../01_canonical_bendlab/docs/RESULTS_ROUND0.md) | Frozen results copy |
-| [Results round 1](../01_canonical_bendlab/docs/RESULTS_ROUND1.md) | Frozen results copy |
-| [Results round 2, ZT9](../01_canonical_bendlab/docs/RESULTS_ROUND2_ZT9.md) | Frozen results copy |
-| [Clock and proprioception note](../01_canonical_bendlab/sim_clock_gamma.md) | Frozen root documentation copy |
-
-### Frozen shape-extension snapshot: `04_shape_extension_branch/`
+### Preserved shape-extension snapshot: `04_shape_extension_branch/`
 
 | Document | Use |
 |---|---|
@@ -131,11 +133,3 @@ Markdown document. The same trajectory file is also retained under
 | [Published about page](about.html) | Site overview page |
 | [Published model page](model.html) | Site inverse-model page |
 | [Published fitter page](fitter.html) | Site curve-fitter page |
-| [Snapshot project overview](../01_canonical_bendlab/bendlab_about.html) | Frozen HTML snapshot |
-| [Snapshot visual simulator](../01_canonical_bendlab/bendlab_visual_simulator.html) | Frozen HTML snapshot |
-| [Snapshot inverse-model demo](../01_canonical_bendlab/bendlab_model_demo.html) | Frozen HTML snapshot |
-| [Snapshot curve fitter](../01_canonical_bendlab/bendlab_curve_fitter.html) | Frozen HTML snapshot |
-| [Snapshot site index](../01_canonical_bendlab/docs/index.html) | Frozen HTML snapshot |
-| [Snapshot about page](../01_canonical_bendlab/docs/about.html) | Frozen HTML snapshot |
-| [Snapshot model page](../01_canonical_bendlab/docs/model.html) | Frozen HTML snapshot |
-| [Snapshot fitter page](../01_canonical_bendlab/docs/fitter.html) | Frozen HTML snapshot |

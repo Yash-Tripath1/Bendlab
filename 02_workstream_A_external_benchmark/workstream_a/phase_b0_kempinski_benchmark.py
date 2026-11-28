@@ -2,8 +2,7 @@
 model on the Kempinski et al. (2026) unilateral-light archive.
 
 Standalone analysis. It imports the canonical model read-only from the
-packaged snapshot (01_canonical_bendlab/sim.py; falls back to the
-repository-root sim.py, which is the same model) and does NOT modify it.
+repository-root sim.py and does NOT modify it.
 The published model has
 no light-intensity input: intensity enters only through a clearly
 separated wrapper fitted here on training data only,
@@ -40,9 +39,7 @@ from scipy.optimize import least_squares
 
 HERE = Path(__file__).resolve().parent
 PKG_ROOT = HERE.parents[1]                      # repository/package root
-_MODEL_DIR = PKG_ROOT / "01_canonical_bendlab"  # packaged canonical snapshot
-if not (_MODEL_DIR / "sim.py").exists():
-    _MODEL_DIR = PKG_ROOT                       # plain repository checkout
+_MODEL_DIR = PKG_ROOT                          # canonical repository root
 sys.path.insert(0, str(_MODEL_DIR))             # canonical model, read-only
 from sim import batch_simulate                    # noqa: E402
 
