@@ -1,15 +1,17 @@
 # Data sources
 
-This document records the provenance of the measured data used by
-BendLab and identifies candidate datasets for subsequent validation. It
-also distinguishes measured data from reference simulations. Only the
-PLOS Biology S13 dataset is currently used in the fitting pipeline.
+This document records the provenance of measured data used by BendLab,
+identifies candidate datasets for subsequent validation, and distinguishes
+measured inputs from reference simulations. The canonical root fitting
+pipeline uses the PLOS Biology S13 dataset. The separate external-benchmark
+and growth-aware analyses use the Kempinski et al. unilateral-light archive.
 
 ## Tier 1 - datasets suitable for immediate analysis
 
 | Source | Data provided | Access |
 |---|---|---|
 | Brooks, Atamian & Harmer (2023), *PLOS Biology*, doi:10.1371/journal.pbio.3002344, S13 Data | Stem-angle time series for phototropism and heliotropism experiments; sheet Fig1C contains 48 plants in six stimulus-start-time groups | Public download; included in `data/real/` |
+| Kempinski et al. (2026), *PNAS*, doi:10.1073/pnas.2614473123; Zenodo record 21206480, doi:10.5281/zenodo.21206480 | Unilateral-light trajectories used by the external benchmark and growth-aware analyses | Packaged in `05_data_external/` and `growth_phase/data/00_Data/`; CC BY 4.0, with file checksums in `DATA_CONTRACT.md` |
 | Atamian et al. (2016), *Science* 353:587–590, doi:10.1126/science.aaf9793 | Quantitative results on circadian regulation of sunflower heliotropism, including day/night growth asymmetry and orientation of mature plants | Subscription access may be required |
 | Orbovic & Poff (1993), *Plant Physiology* 103:157–163 | Growth distribution during first positive phototropic curvature of Arabidopsis hypocotyls | Public, PMC158958 |
 | Blaauw sine law | Classical quantitative relationship between stimulus direction and first positive phototropic curvature | Primary literature |

@@ -1,7 +1,7 @@
 # BendLab evidence pack
 
 This directory contains a no-refit evidence audit, reproducibility instructions,
-and five figures regenerated from committed outputs. It was assembled on
+and six figures regenerated from committed outputs. It was assembled on
 2026-11-11. No source report, model, fit, legacy result, or input data outside
 this directory was changed.
 
@@ -39,10 +39,8 @@ reproduction only.
 
 ## Figures
 
-All five PNGs are 300 dpi. Each has a matching source script in `figures/`.
+All six PNGs are 300 dpi. Each has a matching source script in `figures/`.
 
-| Figure | Contents | Main source |
-|---|---|---|
 | Figure | Contents | Main source |
 |---|---|---|
 | [`fig01_identifiability_rate_cap.png`](figures/fig01_identifiability_rate_cap.png) ([script](figures/fig01_identifiability_rate_cap.py)) | Saved `max_rate` fit versus each plant's raw observed adjacent-sample peak rate; 40 caps above and 8 at/below | Evidence-pack identifiability JSON; saved Fig1C fits and S13 angles |
@@ -50,11 +48,13 @@ All five PNGs are 300 dpi. Each has a matching source script in `figures/`.
 | [`fig03_intensity_transfer.png`](figures/fig03_intensity_transfer.png) ([script](figures/fig03_intensity_transfer.py)) | Median held-out RMSE for W1, W3, and B1 across the ten observed intensity groups; the fixed 9.73-degree reference is shown | `phase_e_w3_primary_by_intensity.csv` |
 | [`fig04_growth_coupling_nulls.png`](figures/fig04_growth_coupling_nulls.png) ([script](figures/fig04_growth_coupling_nulls.py)) | Central 95% intervals and medians for four amended Task 4 null distributions in the eligible sample (n=209), against observed partial rho | `analysis_results_amended.json`, `amended_task4_null_rhos.csv` |
 | [`fig05_zt9_transfer.png`](figures/fig05_zt9_transfer.png) ([script](figures/fig05_zt9_transfer.py)) | Paired per-plant held-out RMSE for six ZT9 plants: base scalar versus shared-clock model fitted without ZT9 | `clock_validation_shared_heldout.csv` |
+| [`fig06_phase_e_equivalence.png`](figures/fig06_phase_e_equivalence.png) ([script](figures/fig06_phase_e_equivalence.py)) | Paired Phase E W3 and B1 held-out RMSE; median W3-minus-B1 difference +0.0509 degrees, 95% percentile interval [-0.1954, +0.2798] | `phase_e_w3_heldout_per_plant.csv`, `phase_e_w3_summary.json` |
 
 Figure 2 boxplot fliers are hidden; boxes show the interquartile range and
 whiskers use Matplotlib's 1.5-IQR convention. Figure 3 joins the ten group
 medians with lines and does not show uncertainty intervals. Figure 4 is a
 conditional null sensitivity, not a causal test. Figure 5 does not plot the
 per-plant free-clock refit comparator (median 1.105 degrees); that is not the
-same held-out comparison as the shared-clock model. Generated PNG and JSON
-hashes are recorded in [`SHA256SUMS.txt`](SHA256SUMS.txt).
+same held-out comparison as the shared-clock model. Figure 6's paired result
+is reported as parity, not superiority or a formal equivalence test. Generated
+PNG and JSON hashes are recorded in [`SHA256SUMS.txt`](SHA256SUMS.txt).

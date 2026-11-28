@@ -40,7 +40,7 @@ workbooks/CSVs/JSONs listed below, so run commands from the repository root.
 ## Rebuild commands
 
 From the repository root, run the two audit scripts first, then regenerate the
-five figures:
+six figures:
 
 ```bash
 .venv/bin/python 07_evidence_pack/identifiability_count.py
@@ -89,10 +89,12 @@ Those test inputs were chosen for this check and are not historical results.
 
 Each `figures/fig0*.py` script reads its named committed or evidence-pack
 CSV/JSON input and writes the adjacent PNG. The figure scripts do not call a fitter or run a
-new model search. Figures are saved at 300 dpi and an 85 mm nominal width. Figures 1-3 use a
-70 mm height, figure 4 uses 72 mm, and figure 5 uses 66 mm. The image and JSON
-output hashes are recorded in `SHA256SUMS.txt`; check them from this directory
-with `sha256sum -c SHA256SUMS.txt`.
+new model search. Figures 1-5 are saved at 300 dpi and an 85 mm nominal width.
+Figures 1-3 use a 70 mm height, figure 4 uses 72 mm, and figure 5 uses 66 mm.
+Figure 6 is a two-panel layout saved at 300 dpi with a nominal 180 mm width
+and 82 mm height. The image and JSON output hashes are recorded in
+`SHA256SUMS.txt`; check them from this directory with `sha256sum -c
+SHA256SUMS.txt`.
 
 | Script | Input(s) | Output |
 |---|---|---|
@@ -101,13 +103,16 @@ with `sha256sum -c SHA256SUMS.txt`.
 | `fig03_intensity_transfer.py` | `02_workstream_A_external_benchmark/workstream_a/outputs/phase_e_w3_primary_by_intensity.csv` | `figures/fig03_intensity_transfer.png` |
 | `fig04_growth_coupling_nulls.py` | `06_growth_coupling/outputs/analysis_results_amended.json`, `amended_task4_null_rhos.csv` | `figures/fig04_growth_coupling_nulls.png` |
 | `fig05_zt9_transfer.py` | `results/clock_validation_shared_heldout.csv` | `figures/fig05_zt9_transfer.png` |
+| `fig06_phase_e_equivalence.py` | `02_workstream_A_external_benchmark/workstream_a/outputs/phase_e_w3_heldout_per_plant.csv`; `02_workstream_A_external_benchmark/workstream_a/outputs/phase_e_w3_summary.json` | `figures/fig06_phase_e_equivalence.png` |
 
 Figure 4 summarizes the 1,000 stored eligible-sample draws for each of the
 four amended null series; its intervals are recomputed as linear 2.5th, 50th,
 and 97.5th percentiles. Figure 5 uses the six saved held-out ZT9 per-plant
-rows. Figure 2 uses Phase E held-out predictions, not the older Phase B0
-benchmark summary. Do not mix their slightly different W2 values or describe
-them as a single run.
+rows. Figure 6 recomputes the paired W3-minus-B1 median and bootstrap interval
+from the saved per-plant rows and summary JSON; it does not refit either model
+or establish superiority or formal equivalence. Figure 2 uses Phase E
+held-out predictions, not the older Phase B0 benchmark summary. Do not mix
+their slightly different W2 values or describe them as a single run.
 
 ## Files produced
 
