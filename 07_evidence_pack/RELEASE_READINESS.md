@@ -1,55 +1,229 @@
-# Release readiness assessment
+# Release readiness and Zenodo versioning
 
-## Observed main and existing release
+## Decision
 
-The observed `origin/main` tip is `f1b494270d4882b2607a3f017f460859cf358063`, with Git committer timestamp `2026-11-27T23:56:19+05:30`. This timestamp is later than the assessment date, `2026-11-11`; verify the repository clock/history before tagging. The only tag reported by local and remote tag listings is `v1.0.0`. It points to `b09ea5aa6003082b41d726b2b8499ded313dcb21`, dated `2026-10-16T23:27:14+05:30`, subject `corrected H6/H8, model-selection design study`. GitHub reports the `v1.0.0` release published at `2026-10-18T19:10:05Z`.
+Do not create a tag or release from the current active-session checkout. The
+paper-facing evidence is documented and the technical smoke checks pass, but
+the active branch points at an older commit, the supplied current date conflicts
+with the remote commit timestamps, and the release metadata and legacy dataset
+provenance still need explicit review. No tag or release was created during
+this audit.
 
-`v1.0.0` predates the paper analyses: its tree contains no Phase E report, preregistration, or Phase E output files. Those later analyses are documented in `02_workstream_A_external_benchmark/PHASE_B0_REPORT.md`, `growth_phase/PHASE_E_PREREGISTRATION.md`, and `02_workstream_A_external_benchmark/PHASE_E_RESULTS.md`. The Phase E report describes the fixed-threshold negative result and paired parity with B1; it does not claim superiority or a validated mechanism. Do not move or replace `v1.0.0`.
+This document is an operational release note, not a scientific-results report.
+The scientific reports, fitted results, figures, and preregistrations were not
+rerun or edited as part of this readiness pass.
 
-## Recommended paper tag: `v2.0.0`
+## Existing BendLab Zenodo release
 
-Tag the `main` commit that includes the reviewed paper evidence, after that evidence is merged. Do not tag the currently observed `f1b494...` commit if the paper cites `fig06` or these new documents, because that commit does not contain them. The commands below are for a human to run in Windows PowerShell after merge. They create an annotated tag only if the current `origin/main` contains the new paper files and `v2.0.0` does not already exist. They then verify that the local and remote tag dereference to the same commit as `origin/main`.
+The following v1.0.0 metadata was supplied by the repository owner for this
+release audit; the Zenodo host was not accessed independently.
+
+| Field | Existing release |
+|---|---|
+| Version | `v1.0.0` |
+| Version record | [Zenodo record 23457746](https://zenodo.org/records/23457746) |
+| Version DOI | `10.5281/zenodo.23457746` |
+| Concept DOI | `10.5281/zenodo.23457744` |
+| Resource type | Software |
+| Published | 2026-10-18 |
+| Creators | Anadi Tripathi; Umaid Siddiqui |
+| Archived Git commit | `b09ea5aa6003082b41d726b2b8499ded313dcb21` (`b09ea5a`) |
+| Zenodo licence | CC-BY-4.0 |
+
+The v1.0.0 archive predates Phases B0 through E and therefore does not contain
+the analyses intended for the paper. Preserve that version. The paper-facing
+release should be v2.0.0 as a new version under concept DOI
+`10.5281/zenodo.23457744`, not as a separate Zenodo concept record. Zenodo
+will assign a new version-specific DOI for v2.0.0; record that DOI after the
+archive is created. Keep the external trajectory dataset's source attribution
+to Zenodo record 21206480 separate and unchanged.
+
+## Licence scope finding
+
+The existing Zenodo v1.0.0 record lists CC-BY-4.0. The repository's top-level
+[`LICENSE`](../LICENSE) says the code is MIT-licensed and explicitly excludes
+the PLOS workbook in `data/real/`, which retains its source CC BY terms. The
+external archive is identified as CC-BY-4.0 in the project documentation. The
+Zenodo record's CC-BY-4.0 declaration and the repository's MIT code licence
+therefore have different stated scopes. This is a scope mismatch to carry into
+the v2.0.0 release review, not a determination that either licence is invalid.
+As instructed, neither the Zenodo record nor the repository `LICENSE` was
+changed.
+
+The legacy `results/adaptation_instruction_dataset.csv` is documented as an
+orphan with no tracked generator, source record, or current code consumer. The
+inverse dataset's described generation seed cannot be independently checked
+because its generator is not in the checkout. Both files remain in the tree.
+Before archiving them as distributable materials, verify their provenance and
+redistribution rights or make an explicit, reviewed decision about their scope.
+No file was deleted in this audit.
+
+## Repository state and chronology
+
+The observed `origin/main` is
+`5768b9e7d6ba59f70a10c1580f2a66fe7f33c26a` (`5768b9e`), the merge commit for
+PR #12. GitHub reports that merge at `2026-11-28T05:15:36Z`, and reports three
+successful checks on the merge commit (`build`, `deploy`, and
+`report-build-status`). The supplied session date is 2026-11-11, so this is a
+future-timestamp conflict that must be checked before release.
+
+The session initially opened on `4f33ede`; its worktree matched the 318-file
+`origin/main` tree before the release-readiness edits. To prepare this follow-up
+without rewriting the earlier commits, the active branch was fast-forwarded to
+its existing remote topic head `9984f89`. That tree is identical to the PR #12
+merge tree. This follow-up changes nine documentation or manifest files only;
+it does not change code, data, saved scientific outputs, `growth_phase/`, or
+`tests/`. A tag made from the active topic branch would still target a topic
+commit. After this follow-up is merged, tag a clean `origin/main` commit, and
+only after the chronology conflict is resolved.
+
+The only remote version tag observed in this audit is `v1.0.0`, and GitHub
+lists it as the latest release. No `CITATION.cff` or `.zenodo.json` is tracked.
+That does not prevent a GitHub-to-Zenodo release, but the v2.0.0 record's
+creators, version, resource type, concept relationship, and licence must be
+checked in Zenodo before it is cited. The earlier tag-plan snapshot in this
+file has been replaced with the owner-supplied v1.0.0 and concept-DOI
+information above.
+
+## Readiness checks completed
+
+- `.venv/bin/python -m pytest -q`: 17 passed.
+- `python build_site.py`: all four pages generated successfully.
+- `growth_phase/SHA256SUMS.txt`: 58 of 58 entries pass.
+- `07_evidence_pack/SHA256SUMS.txt`: 8 of 8 entries pass, including Figure 6.
+- Static syntax check: 79 Python files parsed, no syntax errors.
+- `pip check`: no broken requirements reported.
+- The Phase C M0 versus B0 W1 RMSE contexts are reconciled in
+  [`PAPER_DATA.md`](PAPER_DATA.md); neither source report was edited.
+- The evidence-pack README, reproducibility table, paper outline, and checksum
+  manifest now consistently account for six figures. Figure 6 is a paired
+  comparison described as parity, not superiority or a formal equivalence
+  test. The PNG was not regenerated in this audit.
+
+The `growth_phase/README.md` still contains historical branch-handoff language.
+It is part of the protected growth-phase package and was not changed. Read it
+as the package's original handoff note, not as the current repository release
+status.
+
+## Human procedure for GitHub release v2.0.0 and Zenodo versioning
+
+Run these steps yourself in Windows PowerShell only after the chronology,
+provenance, and release-metadata reviews above are resolved. This procedure is
+for a clean clone; do not run it from the current active-session checkout.
+
+### 1. Prepare and verify the release commit
 
 ```powershell
-git fetch origin
+git clone https://github.com/Yash-Tripath1/Bendlab.git
+Set-Location Bendlab
+git fetch origin --tags
 $target = (git rev-parse origin/main).Trim()
-git cat-file -e "${target}:07_evidence_pack/PROJECT_CLOSE.md"
-if ($LASTEXITCODE -ne 0) { throw "Paper close is not present on origin/main; do not tag." }
+if ($LASTEXITCODE -ne 0) { throw "Could not resolve origin/main." }
+$status = git status --porcelain
+if ($status) { $status; throw "Release checkout is not clean." }
+if ($target -ne (git rev-parse HEAD).Trim()) { throw "Checkout is not at origin/main." }
+git cat-file -e "${target}:07_evidence_pack/PAPER_DATA.md"
+if ($LASTEXITCODE -ne 0) { throw "Paper data sheet is missing from release target." }
 git cat-file -e "${target}:07_evidence_pack/figures/fig06_phase_e_equivalence.png"
-if ($LASTEXITCODE -ne 0) { throw "fig06 is not present on origin/main; do not tag." }
-if (git tag --list v2.0.0) { throw "Local v2.0.0 already exists; inspect it before proceeding." }
-if (git ls-remote origin 'refs/tags/v2.0.0') { throw "Remote v2.0.0 already exists; inspect it before proceeding." }
-git tag -a v2.0.0 -m "BendLab paper version" $target
-git push origin refs/tags/v2.0.0
-
-$localCommit = (git rev-parse 'v2.0.0^{commit}').Trim()
-if ($localCommit -ne $target) { throw "Local v2.0.0 does not point to origin/main." }
-$remoteRef = git ls-remote origin 'refs/tags/v2.0.0^{}'
-$remoteCommit = (($remoteRef -split '\s+')[0]).Trim()
-if ($remoteCommit -ne $target) { throw "Remote v2.0.0 does not point to origin/main." }
-"Verified v2.0.0 -> $remoteCommit"
+if ($LASTEXITCODE -ne 0) { throw "Figure 6 is missing from release target." }
+$v1Tag = git ls-remote origin "refs/tags/v1.0.0"
+if (-not $v1Tag) { throw "The existing v1.0.0 tag was not found; stop and inspect tags." }
+$v1Commit = (git rev-parse "v1.0.0^{commit}").Trim()
+if ($v1Commit -ne "b09ea5aa6003082b41d726b2b8499ded313dcb21") {
+    throw "The v1.0.0 tag does not resolve to the archived commit recorded for Zenodo."
+}
+gh release view v1.0.0
+if ($LASTEXITCODE -ne 0) { throw "The existing v1.0.0 GitHub release is not visible." }
+$existingTag = git ls-remote origin "refs/tags/v2.0.0"
+if ($existingTag) { throw "Remote v2.0.0 already exists; inspect it before proceeding." }
+gh release list --limit 20
 ```
 
-## Remote branches and deletion assessment
+Run the project checks from that clean clone before releasing:
 
-This is a pre-PR snapshot. Remote heads were read from `git ls-remote --heads origin`; tip metadata and GitHub compare results were read from the GitHub branches and compare APIs. `origin/HEAD` is a symbolic pointer to `origin/main`, not a separate branch.
+```powershell
+py -3.11 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m pytest -q
+.\.venv\Scripts\python.exe build_site.py
+```
 
-| Remote branch | Tip commit and committer date (UTC) | Merge status relative to main | Tree differs from main? | Deletion safety, no deletion performed |
-|---|---|---|---|---|
-| `origin/main` | `f1b494270d4882b2607a3f017f460859cf358063`, `2026-11-27T18:26:19Z` | Default branch | No | Do not delete. |
-| `origin/arena/5d10ddb3-bendlab` | `02b81d4ef39c888bd131879854a52018d922c375`, `2026-11-27T18:09:03Z` | PR #10 merged; tip is an ancestor of main, zero commits ahead and two behind | No, identical tree | Do not delete while it is the active session branch. Its remote tip has no unique tree content in this snapshot. |
-| `origin/arena/f1102a30-bendlab` | `a452dc4f1edb98c58a64ca0008f68d10c07b4218`, `2026-11-11T17:07:23Z` | PR #4 merged; tip is an ancestor of main, zero ahead and 27 behind | Yes, later main changes | Content-wise safe after checking for local or external reliance; no unique commit is missing from main. |
-| `origin/growth-phase-audit-v2` | `92285f2a1c25daf6c9ebd334a819596f2b5a1c89`, `2026-10-25T18:26:19Z` | PR #3 merged, but the current tip diverges: one commit ahead and 30 behind main | Yes | Not safe to delete without preserving or reviewing the branch-only commit `growth based degeneracy`. |
-| `origin/growth-phase-d-restore` | `c94e08e8d7baba86cf8b21fb579348dfc4f1f1ba`, `2026-11-24T19:11:28Z` | PR #5 merged; tip is an ancestor of main, zero ahead and 25 behind | Yes, later main changes | Content-wise safe after checking for local or external reliance; no unique commit is missing from main. |
+Verify both SHA-256 manifests in PowerShell:
 
-The main, active-session branch, and `growth-phase-d-restore` timestamps are later than the assessment date. Verify this apparent future metadata before release. GitHub also reports PR #2 as open with `main` as both head and base: `https://github.com/Yash-Tripath1/Bendlab/pull/2`. The active-session row records the remote tip before this PR. This PR advances that branch but does not delete any branch or alter tags or releases. At the time of the inventory, the local worktree was based on the observed main commit and the paper changes had not yet been pushed.
+```powershell
+function Test-Sha256Manifest([string]$Manifest) {
+    $directory = Split-Path -Parent $Manifest
+    $lines = Get-Content -LiteralPath $Manifest
+    foreach ($line in $lines) {
+        $parts = $line -split '\s{2,}', 2
+        if ($parts.Count -ne 2) { throw "Malformed entry in ${Manifest}: $line" }
+        $expected = $parts[0].ToLowerInvariant()
+        $path = Join-Path $directory $parts[1]
+        $actual = (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash.ToLowerInvariant()
+        if ($actual -ne $expected) { throw "Checksum mismatch: $path" }
+    }
+    "PASS: $($lines.Count) entries in $Manifest"
+}
+Test-Sha256Manifest "growth_phase\SHA256SUMS.txt"
+Test-Sha256Manifest "07_evidence_pack\SHA256SUMS.txt"
+```
 
-**Administrative provenance note:** the hashes, dates, tag/release versions, PR numbers, and ahead/behind counts above come from Git/GitHub metadata, not a committed-file producer. Under the committed-file-only citation rule these administrative values are `UNSOURCED`; their observed sources are `git ls-remote`, Git commit/tag metadata, and the GitHub branches, compare, release, and pull-request endpoints. Analysis-result numbers in the paper documents cite their committed output paths.
+Confirm the existing v1.0.0 release is intact and the version-specific tag name
+is unused. Do not move or replace v1.0.0.
 
-## Zenodo archive recommendation
+### 2. Connect the existing Zenodo concept before publishing
 
-Create the Zenodo deposit from the exact paper-release commit after the paper evidence is merged, and cite the resulting DOI and Git commit together. Check that the Git-tracked snapshot includes the scripts, tests, documentation, committed outputs, and input data required to reproduce the paper. A Zenodo archive will not include ignored or untracked local files, so do not mint the paper archive from this unmerged working tree.
+In the Zenodo GitHub integration settings, enable
+`Yash-Tripath1/Bendlab` before creating the GitHub release. Confirm that the
+integration is associated with the existing BendLab concept DOI
+`10.5281/zenodo.23457744` and that it will create a new version of that concept
+record. Do not manually create a separate Zenodo concept record for v2.0.0.
 
-## Read-only `requirements.txt` import audit
+### 3. Create the GitHub release
 
-A static AST scan covered tracked Python files plus the new fig06 script. Direct third-party imports found were `fpdf`, `lifelines`, `matplotlib`, `numpy`, `pandas`, `pytest`, `scipy`, and `sklearn`; they map to the listed `fpdf2`, `lifelines`, `matplotlib`, `numpy`, `pandas`, `pytest`, `scipy`, and `scikit-learn` distributions. The `fpdf2` wheel metadata was checked read-only and supplies the `fpdf` top-level module. `openpyxl` is also listed for Excel-file support. No missing direct import dependency was found. This is a static import audit, not a test of optional runtime paths. `requirements.txt` was not changed.
+After the clean target and checks are verified, create the GitHub release from
+PowerShell. `--target` pins the release tag to the previously verified commit.
+This command creates the tag and release; it is intentionally included for the
+human operator and was not run during this audit.
+
+```powershell
+gh release create v2.0.0 `
+  --target $target `
+  --title "BendLab v2.0.0" `
+  --notes "Paper-facing evidence release. Includes the reviewed Phase B0 through Phase E analyses and the six-figure evidence pack. See 07_evidence_pack/RELEASE_READINESS.md for scope and limitations."
+if ($LASTEXITCODE -ne 0) { throw "GitHub release creation failed." }
+```
+
+Verify the GitHub release and that its tag resolves to the intended commit:
+
+```powershell
+gh release view v2.0.0
+if ($LASTEXITCODE -ne 0) { throw "GitHub release v2.0.0 is not visible." }
+git fetch origin --tags
+$tagCommit = (git rev-parse "v2.0.0^{commit}").Trim()
+if ($tagCommit -ne $target) { throw "v2.0.0 does not point to the verified release commit." }
+```
+
+### 4. Verify the Zenodo version and DOI
+
+After Zenodo processes the GitHub release, inspect the Zenodo record pages
+manually:
+
+1. Confirm the existing v1.0.0 record remains record 23457746 and its files are
+   unchanged.
+2. Confirm a v2.0.0 record appears under concept DOI
+   `10.5281/zenodo.23457744`, rather than as a separate concept record.
+3. Confirm the new version's metadata says `v2.0.0`, resource type Software,
+   and creators Anadi Tripathi and Umaid Siddiqui. Review the record licence
+   against the scope note above; do not silently change the repository
+   `LICENSE` or the v1.0.0 Zenodo record.
+4. Copy the new version-specific DOI from the v2.0.0 landing page. Verify that
+   it resolves to the new record and that the concept DOI still resolves to
+   the version group. Use the version-specific DOI in the paper's software
+   citation; retain the concept DOI when citing the series of versions.
+5. Record the new DOI, GitHub tag, exact commit SHA, Zenodo version, licence
+   metadata, and archive checksum in the paper and release notes.
+
+Do not report v2.0.0 as archived until these checks are complete. The record
+23457746 details in this file are owner-supplied; verify the displayed Zenodo
+metadata during the human release procedure.

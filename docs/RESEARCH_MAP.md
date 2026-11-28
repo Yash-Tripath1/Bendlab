@@ -13,7 +13,7 @@ This map describes the current checkout and the evidence routes between the pape
 | `05_data_external/` | Packaged external unilateral-light trajectory archive used by the benchmark and growth-aware work. |
 | `06_growth_coupling/` | Growth-coupling preregistration, analysis code, and observational results with endpoint and measurement-geometry qualifications. |
 | `07_evidence_pack/` | Paper data sheet, outline, quantitative-claim audit, figure captions, reproducibility notes, figure sources, and saved evidence outputs. |
-| `growth_phase/` | Growth-aware photophase programme. It predates the numbering convention and has its own `SHA256SUMS.txt` manifest and preregistrations. It is a separate row, not a numbered project directory. |
+| `growth_phase/` | Growth-aware photophase programme. It predates the numbering convention and has its own `SHA256SUMS.txt` manifest and preregistrations. It is a separate row, not a numbered project directory. Its README's branch-upload status is a historical handoff note, not the current repository release status; see the [release readiness assessment](../07_evidence_pack/RELEASE_READINESS.md). |
 | `data/` | Measured PLOS Biology workbook under `data/real/`. Its source, handling rules, and checksum are documented in [`DATA_CONTRACT.md`](DATA_CONTRACT.md). |
 | `docs/` | Current project documentation, indexes, guides, and historical material under `docs/archive/`. The longer former README is preserved in [`PROJECT_OVERVIEW.md`](PROJECT_OVERVIEW.md). |
 | `results/` | Committed result tables, summaries, fitted-model assets, inverse-model datasets, and figures. File paths and source claims are documented by the relevant reports. |

@@ -202,7 +202,7 @@ limits are documented with the benchmark and growth-phase sources.
 ## Authors and contributions
 
 - **Anadi Tripathi** ([@Yash-Tripath1](https://github.com/Yash-Tripath1)) - project lead; model implementation, analyses, and repository.
-- **Umaid** - collaborator; code review and crossover connectivity analysis.
+- **Umaid Siddiqui** - collaborator; code review and crossover connectivity analysis.
 - The interactive figure was built with Anima by **Natnael Getenew**, as credited above.
 
 AI-assisted tools (Arena.ai Agent Mode) were used for ideation, code
