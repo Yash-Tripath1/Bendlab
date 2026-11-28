@@ -30,3 +30,16 @@ Growth-aware Phases A to E report an early-length association, no improvement fr
 - Directories 03 and 04 are archived sub-projects retained as evidence, not paper claims. Their scopes and limits are described in the [Research Map](docs/RESEARCH_MAP.md).
 
 Code is released under the MIT license. The measured PLOS data and external archive retain their source licenses and attribution; see [`LICENSE`](LICENSE), [`docs/DATA_CONTRACT.md`](docs/DATA_CONTRACT.md), and [`docs/DATA_SOURCES.md`](docs/DATA_SOURCES.md).
+
+## Citation and software archive
+
+The archived BendLab software release **v1.0.0** is available from Zenodo at
+[10.5281/zenodo.23457746](https://doi.org/10.5281/zenodo.23457746). It was
+archived from commit `b09ea5a` and predates Phases B0 through E, so this
+version DOI does not identify the current paper-facing code. The series is
+linked by concept DOI [10.5281/zenodo.23457744](https://doi.org/10.5281/zenodo.23457744);
+a future paper-facing release should be a new version under that concept and
+cited using its assigned version-specific DOI. `CITATION.cff` records the
+v1.0.0 citation only. This is the BendLab software record, not the separate
+external trajectory dataset record 21206480 (see
+[`docs/DATA_SOURCES.md`](docs/DATA_SOURCES.md)).

@@ -24,8 +24,8 @@ plant: the deviation of the stem from vertical. A real stem, however, has
 a shape: it can bend at the tip, at the base, or in an S. Two plants with
 the same tip-angle trajectory may reach it with different curvature
 distributions along the stem. If the curvature profile carries parameter
-information that the tip angle discards, then measuring it — angles
-between the vertical and several points of the stem — should reduce
+information that the tip angle discards, then measuring it -- angles
+between the vertical and several points of the stem -- should reduce
 degeneracy.
 
 Within the rigid sim.py model this idea is vacuous by construction:

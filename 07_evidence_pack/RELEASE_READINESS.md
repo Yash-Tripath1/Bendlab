@@ -2,16 +2,22 @@
 
 ## Decision
 
-Do not create a tag or release from the current active-session checkout. The
-paper-facing evidence is documented and the technical smoke checks pass, but
-the active branch points at an older commit, the supplied current date conflicts
-with the remote commit timestamps, and the release metadata and legacy dataset
-provenance still need explicit review. No tag or release was created during
-this audit.
+The v2.0.0 release procedure is documented for the human release operator; no
+v2.0.0 tag, GitHub release, or Zenodo version was created as part of this work.
+PR #13 merged into `origin/main` at `dcfa6d19c5e84ea44646cdafc19be19211fac15c`
+on 2026-11-28, consistent with the session date. The earlier warning about a
+future-dated remote commit used an incorrect session date and is withdrawn.
+The active-session worktree is not the release target: it is based on `4f33ede`
+and contains unmerged local changes. After this audit update is reviewed and
+merged, use a clean clone of the latest `origin/main` and follow the Windows
+PowerShell procedure below. Complete the metadata and provenance checks before
+creating the GitHub release and linking Zenodo.
 
 This document is an operational release note, not a scientific-results report.
-The scientific reports, fitted results, figures, and preregistrations were not
-rerun or edited as part of this readiness pass.
+The Phase E report received a descriptive correction to distinguish the saved
+harness tolerance from the preregistered threshold; historical Markdown received
+punctuation-only normalization. No scientific result values changed, no fits,
+figures, or data were regenerated, and no preregistrations were edited.
 
 ## Existing BendLab Zenodo release
 
@@ -60,34 +66,37 @@ No file was deleted in this audit.
 
 ## Repository state and chronology
 
-The observed `origin/main` is
-`5768b9e7d6ba59f70a10c1580f2a66fe7f33c26a` (`5768b9e`), the merge commit for
-PR #12. GitHub reports that merge at `2026-11-28T05:15:36Z`, and reports three
-successful checks on the merge commit (`build`, `deploy`, and
-`report-build-status`). The supplied session date is 2026-11-11, so this is a
-future-timestamp conflict that must be checked before release.
+As of 2026-11-28, `origin/main` is
+`dcfa6d19c5e84ea44646cdafc19be19211fac15c` (`dcfa6d1`), the merge commit for
+PR #13. GitHub reports that merge at `2026-11-28T09:46:02Z`, consistent with
+the session date. The earlier warning based on a 2026-11-11 session date was
+incorrect and is withdrawn.
 
-The session initially opened on `4f33ede`; its worktree matched the 318-file
-`origin/main` tree before the release-readiness edits. To prepare this follow-up
-without rewriting the earlier commits, the active branch was fast-forwarded to
-its existing remote topic head `9984f89`. That tree is identical to the PR #12
-merge tree. This follow-up changes nine documentation or manifest files only;
-it does not change code, data, saved scientific outputs, `growth_phase/`, or
-`tests/`. A tag made from the active topic branch would still target a topic
-commit. After this follow-up is merged, tag a clean `origin/main` commit, and
-only after the chronology conflict is resolved.
+The active-session branch remains based on `4f33ede` and its worktree contains
+unmerged changes; neither is the v2.0.0 release target. After this audit update
+is reviewed and merged, resolve the latest `origin/main` from a fresh, clean
+clone and run the documented checks. No v2.0.0 tag, GitHub release, or Zenodo
+publication was made in this work. The human operator should verify the live
+release target at the time of release rather than rely on a SHA recorded here.
 
-The only remote version tag observed in this audit is `v1.0.0`, and GitHub
-lists it as the latest release. No `CITATION.cff` or `.zenodo.json` is tracked.
-That does not prevent a GitHub-to-Zenodo release, but the v2.0.0 record's
-creators, version, resource type, concept relationship, and licence must be
-checked in Zenodo before it is cited. The earlier tag-plan snapshot in this
-file has been replaced with the owner-supplied v1.0.0 and concept-DOI
-information above.
+The v1.0.0 GitHub release is the only release observed, and no v2.0.0 tag or
+release was found. The root `CITATION.cff` records the archived v1.0.0 citation
+only; it does not assign a DOI to the current post-Phase B0-through-E tree. No
+`.zenodo.json` is present. The audit reports that the existing v1.0.0 Zenodo
+title is `Yash-Tripath1/Bendlab: v1.0.0`; this was not independently checked
+or changed. Verify that the future v2.0.0 Zenodo record has the intended title
+before publishing, as described below.
 
 ## Readiness checks completed
 
-- `.venv/bin/python -m pytest -q`: 17 passed.
+- `.venv/bin/python -m pytest -q`: 17 passed in 1.76s on Python 3.11.2
+  during this audit.
+- `.venv/bin/cffconvert --validate --infile CITATION.cff`: valid CFF 1.2.0
+  metadata.
+- A GitHub Actions workflow is added to run the regression suite on pushes,
+  pull requests, and manual dispatch with Python 3.11 and `requirements.txt`.
+  Verify its first GitHub check is green after this audit update is merged; no
+  CI result is claimed here.
 - `python build_site.py`: all four pages generated successfully.
 - `growth_phase/SHA256SUMS.txt`: 58 of 58 entries pass.
 - `07_evidence_pack/SHA256SUMS.txt`: 8 of 8 entries pass, including Figure 6.
@@ -213,10 +222,14 @@ manually:
    unchanged.
 2. Confirm a v2.0.0 record appears under concept DOI
    `10.5281/zenodo.23457744`, rather than as a separate concept record.
-3. Confirm the new version's metadata says `v2.0.0`, resource type Software,
-   and creators Anadi Tripathi and Umaid Siddiqui. Review the record licence
-   against the scope note above; do not silently change the repository
-   `LICENSE` or the v1.0.0 Zenodo record.
+3. Confirm the v2.0.0 record title is exactly `BendLab v2.0.0`, not an
+   owner/repository slug. The audit reports that the existing v1.0.0 title is
+   `Yash-Tripath1/Bendlab: v1.0.0`; that metadata was not changed. If the v2.0.0
+   draft still uses a repository slug, resolve its title before publication;
+   do not change the v1 record. Confirm the new version says `v2.0.0`, resource
+   type Software, and creators Anadi Tripathi and Umaid Siddiqui. Review the
+   record licence against the scope note above; do not silently change the
+   repository `LICENSE` or the v1.0.0 Zenodo record.
 4. Copy the new version-specific DOI from the v2.0.0 landing page. Verify that
    it resolves to the new record and that the concept DOI still resolves to
    the version group. Use the version-specific DOI in the paper's software

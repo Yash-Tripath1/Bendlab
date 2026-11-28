@@ -1,9 +1,9 @@
 # Research note: Can stem-shape measurement break parameter degeneracy in phototropic bending?
 
-**Project:** BendLab — parameter identifiability in a minimal model of phototropic stem bending
+**Project:** BendLab -- parameter identifiability in a minimal model of phototropic stem bending
 **Repository branch:** `shape-extension` (github.com/umaidsiddiqui10/Bendlab)
 **Date:** 18 October 2026
-**Status:** Complete — one pre-registered confirmation after two documented falsifications
+**Status:** Complete -- one pre-registered confirmation after two documented falsifications
 **Reproducibility:** every number below comes from seeded scripts in the branch; no unseeded randomness, no post-hoc metric changes inside a study
 
 ---
@@ -33,7 +33,7 @@ strongly, how fast and toward what target they bend.
 ## 2. The idea tested in this note
 
 Instead of one angle, measure the **shape** of the stem: the angle
-between the vertical and several points along the stem, over time —
+between the vertical and several points along the stem, over time --
 i.e. the curvature profile theta(s, t). Two plants with the same tip
 curve may bend at the tip vs the base, in a C vs an S, with different
 bend-propagation timing. If the curvature profile carries parameter
@@ -62,9 +62,9 @@ degeneracy.
    non-confirmatory, and confirmatory runs use **fresh populations**
    (new seeds) so protocol choices cannot over-fit to exploration.
 
-## 4. Outcomes — the three studies
+## 4. Outcomes -- the three studies
 
-### Study 1 (v1): clustering on tip vs tip+shape features — FALSIFIED, uninformatively
+### Study 1 (v1): clustering on tip vs tip+shape features -- FALSIFIED, uninformatively
 
 Same population as the published H1 sweep (10,000 plants), same metric
 (median within-cluster IQR / full range).
@@ -85,7 +85,7 @@ model class, not about shape measurement. (Sanity anchors: the tip arm
 reproduced H1's published retention numbers and largest-cluster size,
 n = 2,859, exactly.)
 
-### Study 2 (v2): same comparison with the sensitivity gradient — FALSIFIED, honestly
+### Study 2 (v2): same comparison with the sensitivity gradient -- FALSIFIED, honestly
 
 `zeta > 0` opens the shape channel (joint curvatures up to 19.7°).
 
@@ -103,18 +103,18 @@ Verdict as pre-registered: not supported. Shape features identify the
 shape features into a flat clustering distance against 6 tip features
 *displaced* the drive-parameter information: shape-dominated clusters
 group plants by `c/zeta` and release `k/tau/phi0`. Interpretation: a
-decoder failure, not an information failure — to be tested, not assumed.
+decoder failure, not an information failure -- to be tested, not assumed.
 
 ### Exploration (labelled non-confirmatory)
 
 On the saved v2 population, three probes separated "no information" from
 "wrong decoder": nearest-neighbour recovery, **twin refinement** (among
-a plant's 20 nearest neighbours in tip-feature space — its curve twins —
+a plant's 20 nearest neighbours in tip-feature space -- its curve twins --
 pick the one nearest in shape space), and a flexible decoder
 (ExtraTrees, cross-validated R²). All three showed strong signal; the
 twin-refinement protocol became the pre-registered v3.
 
-### Study 3 (v3): twin refinement on a fresh population — SUPPORTED
+### Study 3 (v3): twin refinement on a fresh population -- SUPPORTED
 
 Pre-registered criterion: shape refinement reduces median normalised
 parameter error by ≥ 25% versus the plain tip twin, for ≥ 2 of the four
@@ -130,7 +130,7 @@ n = 10,000.
 | tau | 10.36% | 11.02% | 1.11% | −6.4% ✗ |
 | max_rate | 28.98% | 28.66% | 1.68% | +1.1% ✗ |
 
-**Verdict: SUPPORTED** — `k` and `phi0` both exceed the 25% threshold,
+**Verdict: SUPPORTED** -- `k` and `phi0` both exceed the 25% threshold,
 exactly the two parameters the pre-registration expected to qualify.
 Effect sizes replicate the exploration almost exactly on independent
 seeds (e.g. R² combined arm: k 0.924 vs 0.926 explored; phi0 0.962 vs
@@ -145,7 +145,7 @@ more decoders:
   tau **0.761** vs 0.522; phi0 **0.962** vs 0.625; zeta **0.913** vs
   0.286; c **0.786** vs 0.056; max_rate −0.009 vs −0.024.
 
-## 5. Final results — what the data support
+## 5. Final results -- what the data support
 
 1. **The method works.** Among plants with indistinguishable bending
    curves, the curvature profile identifies the right plant at roughly
@@ -158,7 +158,7 @@ more decoders:
    0.06).
 3. **Limits are sharp and informative.**
    - `max_rate` is at chance in **every** method whenever the rate cap
-     does not bind — an exact degeneracy (H1), not a method failure. No
+     does not bind -- an exact degeneracy (H1), not a method failure. No
      amount of spatial or temporal resolution helps under static light.
    - `tau` is recovered well by the joint decoder (R² 0.76) but **not**
      by shape tie-breaking among curve twins; the oracle row (1.1%) shows
@@ -214,10 +214,10 @@ used by BendLab).
 From the repository root (Python 3.10+, `pip install -r requirements.txt`):
 
     python check_multiseg.py            # model contract checks
-    python shape_degeneracy.py          # Study 1 (v1) — falsified, empty channel
-    python shape_degeneracy_v2.py       # Study 2 (v2) — falsified, decoder failure
+    python shape_degeneracy.py          # Study 1 (v1) -- falsified, empty channel
+    python shape_degeneracy_v2.py       # Study 2 (v2) -- falsified, decoder failure
     python shape_probe_exploratory.py   # labelled exploration
-    python shape_identification_v3.py   # Study 3 (v3) — SUPPORTED
+    python shape_identification_v3.py   # Study 3 (v3) -- SUPPORTED
 
 Seeds: v1 population 1 / coupling 2; v2 + zeta 3; v3 population 101,
 coupling 102, zeta 103; clustering and CV seed 1 / 101 respectively.

@@ -24,7 +24,7 @@ Here `gamma` is a phenomenological restoring coefficient, not a claim about a sp
 
 The analysis used the tracked `05_data_external/uni_trajectories.csv`: 88,504 observations from 268 plants, with ten intensity groups from 0.7 to 5.8 W/m². The script reused the existing intensity-stratified five-fold plant assignment, seed 42, every-fourth-observation fitting subsample, one-minute integration step, observed initial angle, and evaluation at every observed time. W1, W2, B1, B1r, and B2 were reproduced with the existing benchmark functions without modifying the benchmark script.
 
-All five reproduced baselines agreed with `benchmark_summary.json` within the preregistered 0.05-degree harness tolerance. The largest difference was 0.0074 degrees for W2. W1, B1, B1r, and B2 were within 0.0001 degrees of their saved values.
+All five reproduced baselines agreed with `benchmark_summary.json` within the saved 0.05-degree harness tolerance. The largest difference was 0.0074 degrees for W2. W1, B1, B1r, and B2 were within 0.0001 degrees of their saved values.
 
 The script runtime was 224.2 seconds. The primary and leave-one-intensity-out results were generated with seed 42. The committed machine-readable outputs and per-plant results are in `02_workstream_A_external_benchmark/workstream_a/outputs/phase_e_w3_*`.
 

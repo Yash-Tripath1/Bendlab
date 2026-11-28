@@ -3,6 +3,7 @@ __pycache__/
 .ipynb_checkpoints/
 .DS_Store
 .venv/
+.venv-evidence/
 .pytest_cache/
 .ruff_cache/
 .mypy_cache/

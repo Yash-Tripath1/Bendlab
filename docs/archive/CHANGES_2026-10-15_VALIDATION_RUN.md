@@ -1,11 +1,11 @@
-# BendLab — Actual Code Changes & Simulation Results
+# BendLab -- Actual Code Changes & Simulation Results
 **Date:** 15 Oct 2026 | **Checkout:** `Yash-Tripath1/Bendlab` main (13 Oct clock-fix) | **Runner:** Umaid
 
-> All commands were run from fresh clone `/tmp/Bendlab_check` with `PYTHONPATH=/tmp/Bendlab_check`. Original repo untouched — new files in `/home/user/`.
+> All commands were run from fresh clone `/tmp/Bendlab_check` with `PYTHONPATH=/tmp/Bendlab_check`. Original repo untouched -- new files in `/home/user/`.
 
 ---
 
-## 1. File Created: `sim_gamma.py` — Proprioception (Bastien 2012)
+## 1. File Created: `sim_gamma.py` -- Proprioception (Bastien 2012)
 
 **Location:** `/home/user/sim_gamma.py` (drop-in for `sim.py`)
 
@@ -45,7 +45,7 @@ cp /home/user/sim_gamma.py /tmp/Bendlab_check/sim.py  # to test
 
 > **Verdict:** Optimizer chose `gamma=0.00`. Improvement **0.0%**, `tau` still at wall. Proves dip not fixed by simple `gamma*theta`.
 
-**Plot:** `/home/user/test_gamma_ZT9.png` — black line through middle, blue `gamma=1.0` flatlines at 39deg.
+**Plot:** `/home/user/test_gamma_ZT9.png` -- black line through middle, blue `gamma=1.0` flatlines at 39deg.
 
 ---
 
@@ -71,14 +71,14 @@ PYTHONPATH=/tmp/Bendlab_check python3 /tmp/run_zt9_sim.py
 | ZT9-6 | 4.68 | 3.08 | 75.53 | 61.33 | 1.38 | [] |
 | **Median** |  |  |  |  | **2.42** | 4/6 at wall |
 
-**Plot:** `/home/user/zt9_all_simulation.png` — top row dips huge (ZT9-1 30->23deg at 9-11h), bottom row 2 clean fits sit on dots.
+**Plot:** `/home/user/zt9_all_simulation.png` -- top row dips huge (ZT9-1 30->23deg at 9-11h), bottom row 2 clean fits sit on dots.
 
 **Check:** Segment residuals match official `zt9_diagnostics.py` exactly:
 `ZT9-1 1-4h +10.93, 4-8h +11.49, 8-16h -4.34` vs `ZT9-5 4-8h +0.74`.
 
 ---
 
-## 3. File Created: Clock `k(t)` — Circadian Gating (Atamian 2016)
+## 3. File Created: Clock `k(t)` -- Circadian Gating (Atamian 2016)
 
 **Location:** `/tmp/test_clock_ZT9.py:14` (not yet merged to `sim_gamma.py`)
 
@@ -118,9 +118,9 @@ POLISHED same  RMSE 3.204  Improvement 52.6%  tau LIFTED 0.05->0.10
 | ZT9-5 | 1.20 | **0.84** | 30.1% |
 | ZT9-6 | 1.38 | **1.20** | 13.6% |
 
-**Plot:** `/home/user/zt9_clock_ZT9-1.png` — red clock line follows dip, blue dashed `k(t)` high 9 at 0h, low 0.3 at 10h dip, high 9 at 23h.
+**Plot:** `/home/user/zt9_clock_ZT9-1.png` -- red clock line follows dip, blue dashed `k(t)` high 9 at 0h, low 0.3 at 10h dip, high 9 at 23h.
 
-> Clock `a=0.90` = 90% swing (0.5 to 9) — matches Atamian Fig3B morning 50deg vs night 15deg.
+> Clock `a=0.90` = 90% swing (0.5 to 9) -- matches Atamian Fig3B morning 50deg vs night 15deg.
 
 ---
 
@@ -135,8 +135,8 @@ cd /tmp/Bendlab_check && timeout 100 python3 vector_grand_atlas.py
 
 **`zt9_diagnostics.py` (210 lines, 1s):**
 - Segment residuals: `ZT9-1 1-4h +10.93, 4-8h +11.49` (matches our run)
-- Tau floor sensitivity: `0.05 -> 2.420, 0.01 ->2.401, 0.001 ->2.400` median RMSE — only **0.8%** improvement (official: wall is symptom)
-- Stall: 42/48 plants stall, elapsed IQR 3.31h vs circadian IQR 7.31h — inconclusive
+- Tau floor sensitivity: `0.05 -> 2.420, 0.01 ->2.401, 0.001 ->2.400` median RMSE -- only **0.8%** improvement (official: wall is symptom)
+- Stall: 42/48 plants stall, elapsed IQR 3.31h vs circadian IQR 7.31h -- inconclusive
 
 **`vector_stimulus.py` (476 lines, 4.3s, 20k plants):**
 - Validation `max_abs_diff vs sim.py = 0.000 deg`
@@ -146,7 +146,7 @@ cd /tmp/Bendlab_check && timeout 100 python3 vector_grand_atlas.py
 - Moving sun + diffuse vs sun-only diff median `-9 to -16 deg`, `max 60-83 deg`
 
 **`vector_grand_atlas.py` (303 lines, 145.7s, 100k plants):**
-- Sensitivity sweep `alpha 0.15/0.30/0.50 x T 0/0.10/0.25 x diffuse 0-0.30` — diffuse drives effect
+- Sensitivity sweep `alpha 0.15/0.30/0.50 x T 0/0.10/0.25 x diffuse 0-0.30` -- diffuse drives effect
 - Cluster ARI vs sun-only: `physical 0.678, transduced 0.679, circumference 0.713`
 - Twin median RMSE `circumference 0.011deg` vs `sun-only 0.035deg`
 
@@ -162,7 +162,7 @@ cd /tmp/Bendlab_check && timeout 100 python3 vector_grand_atlas.py
 
 | Change | Code Location | Benefit | Result |
 |---|---|---|---|
-| `gamma` proprioception | `sim_gamma.py:24` `- gamma*theta` | Stiffens valley walls, stops wobble, defines `B` | **Did NOT fix ZT9 dip** (0% gain) — honest negative |
+| `gamma` proprioception | `sim_gamma.py:24` `- gamma*theta` | Stiffens valley walls, stops wobble, defines `B` | **Did NOT fix ZT9 dip** (0% gain) -- honest negative |
 | All-ZT9 sim | `/tmp/run_zt9_sim.py` `t_e = t-t0` | Shows 2/6 clean, 4/6 wall but only ZT9-1 truly bad | Verified correct handling vs official |
 | Clock `k(t)` | `run_model_clock` `k_eff = k0*(1+a*cos)` | Explains rise-stall-fall-rise, lifts tau | **52-70% RMSE cut on ZT9**, all 6 improve |
 | Official vector work | `vector_*.py` `alpha=0.30 T=0.10` | 30deg two-torch illusion, H7 successor | Already validated 0.000 deg, ready for H7 |
